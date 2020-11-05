@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+mat-card {
+  max-width: 300px;
+  max-height: auto;
+  margin: 10px;
+}
