@@ -1,0 +1,27 @@
+{
+    "users": [{
+            "firstname": "นายกฤษณะ",
+            "lasName": "ประสิทธิ์",
+            "email": "kritsana.pr.60@ubu.ac.th",
+            "password": "1234567890",
+            "confirm_password": "1234567890",
+            "phone": "0987654321",
+            "position": "ครู",
+            "department": "กลุ่มสาระการเรียนรู้เทคโนโลยีสารสนเทศ",
+            "role": "admin",
+            "avatar": null
+        },
+        {
+            "firstname": "นาวสาวอภิชญา",
+            "lasName": "ประตังทะสา",
+            "email": "apitchaya.pr.59@ubu.ac.th",
+            "password": "1234567890",
+            "confirm_password": "1234567890",
+            "phone": "0987654321",
+            "position": "ลูกกระจ๊อก",
+            "department": "กลุ่มสาระการเรียนรู้เทคโนโลยีสารสนเทศ",
+            "role": "user",
+            "avatar": null
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-lg-12">
+                <b>รายชื่อผู้ใช้งานทั้งหมด</b>
+                <hr>
+                <table class="table table-hover table-responsive-md">
+                    <thead class="thead-dark text-center">
+                        <th>ชื่อ - นามสกุล</th>
+                        <th>ตำแหน่ง</th>
+                        <th>อีเมล</th>
+                        <th>เบอร์โทรศัพท์</th>
+                        <th>Permission</th>
+                        <th>แก้ไขผู้ใช้าน</th>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr *ngFor="let user of allUser">
+                            <td>{{ user.firstName }} {{ user.lastName }}</td>
+                            <td>{{ user.position }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td *ngIf="user.permission == 'Authorization'"><span class="dot success"></span> {{ user.permission }}</td>
+                            <td *ngIf="user.permission == 'Anonymous'"><span class="dot reject"></span> {{ user.permission }}</td>
+                            <td><button type="button" class="btn btn-danger" (click)="userDetail(user.id)"><mat-icon>create</mat-icon> แก้ไขผู้ใช้งาน</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

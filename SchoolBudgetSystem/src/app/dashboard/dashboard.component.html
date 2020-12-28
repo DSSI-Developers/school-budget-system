@@ -1,0 +1,100 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">sync</i>
+                        </div>
+                        <p class="card-category">โครงการที่อยู่ระหว่างรอดำเนินการ</p>
+                        <h3 class="card-title">12
+                            <small>โครงการ</small>
+                        </h3>
+                    </div>
+                    <div class="card-footer" (click)="moreDetail()">
+                        <div class="stats">
+                            <i class="material-icons">forward</i>
+                            <!-- <mat-icon>forward</mat-icon> -->
+                            รายละเอียดเพิ่มเติม ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">done_all</i>
+                        </div>
+                        <p class="card-category">โครงการที่ได้รับการอนุมัติ</p>
+                        <h3 class="card-title">7
+                            <small>โครงการ</small>
+                        </h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats" (click)="moreDetail()">
+                            <i class="material-icons">forward</i>
+                            <!-- <mat-icon>forward</mat-icon> -->
+                            รายละเอียดเพิ่มเติม ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">cancel_presentation</i>
+                        </div>
+                        <p class="card-category">โครงการที่ไม่ผ่านการอนุมัติ</p>
+                        <h3 class="card-title">3
+                            <small>โครงการ</small>
+                        </h3>
+                    </div>
+                    <div class="card-footer" (click)="moreDetail()">
+                        <div class="stats">
+                            <i class="material-icons">forward</i>
+                            <!-- <mat-icon>forward</mat-icon> -->
+                            รายละเอียดเพิ่มเติม ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">โครงการทั้งหมด</h4>
+                        <p class="card-category">รายการโครงการทั้งหมดที่เสนอ</p>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-hover">
+                            <thead class="text-center">
+                                <th>ลำดับ</th>
+                                <th>รายการ</th>
+                                <th>ราคาต่อหน่วย</th>
+                                <th>จำนวนหน่วย</th>
+                                <th>งบประมาณ</th>
+                                <th></th>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr *ngFor="let allData of allProject">
+                                    <td>{{ allData.no }}</td>
+                                    <td>{{ allData.list }}</td>
+                                    <td>{{ allData.unit }}</td>
+                                    <td>{{ allData.unitMany }}</td>
+                                    <td>{{ allData.priceUnit }}</td>
+                                    <td><button mat-raised-button type="button"><mat-icon>insert_drive_file</mat-icon> PDF</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
