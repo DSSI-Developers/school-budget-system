@@ -111,8 +111,8 @@ exports.getAllUsers = (req, res) => {
     Users.find({}).then((data) => {
         const users = data;
         res.status(201).json({
-            success: true,
-            msg: data
+            message: true,
+            users: data
         });
     }).catch((err) => {
         res.status(404).json({
@@ -134,46 +134,65 @@ exports.getuserByusername = (req, res, next) => {
 }
 
 // Get users by laerning group 
-// exports.getuserByGroup = (req, res, next) => {
+exports.getuserByGroup = (req, res, next) => {
 
-// }
+}
 
 // Delete one user
-// exports.deletelUser = (req, res) => {
-//     const userId = req.body.id;
-//     Users.findByIdAndRemove(id)
-//         .then(data => {
-//             if (!data) {
-//                 res.status(404).send({
-//                     message: `Cannot delete user with id=${userId}. Maybe user was not found!`
-//                 });
-//             } else {
-//                 res.send({
-//                     message: "Users was deleted successfully!"
-//                 });
-//             }
-//         })
-//         .catch(err => {
-//             res.status(500).send({
-//                 message: "Could not delete User with id=" + userId
-//             });
-//         });
-// }
+exports.deleteUser = (req, res) => {
+    const userId = req.body.id;
+    Users.findByIdAndRemove(id)
+        .then(data => {
+            if (!data) {
+                res.status(404).send({
+                    message: `Cannot delete user with id=${userId}. Maybe user was not found!`
+                });
+            } else {
+                res.send({
+                    message: "Users was deleted successfully!"
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not delete User with id=" + userId
+            });
+        });
+}
+
+
+// Verified User 
+exports.verfiedUser = (req, res, next) => {
+    const id = req.params.id;
+    Users.findByIdAndUpdate(id, req.body, { useFindAndModify: false }, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: "Cannot update data !",
+                result: err
+            });
+        } else {
+            res.status(201).json({
+                message: "Update data successfully",
+                result: result
+            });
+        }
+    });
+}
 
 // Delete all user
-// exports.deleteAllUser = (req, res) => {
-//     Users.deleteMany({})
-//         .then(data => {
-//             res.send({
-//                 message: `${data.deletedCount} Tutorials were deleted successfully!`
-//             });
-//         })
-//         .catch(err => {
-//             res.status(500).send({
-//                 message: err.message || "Some error occurred while removing all tutorials."
-//             });
-//         });
-// }
+exports.deleteAllUser = (req, res) => {
+    Users.deleteMany({})
+        .then(data => {
+            res.send({
+                message: `${data.deletedCount} Tutorials were deleted successfully!`
+            });
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while removing all tutorials."
+            });
+        });
+}
 
 
 // Edit position user 

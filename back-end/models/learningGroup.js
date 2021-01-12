@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
 const LearningGroupModels = mongoose.Schema({
-    timestamp: Date,
     learning_group_name: String
+}, {
+    timestamp: true
 });
 
 module.exports = mongoose.model('LearningGroups', LearningGroupModels);

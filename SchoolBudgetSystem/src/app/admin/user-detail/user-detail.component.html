@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12 col-sm-12 col-lg-12">
+    <div class="col-md-10 col-sm-10 col-lg-10">
         <mat-tab-group>
             <mat-tab label="ข้อมูลผู้ใช้งาน">
                 <table class="table table-hover table-responsive-md">
@@ -12,14 +12,14 @@
                         <th>แก้ไขผู้ใช้าน</th>
                     </thead>
                     <tbody class="text-center">
-                        <tr *ngFor="let user of userData">
+                        <tr *ngFor="let user of dataUser">
                             <td>{{ user.firstName }} {{ user.lastName }}</td>
                             <td>{{ user.position }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.phone }}</td>
                             <td><span class="dot success"></span> {{ user.permission }}</td>
-                            <td><button mat-button (click)="ondeleteUser(user.id,user.firstName)"><mat-icon>delete</mat-icon> </button>
-                                <button mat-button (click)="verified()"><mat-icon>verified_user</mat-icon> </button>
+                            <td><button mat-button (click)="ondeleteUser(user._id,user.firstName)"><mat-icon>delete</mat-icon> </button>
+                                <!-- <button *ngIf="user.permission === 'anonymous'" mat-button (click)="verified(user._id, user.firstName)"><mat-icon>verified_user</mat-icon> </button> -->
                             </td>
                         </tr>
                     </tbody>

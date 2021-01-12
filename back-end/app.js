@@ -28,6 +28,7 @@ app.use((req, res, next) => {
     );
     next();
 });
+
 // Midleware  authentication 
 app.use(passport.initialize());
 app.use(passport.session());

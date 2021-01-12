@@ -58,21 +58,13 @@ exports.editProject = (req, res, next) => {
             console.log(err);
             throw err;
         } else {
-            res.status(401).send({
+            res.status(201).send({
                 msg: `Updated data ${id}`,
                 data: docs
             })
         }
     });
-    // .then(data => {
-    //     if (!data) {
-    //         res.status(404).send({
-    //             msg: `Cannot update Project with ${id}. Maybe Project was not found`
-    //         });
-    //     } else res.status(500).send({
-    //         msg: "Error updateing Project eith id = " + id
-    //     });
-    // });
+
 }
 
 exports.deleteProject = (req, res, next) => {

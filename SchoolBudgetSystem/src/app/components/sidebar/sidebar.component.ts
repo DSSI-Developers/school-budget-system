@@ -1,5 +1,8 @@
+import { Users } from './../../../models/users.model';
+import { Observable } from 'rxjs';
 import { UserData } from './../../user-profile/user-profile.component';
 import { Component, OnInit } from '@angular/core';
+import { UsersService } from './../../services/users.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -8,6 +11,7 @@ declare interface RouteInfo {
     icon: string;
     class: string;
 }
+
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
     // { path: '/allproject', title: 'โครงการทั้งหมด',  icon: 'content_paste', class: '' },
@@ -20,7 +24,6 @@ export const ROUTES: RouteInfo[] = [
     { path: '/readForm', title: 'ตรวจสอบโครงการ',  icon: 'folder_open', class: '' },
     { path: '/readDetailForm', title: 'อ่านรายละเอียดโครงการ',  icon: 'chrome_reader_mode', class: '' },   // ไม่แสดงใน Sidebar
     { path: '/manageUser', title: 'จัดการผู้ใช้งาน',  icon: 'supervised_user_circle', class: '' },
-
 ];
 
 @Component({
@@ -30,8 +33,9 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
+  userData$: Users;
 
-  constructor() { }
+  constructor(public usersService:UsersService) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);

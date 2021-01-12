@@ -36,7 +36,10 @@ exports.getOneNotification = (req, res, next) => {
 
 exports.getAllNotification = (req, res, next) => {
     Notification.find({}).then(data => {
-        res.send(data);
+        res.status(201).json({
+            message: "All notification",
+            notification: data
+        });
     }).catch(err => {
         msg: err.msg || "Some error occurred while retrieving data. "
     });

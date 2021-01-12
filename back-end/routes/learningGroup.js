@@ -14,7 +14,7 @@ const learnGpController = require('../controllers/learningGroup');
 router.get('/getLeaning', learnGpController.getLearningGroup);
 router.get('/getOneLeaning/:id', learnGpController.getOneLearing);
 router.post('/addLearning', learnGpController.addLearningGroup);
-router.put('/editLearning/:', learnGpController.editLearningGroup);
+router.put('/editLearning/:id', learnGpController.editLearningGroup);
 router.delete('/deleteLearning/:id', learnGpController.deleteLearningGroup);
 
 module.exports = router;

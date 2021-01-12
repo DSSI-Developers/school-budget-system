@@ -18,8 +18,7 @@ export interface Type {
 export class AddRequestEquipmentComponent implements OnInit {
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
-  
-  
+
 
   // Initialized to specific date (09.10.2018).
   private model: Object = { date: { year: 2018, month: 10, day: 9 } };
@@ -41,7 +40,8 @@ export class AddRequestEquipmentComponent implements OnInit {
       value: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
       valueView: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
     },
-    { value: "กลุ่มสาระการเรียนรู้", valueView: "กลุ่มสาระการเรียนรู้ภาษาไทย" },
+    { value: "กลุ่มสาระการเรียนรู้", 
+      valueView: "กลุ่มสาระการเรียนรู้ภาษาไทย" },
     {
       value: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
       valueView: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
@@ -109,6 +109,34 @@ export class AddRequestEquipmentComponent implements OnInit {
   constructor(public fb: FormBuilder) {}
 
   ngOnInit(): void {}
+
+  addData() {
+    // if(this.equipmentsRequest.valid) return;
+    const data =  this.equipmentsRequest.value;
+    this.equipmentsRequest.value.responPerson.firstName;
+    this.equipmentsRequest.value.responPerson.lastName;
+    this.equipmentsRequest.value.responPerson.position;
+    this.equipmentsRequest.value.responPerson.learningGroup;
+    this.equipmentsRequest.value.responPerson.subjectTeach;
+
+    this.equipmentsRequest.value.data.reason;
+    this.equipmentsRequest.value.data.objective;
+
+    this.equipmentsRequest.value.requestBudget.typeEquipment;
+    this.equipmentsRequest.value.requestBudget.learningGroups;
+    this.equipmentsRequest.value.requestBudget.majorList;
+    this.equipmentsRequest.value.requestBudget.budget;
+
+    this.equipmentsRequest.value.otherData.neccessay;
+    this.equipmentsRequest.value.otherData.existEquipment;
+    this.equipmentsRequest.value.otherData.otherReason;
+    this.equipmentsRequest.value.otherData.dataProject;
+    this.equipmentsRequest.value.otherData.condition;
+
+
+    console.log(data);
+  }
+
 
   logData() {}
 }

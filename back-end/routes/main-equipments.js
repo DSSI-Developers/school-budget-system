@@ -9,5 +9,4 @@ router.delete('/deleteEquipment/:id', mainEquipments.deleteProject);
 router.get('/getAllEquipments', mainEquipments.getAllProject);
 router.get('/getOneEquipment/:id', mainEquipments.getOneProject);
 
-
 module.exports = router;
