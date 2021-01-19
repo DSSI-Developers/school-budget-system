@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { NotifiedService } from './../services/notified.service';
 import { Notification } from './../../models/notified.model';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 
@@ -36,19 +37,28 @@ export class NotificationsComponent implements OnInit {
     // { dateTime: '27 พ.ย. 2563 - 09:59', type: 'ครุภัณฑ์', status: 'ไม่สำเร็จ', icon: '', detail: 'โครงการไม่ผ่านการอนุมัติเนื่องจาก มีอุปกรณ์ที่สามารถใช้ทดอทนกันได้', note: ''}
   // ];
 
-  notification$;
+  notification: Notification[] = [];
+  private allNotification: Subscription;
+  closeDialig: boolean;
+
   constructor(public notifiedService: NotifiedService) { }
 
   ngOnInit() {
-    this.notifiedService.getNotified().subscribe(result => {
-      console.log('Result of notification : ', result);
-      this.notification$ = result.notification;
+    this.notifiedService.getAllNotified()
+    this.allNotification =  this.notifiedService.getNitifiedUpdateListener()
+    .subscribe((result: Notification[]) => {
+      this.notification = result;
+      // console.log('Result of notification : ', result);
+      // this.notification$ = result.notification;
     });
   }
 
-  closeNitification(id) {
-    window.confirm('ต้องการลบการแจ้งเตือนนี้หรือไม่');
-    console.log(id);
-    const index = this.notification$.indexOf(id);
+  closeNitification(id: string) {
+    this.closeDialig = window.confirm('ต้องการลบการแจ้งเตือนนี้หรือไม่');
+    if (this.closeDialig === true) {
+      this.notifiedService.deleteNotified(id);
+    } else {
+      console.log(id);
+    }
   }
 }

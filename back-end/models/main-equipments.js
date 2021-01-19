@@ -15,13 +15,9 @@ const mainEquipments = mongoose.Schema({
     necessary: { type: Number },
     existEquipment: { type: Number },
     otherReason: { type: String },
-    // dateProject: { type: Date },
+    dateProject: { type: Date },
     condition: { type: String },
     status: { type: String }
-    // dataTime: {
-    //     type: Date,
-    //     default: Date.now,
-    // },
-});
+}, { timestamp: true });
 
 module.exports = mongoose.model("MainEquipment", mainEquipments);

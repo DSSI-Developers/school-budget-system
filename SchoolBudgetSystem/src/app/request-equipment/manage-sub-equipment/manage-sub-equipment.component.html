@@ -65,7 +65,7 @@
                                                         <mat-hint matSuffix>/บาท</mat-hint>
                                                     </mat-form-field>
                                                     <div class="center-align">
-                                                        <button mat-raised-button color="primary" type="submit" (click)="addSubEupqment()"><mat-icon>save</mat-icon>บันทึก</button>
+                                                        <button mat-raised-button color="primary" type="submit" (click)="addSubEupqment()"><mat-icon>save</mat-icon>เพิ่ม</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -77,7 +77,7 @@
                         <hr>
                         <table class="table table-hover">
                             <thead class="thead-dark text-center">
-                                <th>รายการที่</th>
+                                <!-- <th>รายการที่</th> -->
                                 <th>รายการครุภัณฑ์ย่อย</th>
                                 <th>ราคาต่อหน่วย</th>
                                 <th>จำนวนหน่วย</th>
@@ -86,6 +86,7 @@
                                 <th>ลบ</th>
                             </thead>
                             <tbody class="text-center">
+                                <!-- <tr *ngFor="let listSub of listOfSubProject; let i = index"> -->
                                 <tr *ngFor="let listSub of listOfSubProject; let i = index">
                                     <td *ngIf="i < 0">
                                         ยังไม่ได้เพิ่มรายการย่อย
@@ -99,12 +100,13 @@
                                         <button mat-raised-button color="primary" routerLink="/manageSubQuipment"><mat-icon>{{ listSub.edit}}</mat-icon></button>
                                     </td>
                                     <td>
-                                        <button mat-raised-button class="red"><mat-icon>{{ listSub.delete}}</mat-icon></button>
+                                        <button mat-raised-button class="red" (click)="deleteEquipment(i)"><mat-icon>{{ listSub.delete}}</mat-icon></button>
                                     </td>
 
                                 </tr>
                             </tbody>
                         </table>
+                        <button mat-raised-button color="primary" type="submit" (click)="saveSubEupqment()"><mat-icon>save</mat-icon>บันทึก</button>
                     </div>
                 </div>
 

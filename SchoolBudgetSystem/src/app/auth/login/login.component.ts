@@ -1,6 +1,6 @@
-import { ActivatedRoute,Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,

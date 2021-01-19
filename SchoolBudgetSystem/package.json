@@ -52,6 +52,7 @@
         "mydatepicker-th": "^0.1.1",
         "ng-validate-equal": "^1.0.4",
         "ngx-drag-drop": "^2.0.0",
+        "pdfmake": "^0.1.69",
         "perfect-scrollbar": "1.5.0",
         "popper.js": "1.16.1",
         "rxjs": "6.6.3",

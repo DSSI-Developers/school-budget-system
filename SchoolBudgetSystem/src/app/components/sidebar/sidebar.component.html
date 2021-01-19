@@ -65,7 +65,9 @@
     <ul class="nav">
         <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
             <a class="nav-link" *ngIf="menuItem.title != 'เพิ่มคำขอจัดตั้งครุภัณฑ์ใหม่' && menuItem.title != 'จัดการครุภัณฑ์หรือรายการย่อย'
-            && menuItem.title != 'อ่านรายละเอียดโครงการ'" [routerLink]="[menuItem.path]">
+            && menuItem.title != 'อ่านรายละเอียดโครงการ'
+            && menuItem.title != 'แก้ไขคำขอจัดตั้งครุภัณฑ์ใหม่'
+            " [routerLink]="[menuItem.path]">
                 <!-- <a class="nav-link" *ngIf="menuItem.title != 'เพิ่มคำขอจัดตั้งครุภัณฑ์ใหม่' && menuItem.title != 'จัดการครุภัณฑ์หรือรายการย่อย'" [routerLink]="[menuItem.path]"> -->
                 <i class="material-icons">{{menuItem.icon}}</i>
                 <p>{{menuItem.title}}</p>

@@ -75,20 +75,22 @@
                         <table class="table table-hover">
                             <thead class="text-center">
                                 <th>ลำดับ</th>
+                                <!-- <th>ประเภท</th> -->
                                 <th>รายการ</th>
-                                <th>ราคาต่อหน่วย</th>
-                                <th>จำนวนหน่วย</th>
                                 <th>งบประมาณ</th>
+                                <th>จำนวนหน่วยที่จัดตั้ง</th>
+                                <th>สถานะ</th>
                                 <th></th>
                             </thead>
                             <tbody class="text-center">
-                                <tr *ngFor="let allData of allProject">
-                                    <td>{{ allData.no }}</td>
-                                    <td>{{ allData.list }}</td>
-                                    <td>{{ allData.unit }}</td>
-                                    <td>{{ allData.unitMany }}</td>
-                                    <td>{{ allData.priceUnit }}</td>
-                                    <td><button mat-raised-button type="button"><mat-icon>insert_drive_file</mat-icon> PDF</button></td>
+                                <tr *ngFor="let allData of equipments; let i = index">
+                                    <td>{{ i+1 }}</td>
+                                    <!-- <td>{{ allData.typeEquipments }}</td> -->
+                                    <td class="text-left">{{ allData.majorList }}</td>
+                                    <td>{{ allData.budget }}</td>
+                                    <td>{{ allData.necessary }}</td>
+                                    <td>{{ allData.status }}</td>
+                                    <td><button mat-raised-button type="button" (click)="generatePdf()"><mat-icon>insert_drive_file</mat-icon> PDF</button></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -26,16 +26,19 @@ exports.saveProject = async(req, res, next) => {
         necessary: req.body.necessary,
         existEquipment: req.body.existEquipment,
         otherReason: req.body.otherReason,
-        // dateProject: req.body.dateProject,
-        condition: req.body.condition
+        dateProject: req.body.dateProject,
+        condition: req.body.condition,
+        status: req.body.status
     });
     if (!project) {
         res.status(401).json({
             msg: "Don't have data !"
         });
     }
+    console.log(project);
+    // res.end();
     project.save(project).then(data => {
-        res.send(data);
+        res.status(201).send({ data: data });
     }).catch(err => {
         res.status(500).send({
             msg: err.msg || "Some error occurred while creating the Project."
@@ -69,7 +72,7 @@ exports.editProject = (req, res, next) => {
 
 exports.deleteProject = (req, res, next) => {
     const id = req.params.id;
-    MainEquipment.findByIdAndRemove(id).then(data => {
+    MainEquipment.deleteOne({ _id: req.params.id }).then(data => {
         if (!data) {
             res.status(404).send({
                 msg: `Connot delete project with = ${id}. Maybe Project was not found! `
@@ -84,6 +87,13 @@ exports.deleteProject = (req, res, next) => {
     });
 }
 
+// Post.deleteOne({ _id: req.params.id }).then(result => {
+//     console.log(result);
+//     res.status(200).json({
+//         message: "Post deleted!"
+//     });
+// });
+
 exports.deleteAllProject = (req, res, next) => {
     MainEquipment.deleteMany({}).then(data => {
         res.status(201).send({
@@ -97,16 +107,14 @@ exports.deleteAllProject = (req, res, next) => {
 }
 
 exports.getAllProject = (req, res, next) => {
-
     // const allProject = req.body;
     MainEquipment.find({}).then((data) => {
-        res.send(data);
+        res.status(201).json({ data: data });
     }).catch(err => {
-        res.status(500).send({
+        res.status(500).json({
             msg: err.msg || "Some error occurred while retrieving data."
         });
     });
-    MainEquipment.close();
 }
 
 exports.getOneProject = (req, res, next) => {

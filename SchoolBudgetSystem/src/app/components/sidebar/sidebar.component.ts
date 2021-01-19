@@ -18,6 +18,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/allproject', title: 'ประวัติการได้รับจัดสรร',  icon: 'content_paste', class: '' },
     { path: '/requestEquipment', title: 'เพิ่มคําขอครุภัณฑ์หลัก',  icon: 'library_books', class: '' },
     { path: '/addRequestEquip', title: 'เพิ่มคำขอจัดตั้งครุภัณฑ์ใหม่',  icon: 'library_books', class: '' }, // ไม่ได้อยู่ใน Sidebar
+    { path: '/editRequestEquip/:equipmentId', title: 'แก้ไขคำขอจัดตั้งครุภัณฑ์ใหม่',  icon: 'library_books', class: '' }, // ไม่ได้อยู่ใน Sidebar
     { path: '/manageSubQuipment', title: 'จัดการครุภัณฑ์หรือรายการย่อย',  icon: 'chrome_reader_mode', class: '' }, // ไม่ได้อยู่ใน Sidebar
     { path: '/notifications', title: 'การเเจ้งเตือนโครงการ',  icon:'notifications', class: '' },
     { path: '/user-profile', title: 'โปรไฟล์',  icon: 'person', class: '' },

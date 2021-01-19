@@ -1,142 +1,289 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
+import { NotifiedService } from './../../services/notified.service';
+import { EquipmentsService } from './../../services/equipments.service';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 
-import { MomentDateAdapter } from "@angular/material-moment-adapter";
-import * as moment from "moment";
+import { Equipments } from './../../../models/equipments.model';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import * as moment from 'moment';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { map } from 'rxjs/operators';
 
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 export interface Type {
   value: string;
   valueView: string;
 }
 
 @Component({
-  selector: "app-add-request-equipment",
-  templateUrl: "./add-request-equipment.component.html",
-  styleUrls: ["./add-request-equipment.component.css"],
+  selector: 'app-add-request-equipment',
+  templateUrl: './add-request-equipment.component.html',
+  styleUrls: ['./add-request-equipment.component.css'],
 })
 export class AddRequestEquipmentComponent implements OnInit {
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   // Initialized to specific date (09.10.2018).
   private model: Object = { date: { year: 2018, month: 10, day: 9 } };
   typeOfProject: Type[] = [
-    { value: "ครุภัณฑ์การศึกษา", valueView: "ครุภัณฑ์การศึกษา" },
-    { value: "โครงการ", valueView: "โครงการ" },
+    { value: 'ครุภัณฑ์การศึกษา', valueView: 'ครุภัณฑ์การศึกษา' },
+    { value: 'โครงการ', valueView: 'โครงการ' },
   ];
 
   learningGroup: Type[] = [
     {
-      value: "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
-      valueView: "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+      value: 'กลุ่มสาระการเรียนรู้วิทยาศาสตร์',
+      valueView: 'กลุ่มสาระการเรียนรู้วิทยาศาสตร์',
     },
     {
-      value: "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
-      valueView: "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
+      value: 'กลุ่มสาระการเรียนรู้คณิตศาสตร์',
+      valueView: 'กลุ่มสาระการเรียนรู้คณิตศาสตร์',
     },
     {
-      value: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
-      valueView: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
-    },
-    { value: "กลุ่มสาระการเรียนรู้", 
-      valueView: "กลุ่มสาระการเรียนรู้ภาษาไทย" },
-    {
-      value: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
-      valueView: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
+      value: 'กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี',
+      valueView: 'กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี',
     },
     {
-      value: "กลุ่มสาระการเรียนรู้",
-      valueView: "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
+      value: 'กลุ่มสาระการเรียนรู้ภาษาไทย',
+      valueView: 'กลุ่มสาระการเรียนรู้ภาษาไทย',
     },
     {
-      value: "กลุ่มสาระการเรียนรู้ศิลปะ",
-      valueView: "กลุ่มสาระการเรียนรู้ศิลปะ",
+      value: 'กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา',
+      valueView: 'กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา',
     },
     {
-      value: "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
-      valueView: "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
+      value: 'กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม',
+      valueView: 'กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม',
+    },
+    {
+      value: 'กลุ่มสาระการเรียนรู้ศิลปะ',
+      valueView: 'กลุ่มสาระการเรียนรู้ศิลปะ',
+    },
+    {
+      value: 'กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ',
+      valueView: 'กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ',
     },
   ];
 
+  equipments;
+  private mode = 'create';
+  private equipmentsId: string;
+  dataEdit;
+
+  // Equipment data
+  reason;
+  objective;
+  learningGroups;
+  majorList;
+  budget;
+  necessary;
+  existEquipment;
+  otherReason;
+  dateProject;
+  condition;
+
+  equipmentsRequest: FormGroup;
+  reasonPerson;
+  equipmantsEdit: Equipments;
+
   // Equipments รายการคำร้องจัดตั้งครุภัณฑ์
-  equipmentsRequest = this.fb.group({
-    responPerson: this.fb.group({
-      firstName: ["กฤษณะ"],
-      lastName: ["ประสิทธิ์"],
-      position: ["ศาสตราจารย์"],
-      learningGroup: ["เทพเจ้า"],
-      subjectTeach: ["คอมพิวเตอร์"],
-    }),
-    data: this.fb.group({
-      reasons: [""],
-      objective: [""],
-    }),
-    requestBudget: this.fb.group({
-      typeEquipment: [""],
-      learningGroups: [""],
-      majorList: [""],
-      budget: [""],
-    }),
-    otherData: this.fb.group({
-      necessary: [""],
-      existEquipment: [""],
-      otherReason: [""],
-      dateProject: [""],
-      condition: [""],
-    }),
+  // equipmentsRequest = this.fb.group({
+  //   responPerson: this.fb.group({
+  //     firstName: ['กฤษณะ'],
+  //     lastName: ['ประสิทธิ์'],
+  //     position: ['ผู้ดูแลระบบ'],
+  //     learningGroup: ['กลุ่มสาระการเรียนรู้วิทยาศาสตร์'],
+  //     subjectTeach: ['คอมพิวเตอร์'],
+  //   }),
+  //   data: this.fb.group({
+  //     reason: [''],
+  //     objective: [''],
+  //   }),
+  //   requestBudget: this.fb.group({
+  //     learningGroups: [''],
+  //     majorList: [''],
+  //     budget: [''],
+  //   }),
+  //   otherData: this.fb.group({
+  //     necessary: [''],
+  //     existEquipment: [''],
+  //     otherReason: [''],
+  //     dateProject: [''],
+  //     condition: [''],
+  //   }),
+  // });
 
-    // firstName: ['กฤษณะ'],
-    // lastName: ['ประสิทธิ์'],
-    // position: ['ครู'],
-    // learningGroup: ['กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยีสารสนเทศ'],
-    // subjectTeach: ['คอมพิวเตอร์'],
-    // reasons: [''],
-    // objective: [''],
-    // typeEquipment: [''],
-    // learningGroups: [''],
-    // majorList: [''],
-    // budget: [''],
-    // necessary: [''],
-    // existEquipment: [''],
-    // otherReason: [''],
-    // dateProject: [''],
-    // condition: ['']
-  });
+  constructor(
+    public fb: FormBuilder,
+    private equipmentsService: EquipmentsService,
+    private notifiedService: NotifiedService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private _snackBar: MatSnackBar
+  ) { }
 
+  ngOnInit(): void {
+    this.equipmentsRequest = new FormGroup({
+      firstName: new FormControl(null, { validators: [Validators.required] }),
+      lastName: new FormControl(null, { validators: [Validators.required] }),
+      position: new FormControl(null, { validators: [Validators.required] }),
+      learningGroup: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      subjectTeach: new FormControl(null, {
+        validators: [Validators.required],
+      }),
 
-  constructor(public fb: FormBuilder) {}
+      reason: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(10)],
+      }),
+      objective: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(10)],
+      }),
 
-  ngOnInit(): void {}
+      learningGroups: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      majorList: new FormControl(null, { validators: [Validators.required] }),
+      budget: new FormControl(null, { validators: [Validators.required] }),
 
-  addData() {
-    // if(this.equipmentsRequest.valid) return;
-    const data =  this.equipmentsRequest.value;
-    this.equipmentsRequest.value.responPerson.firstName;
-    this.equipmentsRequest.value.responPerson.lastName;
-    this.equipmentsRequest.value.responPerson.position;
-    this.equipmentsRequest.value.responPerson.learningGroup;
-    this.equipmentsRequest.value.responPerson.subjectTeach;
-
-    this.equipmentsRequest.value.data.reason;
-    this.equipmentsRequest.value.data.objective;
-
-    this.equipmentsRequest.value.requestBudget.typeEquipment;
-    this.equipmentsRequest.value.requestBudget.learningGroups;
-    this.equipmentsRequest.value.requestBudget.majorList;
-    this.equipmentsRequest.value.requestBudget.budget;
-
-    this.equipmentsRequest.value.otherData.neccessay;
-    this.equipmentsRequest.value.otherData.existEquipment;
-    this.equipmentsRequest.value.otherData.otherReason;
-    this.equipmentsRequest.value.otherData.dataProject;
-    this.equipmentsRequest.value.otherData.condition;
-
-
-    console.log(data);
+      necessary: new FormControl(null, { validators: [Validators.required] }),
+      existEquipment: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      otherReason: new FormControl(null, { validators: [Validators.required] }),
+      dateProject: new FormControl(null, { validators: [Validators.required] }),
+      condition: new FormControl(null, { validators: [Validators.required] }),
+    });
+    this.route.paramMap.subscribe((paramMap) => {
+      console.log('Param', paramMap.has('equipmentId'));
+      if (paramMap.has('equipmentId')) {
+        this.mode = 'edit';
+        this.equipmentsId = paramMap.get('equipmentId');
+        this.equipments = this.equipmentsService.getOneEquipment(this.equipmentsId)
+          .subscribe((equipmentData) => {
+            console.log(equipmentData);
+            this.equipmantsEdit = {
+              _id: equipmentData._id,
+              firstName: equipmentData.firstName,
+              lastName: equipmentData.lastName,
+              position: equipmentData.position,
+              learningGroup: equipmentData.learningGroup,
+              subjectTeach: equipmentData.subjectTeach,
+              reason: equipmentData.reason,
+              objective: equipmentData.objective,
+              typeEquipments: equipmentData.typeEquipments,
+              learningGroups: equipmentData.learningGroups,
+              majorList: equipmentData.majorList,
+              budget: equipmentData.budget,
+              necessary: equipmentData.necessary,
+              existEquipment: equipmentData.existEquipment,
+              otherReason: equipmentData.otherReason,
+              dateProject: equipmentData.dateProject,
+              condition: equipmentData.condition,
+              status: equipmentData.status
+            }
+        console.log(this.mode);
+        console.log(this.equipmantsEdit);
+        this.equipmentsRequest.setValue({
+          firstName: this.equipmantsEdit.firstName,
+          lastName: this.equipmantsEdit.lastName,
+          position: this.equipmantsEdit.position,
+          learningGroup: this.equipmantsEdit.learningGroup,
+          subjectTeach: this.equipmantsEdit.subjectTeach,
+          reason: this.equipmantsEdit.reason,
+          objective:  this.equipmantsEdit.objective,
+          learningGroups:this.equipmantsEdit.learningGroups,
+          majorList: this.equipmantsEdit.majorList,
+          budget: this.equipmantsEdit.budget,
+          necessary: this.equipmantsEdit.necessary,
+          existEquipment: this.equipmantsEdit.existEquipment,
+          otherReason: this.equipmantsEdit.otherReason,
+          dateProject: this.equipmantsEdit.dateProject,
+          condition: this.equipmantsEdit.condition,
+        })
+      });
+      } else {
+        this.mode = 'create';
+        console.log(this.mode);
+      }
+    });
   }
 
+  addData() {
+    if (this.mode === 'create') {
+      console.log(this.equipmentsRequest);
+      this.equipmentsService.addEquipment(
+        this.equipmentsRequest.value.firstName,
+        this.equipmentsRequest.value.lastName,
+        this.equipmentsRequest.value.position,
+        this.equipmentsRequest.value.learningGroup,
+        this.equipmentsRequest.value.subjectTeach,
+        this.equipmentsRequest.value.reason,
+        this.equipmentsRequest.value.objective,
+        this.equipmentsRequest.value.typeEquipment,
+        this.equipmentsRequest.value.learningGroups,
+        this.equipmentsRequest.value.majorList,
+        this.equipmentsRequest.value.budget,
+        this.equipmentsRequest.value.necessary,
+        this.equipmentsRequest.value.existEquipment,
+        this.equipmentsRequest.value.otherReason,
+        this.equipmentsRequest.value.dateProject,
+        this.equipmentsRequest.value.condition
+      );
+      const type = 'โครงการ';
+      const status = 'กำลังดำเนินการ';
+      const detail = this.equipmentsRequest.value.majorList;
+      const note = '';
+      // Notification
+      this.notifiedService.addNotification(type, status, detail, note);
+      this._snackBar.open('เพิ่มข้อมูลเรียบร้อย', 'ปิด', {
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    } else {
+      this.equipmentsService.editEquipment(
+        this.equipmentsId,
+        this.equipmentsRequest.value.firstName,
+        this.equipmentsRequest.value.lastName,
+        this.equipmentsRequest.value.position,
+        this.equipmentsRequest.value.learningGroup,
+        this.equipmentsRequest.value.subjectTeach,
+        this.equipmentsRequest.value.reason,
+        this.equipmentsRequest.value.objective,
+        this.equipmentsRequest.value.typeEquipment,
+        this.equipmentsRequest.value.learningGroups,
+        this.equipmentsRequest.value.majorList,
+        this.equipmentsRequest.value.budget,
+        this.equipmentsRequest.value.necessary,
+        this.equipmentsRequest.value.existEquipment,
+        this.equipmentsRequest.value.otherReason,
+        this.equipmentsRequest.value.dateProject,
+        this.equipmentsRequest.value.condition
+      );
+      this._snackBar.open('แก้ไขข้อมูลเรียบร้อย', 'ปิด', {
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    }
+    this.router.navigate(['/requestEquipment']);
+  }
 
-  logData() {}
 }

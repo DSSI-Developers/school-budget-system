@@ -1,6 +1,9 @@
 export interface Equipments {
     _id: string,
-    userId: string,
+    firstName: string,
+    lastName: string,
+    position: string,
+    learningGroup: string,
     subjectTeach: string,
     reason: string,
     objective: string,
@@ -11,5 +14,7 @@ export interface Equipments {
     necessary: number,
     existEquipment: number,
     otherReason: string,
-    condition: string
+    dateProject: Date,
+    condition: string,
+    status: string
 }

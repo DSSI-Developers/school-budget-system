@@ -67,6 +67,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'newproject',  component: NewprojectComponent },
     { path: 'requestEquipment',  component: RequestEquipmentComponent },
     { path: 'addRequestEquip',  component: AddRequestEquipmentComponent },
+    { path: 'editRequestEquip/:equipmentId',  component: AddRequestEquipmentComponent },
     { path: 'manageSubQuipment',  component: ManageSubEquipmentComponent },
     { path: 'manageUser',  component: ManageUserComponent },
     { path: 'readForm',  component: CheckFormComponent },
