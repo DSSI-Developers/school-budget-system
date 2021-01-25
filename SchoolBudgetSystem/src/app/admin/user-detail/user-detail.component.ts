@@ -91,7 +91,7 @@ export class UserDetailComponent implements OnInit {
   });
   dataUser;
 
-  @Input("passingData") passingData: Array<any>;
+  // @Input("passingData") passingData: Array<any>;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { user: string },
     public dialog: MatDialog,

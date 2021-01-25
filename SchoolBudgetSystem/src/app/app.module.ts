@@ -1,9 +1,10 @@
+import { AuthInterceptor } from './services/auth-interceptor';
 // Module
 import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DndModule } from 'ngx-drag-drop';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
@@ -25,19 +26,28 @@ import { ExportPDFComponent } from './allproject/export-pdf/export-pdf.component
 import { MoreDetailComponent } from './dashboard/more-detail/more-detail.component';
 
 
-import { RequestEquipmentComponent } from './request-equipment/request-equipment.component';
-import { ManageProfileComponent } from './user-profile/manage-profile/manage-profile.component';
-import { ManageSubEquipmentComponent } from './request-equipment/manage-sub-equipment/manage-sub-equipment.component';
-import { ManageUserComponent } from './admin/manage-user/manage-user.component';
-import { CheckFormComponent } from './leader/check-form/check-form.component';
-import { ReadDetailFormComponent } from './leader/read-detail-form/read-detail-form.component';
-import { UserDetailComponent } from './admin/user-detail/user-detail.component';
+// import { RequestEquipmentComponent } from './request-equipment/request-equipment.component';
+// import { ManageProfileComponent } from './user-profile/manage-profile/manage-profile.component';
+// import { ManageSubEquipmentComponent } from './request-equipment/manage-sub-equipment/manage-sub-equipment.component';
+// import { ManageUserComponent } from './admin/manage-user/manage-user.component';
+// import { CheckFormComponent } from './leader/check-form/check-form.component';
+// import { ReadDetailFormComponent } from './leader/read-detail-form/read-detail-form.component';
+// import { UserDetailComponent } from './admin/user-detail/user-detail.component';
+
+// import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 // import { DetailHistoryComponent } from './allproject/detail-history/detail-history.component';
-
 // import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-
-
 // import { AngularEditorModule } from '@kolkov/angular-editor';
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatMomentDateModule, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentUtcDateAdapter } from './moment-utc-date-adapter';
+import { ErrorComponent } from './error/error.component';
+import { ErrorInterceptor } from './services/error-interceptor';
+
+
+// import { CKEditorModule } from 'ng2-ckeditor';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -51,6 +61,9 @@ import { UserDetailComponent } from './admin/user-detail/user-detail.component';
     ValidateEqualModule,
     DragDropModule,
     DndModule,
+    MatDialogModule,
+    CKEditorModule
+    // SweetAlert2Module.forRoot(),
     // AngularEditorModule
   ],
   declarations: [
@@ -60,9 +73,16 @@ import { UserDetailComponent } from './admin/user-detail/user-detail.component';
     RegisterComponent,
     ExportPDFComponent,
     MoreDetailComponent,
-    
+    ErrorComponent,
   ],
-  providers: [ ],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'th-TH' },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: DateAdapter, useClass: MomentUtcDateAdapter },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+   ],
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }

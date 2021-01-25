@@ -10,7 +10,11 @@ const UsersSchema = mongoose.Schema({
     phone: { type: String },
     position: { type: String },
     department: { type: String },
-    role: { type: String },
+    role: {
+        type: String,
+        default: 'USER',
+        enum: ["ADMIN", "LEADER", "USER"]
+    },
     avatar: { type: String },
     permission: { type: String },
     verified: {

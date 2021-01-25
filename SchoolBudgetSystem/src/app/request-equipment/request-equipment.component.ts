@@ -1,8 +1,14 @@
+import { UsersService } from './../services/users.service';
 import { EquipmentsService } from './../services/equipments.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Equipments } from './../../models/equipments.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SubEquipmentsService } from './../services/sub-equipments.service';
+
+
+
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export interface Type {
   value: string;
@@ -41,19 +47,24 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
   equipments: Equipments[] = [];
   private allEquipment$: Subscription;
 
+  isLoading = false;
+  private authStatusSub: Subscription;
+
   constructor(
     private equipmentsService: EquipmentsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private subEquipmentsService: SubEquipmentsService,
+    private userServices: UsersService
   ) {}
 
-
   ngOnInit(): void {
-    // this.equipmentsService.getAllEquipments().subscribe((equipment) => {
-    //   this.allEquipment$ = equipment.data;
-    //   console.log(this.allEquipment$);
-    // });
+    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
+
     this.equipmentsService.getAllEquipments();
-    this.allEquipment$ = this.equipmentsService.getEquipmentUpdateListener()
+    this.allEquipment$ = this.equipmentsService
+      .getEquipmentUpdateListener()
       .subscribe((equipments: Equipments[]) => {
         this.equipments = equipments;
       });
@@ -62,12 +73,31 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
 
   deleteEquipment(equipmentId: string) {
     console.log(equipmentId);
-    const confirm = window.confirm('ต้องการลบข้อมูลหรือไม่');
-    if (confirm === true) {
-      this.equipmentsService.deleteEquipment(equipmentId);
-    } else {
-      window.alert('บักขี้ตั๋ว');
-    }
+    Swal.fire({
+      title: 'คุณต้องการยืนยัการลบรายการนี้หรือไม่ ?',
+      text: 'หากข้อมูลถุกลบไปเเล้วจะไม่สามารถนำกลับมาได้ !',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'ยืนยัน',
+      cancelButtonText: 'ไม่',
+    }).then((result) => {
+      if (result.value) {
+        this.equipmentsService.deleteEquipment(equipmentId);
+        Swal.fire(
+          'ยืนยันการลบ!',
+          'ลบรายการเรียบร้อยเเล้ว',
+          'success'
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('ยกเลิกการลบเรียบร้อย', '', 'error');
+      }
+    });
+    // const confirm = window.confirm('ต้องการลบข้อมูลหรือไม่');
+    // if (confirm === true) {
+    //   this.equipmentsService.deleteEquipment(equipmentId);
+    // } else {
+    //   window.alert('บักขี้ตั๋ว');
+    // }
   }
   ngOnDestroy(): void {
     this.allEquipment$.unsubscribe();

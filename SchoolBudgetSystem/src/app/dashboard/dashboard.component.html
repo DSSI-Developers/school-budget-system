@@ -8,11 +8,11 @@
                             <i class="material-icons">sync</i>
                         </div>
                         <p class="card-category">โครงการที่อยู่ระหว่างรอดำเนินการ</p>
-                        <h3 class="card-title">12
+                        <h3 class="card-title">{{ countPending }}
                             <small>โครงการ</small>
                         </h3>
                     </div>
-                    <div class="card-footer" (click)="moreDetail()">
+                    <div class="card-footer" (click)="moreDetail(pendingEquipments)">
                         <div class="stats">
                             <i class="material-icons">forward</i>
                             <!-- <mat-icon>forward</mat-icon> -->
@@ -29,12 +29,12 @@
                             <i class="material-icons">done_all</i>
                         </div>
                         <p class="card-category">โครงการที่ได้รับการอนุมัติ</p>
-                        <h3 class="card-title">7
+                        <h3 class="card-title">{{ countSuccess }}
                             <small>โครงการ</small>
                         </h3>
                     </div>
                     <div class="card-footer">
-                        <div class="stats" (click)="moreDetail()">
+                        <div class="stats" (click)="moreDetail(successEquipments)">
                             <i class="material-icons">forward</i>
                             <!-- <mat-icon>forward</mat-icon> -->
                             รายละเอียดเพิ่มเติม ...
@@ -49,11 +49,11 @@
                             <i class="material-icons">cancel_presentation</i>
                         </div>
                         <p class="card-category">โครงการที่ไม่ผ่านการอนุมัติ</p>
-                        <h3 class="card-title">3
+                        <h3 class="card-title">{{countFailed}}
                             <small>โครงการ</small>
                         </h3>
                     </div>
-                    <div class="card-footer" (click)="moreDetail()">
+                    <div class="card-footer" (click)="moreDetail(failedEquipments)">
                         <div class="stats">
                             <i class="material-icons">forward</i>
                             <!-- <mat-icon>forward</mat-icon> -->

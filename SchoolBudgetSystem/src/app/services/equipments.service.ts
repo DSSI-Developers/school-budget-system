@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Equipments } from './../../models/equipments.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -12,12 +13,14 @@ export class EquipmentsService {
   private equipments: Equipments[] = [];
   private equipmentUpdated = new Subject<Equipments[]>();
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private router: Router) {}
 
   getAllEquipments() {
+    // เพิ่ม User ID ด้วย
     return this._http.get<{ data: any }>(
       'http://localhost:8080/mainEquipment/getAllEquipments'
     ).subscribe((data) => {
+      console.log(data);
       this.equipments = data.data;
       this.equipmentUpdated.next([...this.equipments]);
     });
@@ -57,7 +60,8 @@ export class EquipmentsService {
   // Filter equipment id to show
   // จะเอาข้อมูล Equipment ทั้งหมด มาหา ID ที่ตรงกัน เเล้ว return กลับ
   getEquipment(id: string) {
-    return { ...this.equipments.find((data) => data._id === id) };
+    return this._http.get<{message: string, data: any }>('http://localhost:8080/mainEquipment/getAllEquipments');
+    // return { ...this.equipments.find((data) => data._id === id) };
   }
 
   addEquipment(
@@ -105,6 +109,7 @@ export class EquipmentsService {
       )
       .subscribe((responseData) => {
         const message = 'Success';
+        this.router.navigate(['/requestEquipment']);
       });
   }
 
@@ -155,6 +160,7 @@ export class EquipmentsService {
       .subscribe((responseData) => {
         const message = 'Success';
         console.log('Edit data success');
+        this.router.navigate(['/requestEquipment']);
       });
   }
 

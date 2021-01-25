@@ -3,16 +3,18 @@ const usersMockup = require('../mockup-data/usersMockup.json');
 const { randomString } = require("../helpers/common");
 const { validationResult } = require("express-validator");
 
-const fs = require('fs');
 const bcrypt = require('bcrypt');
-const { json } = require('body-parser');
-const { success, error, validation } = require('../helpers/responseApi');
-const { has } = require('config');
 const jwt = require('jsonwebtoken');
-const { RSA_NO_PADDING } = require('constants');
 const express = require('express');
-const { token } = require('morgan');
 const config = require('../config/database');
+
+// const jwt = require("jsonwebtoken");
+// const fs = require('fs');
+// const { json } = require('body-parser');
+// const { success, error, validation } = require('../helpers/responseApi');
+// const { has } = require('config');
+// const { RSA_NO_PADDING } = require('constants');
+// const { token } = require('morgan');
 // const dotenv = require('dotenv');
 // dotenv.config();
 /*
@@ -46,58 +48,104 @@ exports.usersRegister = async(req, res, next) => {
         avatar: req.body.role,
         permission: req.body.permission,
     });
-
-    Users.addUser(newUser, (err, user) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: 'Failed to register user'
+    bcrypt.hash(req.body.password, 10).then(hash => {
+        const user = new Users({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: hash,
+            phone: req.body.phone,
+            position: req.body.position,
+            department: req.body.department,
+            role: req.body.role,
+            avatar: req.body.role,
+            permission: req.body.permission,
+        });
+        user
+            .save()
+            .then(result => {
+                res.status(201).json({
+                    message: "User created!",
+                    result: result
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                });
             });
-        } else {
-            res.json({ success: 'true', msg: 'User register' });
-        }
     });
-
 }
 
 
 // User login
 exports.authentication = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    Users.getUserByUsername(email, (err, user) => {
-        if (err) throw err;
-        if (!user) {
-            res.json({ success: false, msg: 'user not found' });
-        }
-        Users.comparePassword(password, user.password, (err, isMatch) => {
-            if (err) throw err;
-            if (isMatch) {
-                const token = jwt.sign(user.toJSON(), config.secret, { expiresIn: 604800 }); // Expires in 1 week
-                // const token = jwt.sign(user.toJSON(), config.secret, { expiresIn: 604800 }); // Expires in 1 week
-                res.json({
-                    success: true,
-                    token: 'bearer ' + token,
-                    user: {
-                        id: user._id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: user.email,
-                        // password: user.password,
-                        phone: user.phone,
-                        position: user.position,
-                        department: user.department,
-                        role: user.role,
-                        avatar: user.avatar,
-                        permission: user.permission,
-                    }
+    let fetchedUser;
+    Users.findOne({ email: req.body.email })
+        .then(user => {
+            if (!user) {
+                return res.status(401).json({
+                    message: "Auth failed"
                 });
-                req.header('auth-token');
-            } else {
-                return res.json({ success: false, msg: 'Wrong Password' });
             }
+            fetchedUser = user;
+            return bcrypt.compare(req.body.password, user.password);
+        })
+        .then(result => {
+            if (!result) {
+                return res.status(401).json({
+                    message: "Auth failed"
+                });
+            }
+            const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id },
+                "secret_this_should_be_longer", { expiresIn: "1h" }
+            );
+            res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userId: fetchedUser._id
+            });
+        })
+        .catch(err => {
+            return res.status(401).json({
+                message: "Invalid authentication credentials!"
+            });
         });
-    });
+
+    // const email = req.body.email;
+    // const password = req.body.password;
+    // Users.getUserByUsername(email, (err, user) => {
+    //     if (err) throw err;
+    //     if (!user) {
+    //         res.json({ success: false, msg: 'user not found' });
+    //     }
+    //     Users.comparePassword(password, user.password, (err, isMatch) => {
+    //         if (err) throw err;
+    //         if (isMatch) {
+    //             const token = jwt.sign(user.toJSON(), config.secret, { expiresIn: 604800 }); // Expires in 1 week
+    //             res.json({
+    //                 success: true,
+    //                 token: 'bearer ' + token,
+    //                 user: {
+    //                     id: user._id,
+    //                     firstName: user.firstName,
+    //                     lastName: user.lastName,
+    //                     email: user.email,
+    //                     // password: user.password,
+    //                     phone: user.phone,
+    //                     position: user.position,
+    //                     department: user.department,
+    //                     role: user.role,
+    //                     avatar: user.avatar,
+    //                     permission: user.permission,
+    //                 }
+    //             });
+    //             req.header('auth-token');
+    //         } else {
+    //             return res.json({ success: false, msg: 'Wrong Password' });
+    //         }
+    //     });
+    // });
 }
 
 exports.profile = (req, res, next) => {
@@ -116,8 +164,8 @@ exports.getAllUsers = (req, res) => {
         });
     }).catch((err) => {
         res.status(404).json({
-            success: false,
-            mag: err
+            message: "Get users failed",
+            status: err
         });
     });
 }
@@ -125,7 +173,19 @@ exports.getAllUsers = (req, res) => {
 // Retrieve  one user 
 exports.getOneUsers = (req, res) => {
     const id = req.params.id;
-    Users.findById(id, callback);
+    // Users.findById(id, callback);
+    Users.findById(id).then(data => {
+        res.status(201).json({
+            message: "Get data successful",
+            data: data
+        })
+    }).catch((err) => {
+        res.status(404).json({
+            message: err || "Data not found",
+            data: err || "Don't have data!"
+        });
+    });
+
 }
 
 exports.getuserByusername = (req, res, next) => {
@@ -194,6 +254,15 @@ exports.deleteAllUser = (req, res) => {
         });
 }
 
+
+const UserTest = require('../models/userTest');
+const fs = require('fs');
+
+exports.drumpUsers = (req, res, next) => {
+    res.status(201).json({
+        message: "Drump user work"
+    });
+}
 
 // Edit position user 
 // exports.editPositionuser = () => {

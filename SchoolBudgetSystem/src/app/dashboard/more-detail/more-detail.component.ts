@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-more-detail',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./more-detail.component.css']
 })
 export class MoreDetailComponent implements OnInit {
-
-  constructor() { }
+  dataInStatus;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { data: string }) { }
 
   ngOnInit(): void {
+    this.dataInStatus = this.data.data;
+    console.log(this.dataInStatus);
   }
 
 }

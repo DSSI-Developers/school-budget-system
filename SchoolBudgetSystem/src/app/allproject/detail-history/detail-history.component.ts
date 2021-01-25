@@ -1,5 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UsersService } from 'app/services/users.service';
 
 export interface PeriodicElement {
   name: string;
@@ -27,9 +29,14 @@ export class DetailHistoryComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
-  constructor(public router: Router) { }
+  isLoading = false;
+  private authStatusSub: Subscription;
+  constructor(public router: Router, private userServices: UsersService) { }
 
   ngOnInit(): void {
+    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
   }
 
   exportPDF() {

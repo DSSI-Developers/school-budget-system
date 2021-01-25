@@ -10,18 +10,19 @@
                         <th>ตำแหน่ง</th>
                         <th>อีเมล</th>
                         <th>เบอร์โทรศัพท์</th>
-                        <th>Permission</th>
+                        <!-- <th>Permission</th> -->
                         <th>แก้ไขผู้ใช้าน</th>
                     </thead>
                     <tbody class="text-center">
                         <tr *ngFor="let user of users$">
                             <td class="text-left">{{ user.firstName }} {{ user.lastName }}</td>
-                            <td>{{ user.position }}</td>
+                            <td class="text-left">{{ user.position }}</td>
                             <td class="text-left">{{ user.email }}</td>
                             <td>{{ user.phone }}</td>
-                            <td *ngIf="user.permission == 'Authorization' || user.permission == 'authorization'"><span class="dot success"></span> {{ user.permission }}</td>
+                            <td><button type="button" class="btn btn-danger" (click)="userDetail(user._id)"><mat-icon>create</mat-icon> </button></td>
+                            <!-- <td *ngIf="user.permission == 'Authorization' || user.permission == 'authorization'"><span class="dot success"></span> {{ user.permission }}</td>
                             <td *ngIf="user.permission == 'Anonymous' || user.permission == 'anonymous'"><span class="dot reject"></span> {{ user.permission }}</td>
-                            <td><button type="button" class="btn btn-danger" (click)="userDetail(user._id)"><mat-icon>create</mat-icon> แก้ไขผู้ใช้งาน</button></td>
+                            <td><button type="button" class="btn btn-danger" (click)="userDetail(user._id)"><mat-icon>create</mat-icon> แก้ไขผู้ใช้งาน</button></td> -->
                         </tr>
                     </tbody>
                 </table>

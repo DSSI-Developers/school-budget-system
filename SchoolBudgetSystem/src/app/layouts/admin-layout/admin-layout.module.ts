@@ -15,6 +15,7 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AllprojectComponent } from 'app/allproject/allproject.component';
 import { RequestEquipmentComponent } from 'app/request-equipment/request-equipment.component';
 import { DetailHistoryComponent } from 'app/allproject/detail-history/detail-history.component';
@@ -26,7 +27,7 @@ import { CheckFormComponent } from 'app/leader/check-form/check-form.component';
 import { ReadDetailFormComponent } from 'app/leader/read-detail-form/read-detail-form.component';
 import { UserDetailComponent } from 'app/admin/user-detail/user-detail.component';
 
-
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   imports: [
@@ -41,6 +42,8 @@ import { UserDetailComponent } from 'app/admin/user-detail/user-detail.component
     MatSelectModule,
     MatTooltipModule,
     MaterialModule,
+    MatProgressSpinnerModule,
+    CKEditorModule
   ],
   declarations: [
     DashboardComponent,
@@ -58,7 +61,6 @@ import { UserDetailComponent } from 'app/admin/user-detail/user-detail.component
     CheckFormComponent,
     ReadDetailFormComponent,
     UserDetailComponent,
-
   ]
 })
 

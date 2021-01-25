@@ -1,6 +1,17 @@
-import { Type } from './../request-equipment.component';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { UsersService } from './../../services/users.service';
+import { Equipments } from "./../../../models/equipments.model";
+import { Subscription } from "rxjs";
+import { EquipmentsService } from "./../../services/equipments.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Type } from "./../request-equipment.component";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+
 export interface SubEquipment {
   no: number; // ลำดับ
   list: string; // รายการ
@@ -12,32 +23,25 @@ export interface SubEquipment {
 }
 
 @Component({
-  selector: 'app-manage-sub-equipment',
-  templateUrl: './manage-sub-equipment.component.html',
-  styleUrls: ['./manage-sub-equipment.component.css'],
+  selector: "app-manage-sub-equipment",
+  templateUrl: "./manage-sub-equipment.component.html",
+  styleUrls: ["./manage-sub-equipment.component.css"],
 })
-export class ManageSubEquipmentComponent implements OnInit {
-  subEquipment = this.fb.group({
-    equipmentName: [''],
-    pricePerunit: [''],
-    unit: [''],
-    budget: [''],
-  });
+export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
+  subEquipment: FormGroup;
 
   listOfProject = [
     {
-      no: '1',
-      type: 'โครงการ',
-      list: 'วงโยธวาทิต',
-      unit: '20',
+      no: "1",
+      type: "โครงการ",
+      list: "วงโยธวาทิต",
+      unit: "20",
       budget: 900000,
       subEquipment: 900000,
     },
   ];
 
-
   listOfSubProject: SubEquipment[] = [
-
     // {
     //   no: 1,
     //   list: this.subEquipment.value.equipment,
@@ -53,11 +57,48 @@ export class ManageSubEquipmentComponent implements OnInit {
     // {no: 4, list: 'ทอมโบน', price: 100000, unit: 3, budget: 300000, edit: 'edit',delete: 'delete'},
   ];
 
+  majorList;
+  budget;
+  necessary;
 
-  constructor(public fb: FormBuilder) {}
+  isLoading = false;
+  private authStatusSub: Subscription;
+
+  constructor(
+    public fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private mainEquipmentServices: EquipmentsService,
+    private userServices: UsersService
+  ) {}
 
   ngOnInit(): void {
-    console.log(typeof this.listOfSubProject);
+    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
+
+    this.subEquipment = new FormGroup({
+      equipmentName: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
+      pricePerunit: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      unit: new FormControl(null, { validators: [Validators.required] }),
+      budget: new FormControl(null, { validators: [Validators.required] }),
+    });
+    this.route.paramMap.subscribe((paramMap) => {
+      const projectId = paramMap.get("listProjectId");
+      console.log(projectId);
+      this.mainEquipmentServices
+        .getOneEquipment(projectId)
+        .subscribe((listProject) => {
+          this.majorList = listProject.majorList;
+          this.budget = listProject.budget;
+          this.necessary = listProject.necessary;
+          // console.log(this.equipmentDetail);
+        });
+    });
   }
 
   addSubEupqment() {
@@ -70,8 +111,8 @@ export class ManageSubEquipmentComponent implements OnInit {
         price: this.subEquipment.value.pricePerunit,
         unit: this.subEquipment.value.unit,
         budget: this.subEquipment.value.budget,
-        edit: 'edit',
-        delete: 'delete',
+        edit: "edit",
+        delete: "delete",
       }
     );
   }
@@ -83,6 +124,8 @@ export class ManageSubEquipmentComponent implements OnInit {
     console.log(this.listOfSubProject);
   }
   daleteEquip() {
-    window.confirm('ต้องการลบข้อมูลนี้หรือไม่');
+    window.confirm("ต้องการลบข้อมูลนี้หรือไม่");
   }
+
+  ngOnDestroy() {}
 }

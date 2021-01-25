@@ -1,3 +1,4 @@
+import { UsersService } from './../../services/users.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroupDirective,NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -46,11 +47,11 @@ export class RegisterComponent implements OnInit {
     phone: ['', [Validators.required]],
     position: ['', [Validators.required]],
     department: ['', [Validators.required]],
-    role: ['user'],
+    role: ['USER'],
     avatar: [''],
-    permission: ['anonymous']
+    permission: ['anvonymous']
   })
-  constructor(public fb: FormBuilder, private _snackBar: MatSnackBar, private rout:Router) { }
+  constructor(public fb: FormBuilder, private _snackBar: MatSnackBar, private rout: Router, private usersServices: UsersService) { }
 
   ngOnInit(): void {
   }
@@ -63,9 +64,25 @@ export class RegisterComponent implements OnInit {
     const user = {
       data: this.formUserData.value
     };
-    console.log(user);
-    console.log(this.formUserData.value);
-    console.log(`Data from form register :${this.formUserData.value}`);
+    this.usersServices.userSignup(
+      this.formUserData.value.firstName,
+      this.formUserData.value.lastName,
+      this.formUserData.value.email,
+      this.formUserData.value.password,
+      this.formUserData.value.phone,
+      this.formUserData.value.position,
+      this.formUserData.value.department,
+      this.formUserData.value.role,
+      this.formUserData.value.avatar,
+      this.formUserData.value.permission
+    )
+    // console.log(user);
+    // console.log(this.formUserData.value);
+    // console.log(`Data from form register :${this.formUserData.value}`);
+  }
+
+  userLogin() {
+    
   }
 
   openSnackBar() {

@@ -2,6 +2,8 @@ import { DetailHistoryComponent } from './detail-history/detail-history.componen
 import { Component, OnInit } from '@angular/core';
 
 import {MatDialog} from '@angular/material/dialog';
+import { UsersService } from 'app/services/users.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,11 +13,16 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class AllprojectComponent implements OnInit {
 
-
-  constructor(public dialog: MatDialog) { }
+  isLoading = false;
+  private authStatusSub: Subscription;
+  constructor(public dialog: MatDialog,  private userServices: UsersService) { }
 
   ngOnInit(): void {
+    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
   }
+
   openDialog() {
     const dialogRef = this.dialog.open(DetailHistoryComponent);
 

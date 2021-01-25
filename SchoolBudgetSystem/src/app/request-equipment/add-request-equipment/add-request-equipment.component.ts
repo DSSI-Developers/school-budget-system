@@ -1,6 +1,7 @@
+import { UsersService } from './../../services/users.service';
 import { NotifiedService } from './../../services/notified.service';
 import { EquipmentsService } from './../../services/equipments.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,7 +13,6 @@ import { Equipments } from './../../../models/equipments.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import * as moment from 'moment';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { map } from 'rxjs/operators';
 
@@ -21,6 +21,13 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { Subscription } from 'rxjs'
+
+
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 export interface Type {
   value: string;
   valueView: string;
@@ -31,7 +38,7 @@ export interface Type {
   templateUrl: './add-request-equipment.component.html',
   styleUrls: ['./add-request-equipment.component.css'],
 })
-export class AddRequestEquipmentComponent implements OnInit {
+export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
 
@@ -85,22 +92,11 @@ export class AddRequestEquipmentComponent implements OnInit {
   private equipmentsId: string;
   dataEdit;
 
-  // Equipment data
-  reason;
-  objective;
-  learningGroups;
-  majorList;
-  budget;
-  necessary;
-  existEquipment;
-  otherReason;
-  dateProject;
-  condition;
-
   equipmentsRequest: FormGroup;
   reasonPerson;
   equipmantsEdit: Equipments;
-
+  isLoading = false;
+  private authStatusSub: Subscription;
   // Equipments รายการคำร้องจัดตั้งครุภัณฑ์
   // equipmentsRequest = this.fb.group({
   //   responPerson: this.fb.group({
@@ -127,6 +123,7 @@ export class AddRequestEquipmentComponent implements OnInit {
   //     condition: [''],
   //   }),
   // });
+  public Editor = ClassicEditor;
 
   constructor(
     public fb: FormBuilder,
@@ -134,10 +131,15 @@ export class AddRequestEquipmentComponent implements OnInit {
     private notifiedService: NotifiedService,
     private route: ActivatedRoute,
     private router: Router,
-    private _snackBar: MatSnackBar
-  ) { }
+    private _snackBar: MatSnackBar,
+    private userServices: UsersService
+  ) {}
 
   ngOnInit(): void {
+     this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
+
     this.equipmentsRequest = new FormGroup({
       firstName: new FormControl(null, { validators: [Validators.required] }),
       lastName: new FormControl(null, { validators: [Validators.required] }),
@@ -175,7 +177,8 @@ export class AddRequestEquipmentComponent implements OnInit {
       if (paramMap.has('equipmentId')) {
         this.mode = 'edit';
         this.equipmentsId = paramMap.get('equipmentId');
-        this.equipments = this.equipmentsService.getOneEquipment(this.equipmentsId)
+        this.equipments = this.equipmentsService
+          .getOneEquipment(this.equipmentsId)
           .subscribe((equipmentData) => {
             console.log(equipmentData);
             this.equipmantsEdit = {
@@ -196,34 +199,36 @@ export class AddRequestEquipmentComponent implements OnInit {
               otherReason: equipmentData.otherReason,
               dateProject: equipmentData.dateProject,
               condition: equipmentData.condition,
-              status: equipmentData.status
-            }
-        console.log(this.mode);
-        console.log(this.equipmantsEdit);
-        this.equipmentsRequest.setValue({
-          firstName: this.equipmantsEdit.firstName,
-          lastName: this.equipmantsEdit.lastName,
-          position: this.equipmantsEdit.position,
-          learningGroup: this.equipmantsEdit.learningGroup,
-          subjectTeach: this.equipmantsEdit.subjectTeach,
-          reason: this.equipmantsEdit.reason,
-          objective:  this.equipmantsEdit.objective,
-          learningGroups:this.equipmantsEdit.learningGroups,
-          majorList: this.equipmantsEdit.majorList,
-          budget: this.equipmantsEdit.budget,
-          necessary: this.equipmantsEdit.necessary,
-          existEquipment: this.equipmantsEdit.existEquipment,
-          otherReason: this.equipmantsEdit.otherReason,
-          dateProject: this.equipmantsEdit.dateProject,
-          condition: this.equipmantsEdit.condition,
-        })
-      });
+              status: equipmentData.status,
+            };
+            console.log(this.mode);
+            console.log(this.equipmantsEdit);
+            this.equipmentsRequest.setValue({
+              firstName: this.equipmantsEdit.firstName,
+              lastName: this.equipmantsEdit.lastName,
+              position: this.equipmantsEdit.position,
+              learningGroup: this.equipmantsEdit.learningGroup,
+              subjectTeach: this.equipmantsEdit.subjectTeach,
+              reason: this.equipmantsEdit.reason,
+              objective: this.equipmantsEdit.objective,
+              learningGroups: this.equipmantsEdit.learningGroups,
+              majorList: this.equipmantsEdit.majorList,
+              budget: this.equipmantsEdit.budget,
+              necessary: this.equipmantsEdit.necessary,
+              existEquipment: this.equipmantsEdit.existEquipment,
+              otherReason: this.equipmantsEdit.otherReason,
+              dateProject: this.equipmantsEdit.dateProject,
+            condition: this.equipmantsEdit.condition,
+            });
+          });
       } else {
         this.mode = 'create';
         console.log(this.mode);
       }
     });
   }
+
+  ckeditorContent;
 
   addData() {
     if (this.mode === 'create') {
@@ -251,12 +256,13 @@ export class AddRequestEquipmentComponent implements OnInit {
       const detail = this.equipmentsRequest.value.majorList;
       const note = '';
       // Notification
-      this.notifiedService.addNotification(type, status, detail, note);
-      this._snackBar.open('เพิ่มข้อมูลเรียบร้อย', 'ปิด', {
-        duration: 5000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
+      // this.notifiedService.addNotification(type, status, detail, note);
+      Swal.fire('บันทึกรายการเรียบร้อย', 'You submitted succesfully!', 'success');
+      // this._snackBar.open('เพิ่มข้อมูลเรียบร้อย', 'ปิด', {
+      //   duration: 5000,
+      //   horizontalPosition: this.horizontalPosition,
+      //   verticalPosition: this.verticalPosition,
+      // });
     } else {
       this.equipmentsService.editEquipment(
         this.equipmentsId,
@@ -277,13 +283,16 @@ export class AddRequestEquipmentComponent implements OnInit {
         this.equipmentsRequest.value.dateProject,
         this.equipmentsRequest.value.condition
       );
-      this._snackBar.open('แก้ไขข้อมูลเรียบร้อย', 'ปิด', {
-        duration: 5000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
+      Swal.fire('บันทึกรายการแก้ไขเรียบร้อย', 'You submitted succesfully!', 'success');
+      // this._snackBar.open('แก้ไขข้อมูลเรียบร้อย', 'ปิด', {
+      //   duration: 5000,
+      //   horizontalPosition: this.horizontalPosition,
+      //   verticalPosition: this.verticalPosition,
+      // });
     }
-    this.router.navigate(['/requestEquipment']);
   }
 
+  ngOnDestroy() {
+    // this.authStatusSub.unsubscribe();
+  }
 }

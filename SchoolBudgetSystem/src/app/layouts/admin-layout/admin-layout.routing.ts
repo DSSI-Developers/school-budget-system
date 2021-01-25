@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../services/auth.guard';
 import { ReadDetailFormComponent } from './../../leader/read-detail-form/read-detail-form.component';
 import { CheckFormComponent } from './../../leader/check-form/check-form.component';
 import { ManageUserComponent } from './../../admin/manage-user/manage-user.component';
@@ -60,16 +61,16 @@ export const AdminLayoutRoutes: Routes = [
     //     }]
     // }
     { path: 'dashboard',      component: DashboardComponent },
-    { path: 'user-profile',   component: UserProfileComponent },
+    { path: 'user-profile',   component: UserProfileComponent},
     // { path: 'icons',          component: IconsComponent },
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'allproject',  component: AllprojectComponent },
     { path: 'newproject',  component: NewprojectComponent },
     { path: 'requestEquipment',  component: RequestEquipmentComponent },
-    { path: 'addRequestEquip',  component: AddRequestEquipmentComponent },
-    { path: 'editRequestEquip/:equipmentId',  component: AddRequestEquipmentComponent },
-    { path: 'manageSubQuipment',  component: ManageSubEquipmentComponent },
+    { path: 'addRequestEquip',  component: AddRequestEquipmentComponent, canActivate: [AuthGuard] },
+    { path: 'editRequestEquip/:equipmentId',  component: AddRequestEquipmentComponent, canActivate: [AuthGuard] },
+    { path: 'manageSubQuipment/:listProjectId',  component: ManageSubEquipmentComponent },
     { path: 'manageUser',  component: ManageUserComponent },
     { path: 'readForm',  component: CheckFormComponent },
-    { path: 'readDetailForm',  component: ReadDetailFormComponent },
+    { path: 'readDetailForm/:equipmentId',  component: ReadDetailFormComponent },
 ];

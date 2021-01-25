@@ -5,8 +5,7 @@
                 <form [formGroup]="equipmentsRequest">
                     <div class="card">
                         <div class="card-header card-header-danger">
-                            <h4 class="card-title">เพิ่มคำขอครุภัณฑ์หลัก / โครงการ
-                            </h4>
+                            <h4 class="card-title">เพิ่มคำขอครุภัณฑ์หลัก / โครงการ</h4>
                             <p class="card-category">
                                 เลือกรายการครุภัณฑ์หรือโครงการและป้อนข้อมูลประกอบ
                             </p>
@@ -49,14 +48,21 @@
                                     <div class="col-md"></div>
                                     <div class="col-md">
                                         <!-- <angular-editor formControlName="htmlContent" [config]="editorConfig"></angular-editor> -->
-                                        <mat-form-field appearance="outline">
+                                        <mat-label>หลักการและเหตุผล</mat-label>
+                                        <ckeditor [editor]="Editor" data="reason" formControlName="reason"></ckeditor>
+                                        <!-- <mat-form-field appearance="outline">
                                             <mat-label>หลักการและเหตุผล</mat-label>
-                                            <textarea matInput rows="5" placeholder="เหตุผลประกอบการพิจารณา" formControlName="reason" value="dataEdit"></textarea>
-                                        </mat-form-field>
-                                        <mat-form-field appearance="outline">
+                                            <textarea matInput rows="5" placeholder="เหตุผลประกอบการพิจารณา"
+                                            formControlName="reason" value="dataEdit"></textarea>
+                                        </mat-form-field> -->
+                                        <br>
+                                        <!-- <mat-form-field appearance="outline">
                                             <mat-label>วัตถุประสงค์</mat-label>
                                             <textarea matInput rows="5" placeholder="เหตุผลประกอบการพิจารณา" formControlName="objective"></textarea>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+                                        <mat-label>วัตถุประสงค์</mat-label>
+                                        <ckeditor [editor]="Editor" data="objective" formControlName="objective"></ckeditor>
+                                        <br>
                                     </div>
                                     <div class="col-md"></div>
                                 </div>
@@ -77,10 +83,7 @@
                                                 <mat-form-field appearance="fill">
                                                     <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
                                                     <mat-select formControlName="learningGroups">
-                                                        <mat-option *ngFor="let
-                                                            learnGroup of
-                                                            learningGroup" value="{{
-                                                            learnGroup.value }}">{{ learnGroup.valueView }}
+                                                        <mat-option *ngFor="let learnGroup of learningGroup" value="{{ learnGroup.value }}">{{ learnGroup.valueView }}
                                                         </mat-option>
                                                     </mat-select>
                                                     <mat-hint align="end">เลือกประเภทรายการที่ต้องการ</mat-hint>
@@ -129,12 +132,6 @@
                                         </mat-form-field>
                                         <div class="form-row mb-4">
                                             <div class="col text-center">
-                                                <!-- <mat-form-field>
-                                                <mat-label>Choose a date</mat-label>
-                                                <input matInput [matDatepicker]="picker">
-                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker></mat-datepicker>
-                                            </mat-form-field> -->
                                                 <mat-form-field class="example-full-width" appearance="fill">
                                                     <mat-label>Choose a date</mat-label>
                                                     <input matInput [matDatepicker]="picker" formControlName="dateProject" />
@@ -160,8 +157,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" (click)="addData()" class="btn
-                                btn-danger">
+                            <button type="submit" (click)="addData()" class="btn btn-danger">
                                 <mat-icon>save_alt</mat-icon> บันทึกข้อมูล
                             </button>
                         </div>

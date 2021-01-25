@@ -31,11 +31,11 @@
                     </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Mike John responded to your email</a>
+                    <!-- <a class="dropdown-item" href="#">Mike John responded to your email</a>
                     <a class="dropdown-item" href="#">You have 5 new tasks</a>
                     <a class="dropdown-item" href="#">You're now friend with Andrew</a>
                     <a class="dropdown-item" href="#">Another Notification</a>
-                    <a class="dropdown-item" href="#">Another One</a>
+                    <a class="dropdown-item" href="#">Another One</a> -->
                 </div>
             </li>
             <!-- <li class="nav-item dropdown">
@@ -52,8 +52,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)">
                     <i class="material-icons">logout</i>
-                    <p>
-                        <span class="d-lg-none d-md-block">ออกจากระบบ</span>
+                    <p *ngIf="1userIsAuthenticated">
+                        <span class="d-lg-none d-md-block" (click)="onLogout()">ออกจากระบบ</span>
                     </p>
                 </a>
             </li>

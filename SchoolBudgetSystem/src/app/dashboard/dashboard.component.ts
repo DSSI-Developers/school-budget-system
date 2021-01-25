@@ -34,14 +34,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ];
 
   equipments: Equipments[] = [];
+  successEquipments: Equipments[] = [];
+  pendingEquipments: Equipments[] = [];
+  failedEquipments: Equipments[] = [];
   private getEquipmentsData: Subscription;
+  countSuccess: number;
+  countPending: number;
+  countFailed: number;
+
+  statusDetail;
   constructor(public dialog: MatDialog, private equipmentServices: EquipmentsService) { }
 
   ngOnInit() {
+    // Get data totable
     this.equipmentServices.getAllEquipments();
     this.getEquipmentsData = this.equipmentServices.getEquipmentUpdateListener()
     .subscribe((objectData: Equipments[]) => {
       this.equipments = objectData;
+      this.successEquipments = this.equipments.filter((status) => status.status === 'กำลังดำเนินการ');
+      this.pendingEquipments = this.equipments.filter((status) => status.status === 'ผ่านการอนุมัติ');
+      this.failedEquipments = this.equipments.filter((status) => status.status === 'ไม่ผ่านการอนุมัติ');
+
+      this.countSuccess = this.successEquipments.length;
+      this.countPending = this.pendingEquipments.length;
+      this.countFailed = this.failedEquipments.length;
+      console.log(this.countSuccess);
+      console.log(this.countPending);
+      console.log(this.countFailed);
     });
   }
 
@@ -95,9 +114,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
     pdfMake.createPdf(dd).open();
   }
-  
-  moreDetail() {
-    const dialogRef = this.dialog.open(MoreDetailComponent);
+
+  moreDetail(status: string) {
+    this.statusDetail = status;
+    const dialogRef = this.dialog.open(MoreDetailComponent, {
+      data: {
+        data: this.statusDetail
+      }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -106,7 +130,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
   }
-
-  
 
 }

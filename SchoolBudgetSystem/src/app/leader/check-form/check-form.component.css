@@ -11,3 +11,7 @@
 .card-title {
     background-color: darkgrey;
 }
+
+mat-card {
+    width: 250px;
+}

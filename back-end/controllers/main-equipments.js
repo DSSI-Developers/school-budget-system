@@ -28,15 +28,16 @@ exports.saveProject = async(req, res, next) => {
         otherReason: req.body.otherReason,
         dateProject: req.body.dateProject,
         condition: req.body.condition,
-        status: req.body.status
+        status: req.body.status,
+        creator: req.userData.userId
     });
     if (!project) {
         res.status(401).json({
             msg: "Don't have data !"
         });
     }
-    console.log(project);
-    // res.end();
+    // console.log(req.userData);
+    // return res.status(200).json({});
     project.save(project).then(data => {
         res.status(201).send({ data: data });
     }).catch(err => {
@@ -61,7 +62,7 @@ exports.editProject = (req, res, next) => {
             console.log(err);
             throw err;
         } else {
-            res.status(201).send({
+            res.status(201).json({
                 msg: `Updated data ${id}`,
                 data: docs
             })
@@ -109,10 +110,13 @@ exports.deleteAllProject = (req, res, next) => {
 exports.getAllProject = (req, res, next) => {
     // const allProject = req.body;
     MainEquipment.find({}).then((data) => {
-        res.status(201).json({ data: data });
+        res.status(201).json({
+            message: 'All data',
+            data: data
+        });
     }).catch(err => {
         res.status(500).json({
-            msg: err.msg || "Some error occurred while retrieving data."
+            message: "Some error occurred while retrieving data." + err
         });
     });
 }

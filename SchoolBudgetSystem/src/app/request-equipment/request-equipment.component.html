@@ -32,7 +32,7 @@
                                     <td>{{ listProject.necessary }}</td>
                                     <td>{{ listProject.budget }}</td>
                                     <td>
-                                        <button mat-raised-button color="" matTooltip="เพิ่ม/ลบ/แก้ไข {{ i }}" matTooltipPosition="above" routerLink="/manageSubQuipment"><mat-icon>add_to_photos</mat-icon></button>
+                                        <button mat-raised-button color="" matTooltip="{{ listProject._id }}" matTooltipPosition="above" [routerLink]="['/manageSubQuipment', listProject._id]"><mat-icon>add_to_photos</mat-icon></button>
                                     </td>
                                     <td>
                                         <button mat-raised-button color="primary" matTooltip="แก้ไข {{ listProject._id }}" matTooltipPosition="above" [routerLink]="['/editRequestEquip', listProject._id]"><mat-icon>edit</mat-icon></button>

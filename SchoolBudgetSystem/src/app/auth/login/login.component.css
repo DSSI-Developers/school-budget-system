@@ -1,5 +1,10 @@
 /* s */
 
+.responsive {
+    width: 60%;
+    height: auto;
+}
+
 .register-block {
     margin: 20px;
     text-align: center;

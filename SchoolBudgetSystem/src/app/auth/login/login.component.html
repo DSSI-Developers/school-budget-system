@@ -8,9 +8,10 @@
             <div class="col-md-6">
                 <div class="card" style="margin-top: 3rem;">
                     <div class="card-header" style="text-align: center;">
-                        <img src="https://angular.io/assets/images/logos/angular/angular.png" alt="Logo not responding">
+                        <!-- <img src="https://angular.io/assets/images/logos/angular/angular.png" alt="Logo not responding"> -->
+                        <img src="../assets/img/school_logo.png" alt="โรงเรียนบึงมะลูวิทยา" class="responsive">
                         <div class="title-login">
-                            <h3>ระบบบริหารจัดการงบประมาณโรงเรียน</h3>
+                            <h3>ระบบจัดตั้งงบประมาณครุภัณฑ์</h3>
                         </div>
                         <hr>
                     </div>
@@ -20,6 +21,7 @@
                                 <mat-label>อีเมล</mat-label>
                                 <input matInput placeholder="Enter your email" type="email" formControlName="email">
                                 <mat-icon matSuffix>email</mat-icon>
+                                <!-- <mat-error *ngIf="login.get('email').invalid">รูปแบบอีเมลไม่ถูกต้อง</mat-error> -->
                                 <mat-error *ngIf="login.value.email">รูปแบบอีเมลไม่ถุกต้อง</mat-error>
                                 <mat-error *ngIf="login.value.email === ''">กรุณากรอกอีเมลแอเดรส</mat-error>
                             </mat-form-field>
@@ -31,9 +33,9 @@
                                 <mat-error *ngIf="login.value.password === ''">กรุณากรอกรหัสผ่าน</mat-error>
                                 <mat-hint></mat-hint>
                             </mat-form-field>
-                            <div class="forgot-password">
+                            <!-- <div class="forgot-password">
                                 <a routerLink="/home">ลืมรหัสผ่าน ?</a>
-                            </div>
+                            </div> -->
                             <hr>
                             <div class="button-group">
 
@@ -41,7 +43,7 @@
                                 <!-- <button mat-raised-button color="primary" v routerLink="/register">สมัครสมชิก</button> -->
                             </div>
                             <div class="register-block">
-                                <a routerLink="/register">สมัครสมาชิก</a>
+                                <!-- <a routerLink="/register">สมัครสมาชิก</a> -->
                             </div>
                         </form>
                     </div>

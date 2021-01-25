@@ -17,7 +17,8 @@ const mainEquipments = mongoose.Schema({
     otherReason: { type: String },
     dateProject: { type: Date },
     condition: { type: String },
-    status: { type: String }
+    status: { type: String },
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "Users", require: true }
 }, { timestamp: true });
 
 module.exports = mongoose.model("MainEquipment", mainEquipments);

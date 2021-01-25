@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { NotifiedService } from './../services/notified.service';
 import { Notification } from './../../models/notified.model';
 import { Subscription } from 'rxjs';
+import { UsersService } from 'app/services/users.service';
 
 declare var $: any;
 
@@ -30,20 +31,19 @@ declare var $: any;
 export class NotificationsComponent implements OnInit {
 
 
-  // notification: Notification[] = [
-    // { dateTime: '05 ธ.ค. 2563 - 16:11', type: 'โครงการ', status: 'กำลังดำเนินการ', icon: '', detail: 'โครงการของท่านกำลังอยู่ในช่วงดำเนินการ', note: ''},
-    // { dateTime: '01 ธ.ค. 2563 - 10:18', type: 'ครุภัณฑ์', status: 'สำเร็จ', icon: '', detail: 'โครงการผ่านการอนุมัติเรียบร้อยแล้ว', note: ''},
-    // { dateTime: '02 ธ.ค. 2563 - 20:54', type: 'โครงการ', status: 'กำลังดำเนินการ', icon: '', detail: 'โครงการของท่านกำลังอยู่ในช่วงดำเนินการ', note: ''},
-    // { dateTime: '27 พ.ย. 2563 - 09:59', type: 'ครุภัณฑ์', status: 'ไม่สำเร็จ', icon: '', detail: 'โครงการไม่ผ่านการอนุมัติเนื่องจาก มีอุปกรณ์ที่สามารถใช้ทดอทนกันได้', note: ''}
-  // ];
-
   notification: Notification[] = [];
   private allNotification: Subscription;
   closeDialig: boolean;
 
-  constructor(public notifiedService: NotifiedService) { }
+  isLoading = false;
+  private authStatusSub: Subscription;
+  constructor(public notifiedService: NotifiedService, private userServices: UsersService) { }
 
   ngOnInit() {
+    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
+
     this.notifiedService.getAllNotified()
     this.allNotification =  this.notifiedService.getNitifiedUpdateListener()
     .subscribe((result: Notification[]) => {
@@ -60,5 +60,9 @@ export class NotificationsComponent implements OnInit {
     } else {
       console.log(id);
     }
+  }
+
+  OnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }
