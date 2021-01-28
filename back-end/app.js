@@ -59,6 +59,7 @@ const mainEquipments = require('./routes/main-equipments');
 const notification = require('./routes/notification');
 const metaEquipment = require('./routes/meta-equipments');
 const learningGroup = require('./routes/learningGroup');
+const subEquipments = require('./routes/sub-equipments');
 app.get('/', (req, res) => {
     res.json({ message: "Welcome to my site" });
 });
@@ -66,6 +67,7 @@ app.get('/', (req, res) => {
 // Router 
 app.use('/users', usersRouter);
 app.use('/mainEquipment', mainEquipments);
+app.use('/subEquipment', subEquipments);
 app.use('/notification', notification);
 app.use('/metaEquipments', metaEquipment);
 app.use('/learningGroup', learningGroup);

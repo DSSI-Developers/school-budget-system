@@ -16,5 +16,6 @@ export interface Equipments {
     otherReason: string,
     dateProject: Date,
     condition: string,
-    status: string
+    status: string,
+    creator: string
 }

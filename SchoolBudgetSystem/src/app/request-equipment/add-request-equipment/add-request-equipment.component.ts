@@ -16,6 +16,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { map } from 'rxjs/operators';
 
+
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -94,7 +95,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
 
   equipmentsRequest: FormGroup;
   reasonPerson;
-  equipmantsEdit: Equipments;
+  equipmantsEdit;
   isLoading = false;
   private authStatusSub: Subscription;
   // Equipments รายการคำร้องจัดตั้งครุภัณฑ์
@@ -133,7 +134,9 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
     private router: Router,
     private _snackBar: MatSnackBar,
     private userServices: UsersService
-  ) {}
+  ) {
+
+  }
 
   ngOnInit(): void {
      this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
@@ -199,7 +202,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
               otherReason: equipmentData.otherReason,
               dateProject: equipmentData.dateProject,
               condition: equipmentData.condition,
-              status: equipmentData.status,
+              status: equipmentData.status
             };
             console.log(this.mode);
             console.log(this.equipmantsEdit);
@@ -256,7 +259,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
       const detail = this.equipmentsRequest.value.majorList;
       const note = '';
       // Notification
-      // this.notifiedService.addNotification(type, status, detail, note);
+      this.notifiedService.addNotification(type, status, detail, note);
       Swal.fire('บันทึกรายการเรียบร้อย', 'You submitted succesfully!', 'success');
       // this._snackBar.open('เพิ่มข้อมูลเรียบร้อย', 'ปิด', {
       //   duration: 5000,

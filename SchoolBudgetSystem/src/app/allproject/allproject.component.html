@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-hover">
-                            <thead class="text-center">
+                            <thead class="thead-dark text-center">
                                 <th>ปีงบประมาณ</th>
                                 <th>รายการ</th>
                                 <th>หน่วย</th>
@@ -29,13 +29,19 @@
                                 <th>หมายเหตุ</th>
                             </thead>
                             <tbody class="text-center">
-                                <tr (click)="openDialog()">
-                                    <td>2561</td>
-                                    <td>ครุภัณฑ์เเละอุปกรณ์ต่อพ่วง โครงการ : DLIT</td>
-                                    <td>1</td>
-                                    <td>96,280</td>
-                                    <td>
-                                        <a class="success"> </a>สำเร็จ
+                                <tr *ngFor="let item of equipments" (click)="openDialog(item._id)">
+                                    <td>{{item.dateProject}}</td>
+                                    <td class="text-left">{{ item.majorList }}</td>
+                                    <td>{{ item.necessary }}</td>
+                                    <td>{{ item.budget }}</td>
+                                    <td *ngIf="item.status == 'ผ่านการอนุมัติ'">
+                                        <span class="dot success"></span> {{ item.status }}
+                                    </td>
+                                    <td *ngIf="item.status == 'กำลังดำเนินการ'">
+                                        <span class="dot pending"></span> {{ item.status }}
+                                    </td>
+                                    <td *ngIf="item.status == 'ไม่สำเร็จ'">
+                                        <span class="dot reject"></span> {{ item.status }}
                                     </td>
                                 </tr>
                             </tbody>

@@ -2,6 +2,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, observable, ObservedValueOf } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from "@angular/material/snack-bar";
 
 // Model
 import { AuthData } from './../../models/auth-data.model';
@@ -24,7 +29,7 @@ export class UsersService {
   private authStatusListener = new Subject<boolean>();
   private userId: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar,) {}
 
   getToken() {
     return this.token;
@@ -66,6 +71,12 @@ export class UsersService {
             console.log(expirationDate);
             this.saveAuthData(token, expirationDate, this.userId);
             this.router.navigate(['/home']);
+
+            this._snackBar.open('ยินดีต้อนรับ', 'ปิด', {
+              duration: 50000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
           }
         },
         (error) => {
@@ -156,7 +167,7 @@ export class UsersService {
       position: position,
       department: department,
       role: role,
-      avatar: avatar,
+      avatar: null,
       permission: permission,
     };
     this.http

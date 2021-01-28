@@ -3,7 +3,6 @@ import { Equipments } from './../../models/equipments.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { stringify } from '@angular/compiler/src/util';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -108,7 +107,6 @@ export class EquipmentsService {
         equipment
       )
       .subscribe((responseData) => {
-        const message = 'Success';
         this.router.navigate(['/requestEquipment']);
       });
   }

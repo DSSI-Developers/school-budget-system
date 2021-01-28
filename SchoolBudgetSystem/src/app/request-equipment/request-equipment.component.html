@@ -25,7 +25,7 @@
                                 <th></th>
                             </thead>
                             <tbody class="text-center">
-                                <tr *ngFor="let listProject of equipments; let i = index">
+                                <tr *ngFor="let listProject of document; let i = index">
                                     <td>{{ i+1 }}</td>
                                     <!-- <td>{{ listProject.type }}</td> -->
                                     <td class="text-left">{{ listProject.majorList }}</td>
@@ -38,7 +38,7 @@
                                         <button mat-raised-button color="primary" matTooltip="แก้ไข {{ listProject._id }}" matTooltipPosition="above" [routerLink]="['/editRequestEquip', listProject._id]"><mat-icon>edit</mat-icon></button>
                                     </td>
                                     <td>
-                                        <button mat-raised-button color="primary" matTooltip="ลบ {{ listProject._id }}" matTooltipPosition="above" (click)="deleteEquipment(listProject._id)"><mat-icon>delete</mat-icon></button>
+                                        <button mat-raised-button color="warn" matTooltip="ลบ {{ listProject._id }}" matTooltipPosition="above" (click)="deleteEquipment(listProject._id)"><mat-icon>delete</mat-icon></button>
                                     </td>
                                 </tr>
                             </tbody>

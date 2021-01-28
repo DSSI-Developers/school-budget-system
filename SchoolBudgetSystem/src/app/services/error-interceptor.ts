@@ -23,16 +23,16 @@ import { ErrorComponent } from './../error/error.component';
       return next.handle(req).pipe(
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'An unknown error occurred!';
-          let errorStatus = 'เข้าสู่ระบบไม่สำเร็จ';
+          // let errorStatus = 'เข้าสู่ระบบไม่สำเร็จ';
           if (error.error.message && error.error.status) {
             errorMessage = error.error.message;
-            errorStatus = error.error.status;
+            // errorStatus = error.error.status;
           }
           // this.dialog.open(ErrorComponent, {data: {message: errorMessage, status: errorStatus}});
           Swal.fire({
             icon: 'error',
             title: errorMessage,
-            text: errorStatus,
+            text: error.message,
           });
           // this.errorService.throwError(errorMessage);
           return throwError(error);

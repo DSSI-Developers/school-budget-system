@@ -157,13 +157,14 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" (click)="addData()" class="btn btn-danger">
+                            <button type="submit" [disabled]="equipmentsRequest.invalid" (click)="addData()" class="btn btn-danger">
                                 <mat-icon>save_alt</mat-icon> บันทึกข้อมูล
                             </button>
                         </div>
                     </div>
                 </form>
-                {{ equipmentsRequest.value | json }} {{ equipmentsRequest.status }}
+                {{ equipmentsRequest.value.dateProject }}
+                <!-- {{ equipmentsRequest.value | json }} {{ equipmentsRequest.status }} -->
             </div>
         </div>
     </div>

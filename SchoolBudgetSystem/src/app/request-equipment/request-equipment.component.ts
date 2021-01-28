@@ -20,36 +20,40 @@ export interface Type {
   styleUrls: ['./request-equipment.component.css'],
 })
 export class RequestEquipmentComponent implements OnInit, OnDestroy {
-  listOfProject = [
-    {
-      no: '1',
-      type: 'โครงการ',
-      list: 'เด็กดีมีคุณธรรม',
-      unit: '20',
-      budget: '20000',
-      note: ' ',
-      subEquipment: '',
-    },
-    {
-      no: '2',
-      type: 'ครุภัณฑ์',
-      list: 'การ์ดจอ RTX 8080',
-      unit: '10',
-      budget: '1000000',
-      note: 'คำขอไม่สมบูรณ์',
-      subEquipment: '',
-    },
-  ];
+  // listOfProject = [
+  //   {
+  //     no: '1',
+  //     type: 'โครงการ',
+  //     list: 'เด็กดีมีคุณธรรม',
+  //     unit: '20',
+  //     budget: '20000',
+  //     note: ' ',
+  //     subEquipment: '',
+  //   },
+  //   {
+  //     no: '2',
+  //     type: 'ครุภัณฑ์',
+  //     list: 'การ์ดจอ RTX 8080',
+  //     unit: '10',
+  //     budget: '1000000',
+  //     note: 'คำขอไม่สมบูรณ์',
+  //     subEquipment: '',
+  //   },
+  // ];
   typeOfProject: Type[] = [
     { value: 'ครุภัณฑ์การศึกษา', valueView: 'ครุภัณฑ์การศึกษา' },
     { value: 'โครงการ', valueView: 'โครงการ' },
   ];
   equipments: Equipments[] = [];
+  // equipments;
+  document;
   private allEquipment$: Subscription;
 
   isLoading = false;
   private authStatusSub: Subscription;
-
+  
+  userId: string;
+  // document: Equipments[] = [];
   constructor(
     private equipmentsService: EquipmentsService,
     private route: ActivatedRoute,
@@ -62,12 +66,19 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
       this.isLoading = false
     });
 
+    this.userId = this.userServices.getUserId();
+    console.log('User ID :', this.userId);
     this.equipmentsService.getAllEquipments();
     this.allEquipment$ = this.equipmentsService
       .getEquipmentUpdateListener()
       .subscribe((equipments: Equipments[]) => {
         this.equipments = equipments;
+        console.log('Equipments :', this.equipments);
+        this.document = this.equipments.filter(data => data.creator === this.userId)
+        console.log('Creator Id:', this.equipments.filter(data => data.creator === this.userId));
       });
+
+
   }
   manageSubQuipments() {}
 

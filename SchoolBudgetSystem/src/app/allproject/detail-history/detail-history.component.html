@@ -1,50 +1,44 @@
-<h2 mat-dialog-title>{{ detailTitle }}</h2>
-<hr>
-<mat-dialog-content class="mat-typography">
-    <h3>รายละเอียดรายการ : {{ detailTitle }}</h3>
+<mat-dialog-content class="mat-typography" *ngFor="let item of value">
+    <h2 mat-dialog-title>{{ item.majorList }}</h2>
+    <hr>
+    <h3>รายละเอียดรายการ : {{ item.majorList }}</h3>
     <p>
         <a class="success"> </a>
-        สถานะโครงการ : {{ statusProject }}
+        สถานะโครงการ : {{ item.status }}
     </p>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-        <!-- Position Column -->
-        <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef class="text-center"> ลำดับ </th>
-            <td mat-cell *matCellDef="let element" class="text-center"> {{element.position}} </td>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef class="text-center"> รายการ </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-
-        <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-            <th mat-header-cell *matHeaderCellDef class="text-center"> จำนวนหน่วย </th>
-            <td mat-cell *matCellDef="let element" class="text-center"> {{element.unit}} </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef class="text-center"> งบประมาณ </th>
-            <td mat-cell *matCellDef="let element" class="text-center"> {{element.budget}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
     <hr>
-    <h3>คำอธิบายโครงการ</h3>
+    <!-- <div *ngFor="let item of value"> -->
+    <h3>ที่มาและเหตุผล</h3>
+    {{ item.reason }}
     <p>สืบเนื่องจากโรงเรียนได้จัดท าโครงการดูแลช่วยเหลือนักเรียนโดยการเยี่ยมบ้านนักเรียนในทุกๆ ปีการศึกษา พบว่ามีนักเรียนหลายคนที่ไม่ได้อยู่กับบิดามารดาโดยมีญาติ ปู่ ย่า ตา ยาย คอยดูแลนักเรียน และในจ านวนนั้นมีฐานะยากจน บางคนอยู่กับบิดามารดาแต่ก็หาเช้ากินค่
         า รับจ้างไปวันๆ แต่ด้วยความรักและ เอาใจใส่ของญาติ ปู่ ย่า ตา ยาย อยากให้เด็กได้เรียนในสถานศึกษาที่ดี มีคุณภาพ แม้จะขัดสนก็ตาม จนบาง เทอมไม่มีเงินจ่ายค่าเล่าเรียน บางรายไม่มีจ่ายเลยหลายเทอมแต่ทางโรงเรียนก็ไม่ได้ทวงถามเมื่อทราบว่าฐานะ ทางครอบครัวไม่ค่อยดีนัก
     </p>
     <hr>
+    <h3>วัตถุประสงค์</h3>
+    {{ item.objective }}
+    <p>สืบเนื่องจากโรงเรียนได้จัดท าโครงการดูแลช่วยเหลือนักเรียนโดยการเยี่ยมบ้านนักเรียนในทุกๆ ปีการศึกษา พบว่ามีนักเรียนหลายคนที่ไม่ได้อยู่กับบิดามารดาโดยมีญาติ ปู่ ย่า ตา ยาย คอยดูแลนักเรียน และในจ านวนนั้นมีฐานะยากจน บางคนอยู่กับบิดามารดาแต่ก็หาเช้ากินค่
+        า รับจ้างไปวันๆ แต่ด้วยความรักและ เอาใจใส่ของญาติ ปู่ ย่า ตา ยาย อยากให้เด็กได้เรียนในสถานศึกษาที่ดี มีคุณภาพ แม้จะขัดสนก็ตาม จนบาง เทอมไม่มีเงินจ่ายค่าเล่าเรียน บางรายไม่มีจ่ายเลยหลายเทอมแต่ทางโรงเรียนก็ไม่ได้ทวงถามเมื่อทราบว่าฐานะ ทางครอบครัวไม่ค่อยดีนัก
+    </p>
+    <hr>
+    <table class="table table-hover">
+        <thead class="thead-dark text-center">
+            <th>รายการครุภัณฑ์ย่อย</th>
+            <th>ราคาต่อหน่วย</th>
+            <th>จำนวนหน่วย</th>
+            <th>งบประมาณ</th>
+        </thead>
+        <tbody class="text-center">
+            <tr *ngFor="let itemDetail of detail">
+                <td class="table-active">{{ itemDetail.equipmentName }}</td>
+                <td class="table-active">{{ itemDetail.budgetPerPrice }}</td>
+                <td class="table-active">{{ itemDetail.unit }}</td>
+                <td class="table-active">{{ itemDetail.budget }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- </div> -->
     <h3>สร้างและส่งออกไฟล์เอกสาร ของรายละเอียดรายการย่อย</h3>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

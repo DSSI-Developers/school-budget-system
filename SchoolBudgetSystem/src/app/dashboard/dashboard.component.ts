@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 // Export PDF 
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { UsersService } from 'app/services/users.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export interface DurableArticles {
@@ -29,30 +30,36 @@ export interface DurableArticles {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  allProject: DurableArticles[] = [
-  {no: '1', list: 'Project', unit: 2, unitMany: 2, priceUnit: 2000, projectStatus: 'สำเร็จ'},
-  ];
+  // allProject: DurableArticles[] = [
+  // {no: '1', list: 'Project', unit: 2, unitMany: 2, priceUnit: 2000, projectStatus: 'สำเร็จ'},
+  // ];
 
   equipments: Equipments[] = [];
   successEquipments: Equipments[] = [];
   pendingEquipments: Equipments[] = [];
   failedEquipments: Equipments[] = [];
+
+  isLoading = false;
+  private authStatusSub: Subscription;
   private getEquipmentsData: Subscription;
   countSuccess: number;
   countPending: number;
   countFailed: number;
 
   statusDetail;
-  constructor(public dialog: MatDialog, private equipmentServices: EquipmentsService) { }
+  constructor(public dialog: MatDialog, private equipmentServices: EquipmentsService, private userServices: UsersService) { }
 
   ngOnInit() {
+    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false
+    });
     // Get data totable
     this.equipmentServices.getAllEquipments();
     this.getEquipmentsData = this.equipmentServices.getEquipmentUpdateListener()
     .subscribe((objectData: Equipments[]) => {
       this.equipments = objectData;
-      this.successEquipments = this.equipments.filter((status) => status.status === 'กำลังดำเนินการ');
-      this.pendingEquipments = this.equipments.filter((status) => status.status === 'ผ่านการอนุมัติ');
+      this.pendingEquipments = this.equipments.filter((status) => status.status === 'กำลังดำเนินการ');
+      this.successEquipments = this.equipments.filter((status) => status.status === 'ผ่านการอนุมัติ');
       this.failedEquipments = this.equipments.filter((status) => status.status === 'ไม่ผ่านการอนุมัติ');
 
       this.countSuccess = this.successEquipments.length;

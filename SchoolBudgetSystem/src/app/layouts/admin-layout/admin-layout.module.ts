@@ -27,7 +27,9 @@ import { CheckFormComponent } from 'app/leader/check-form/check-form.component';
 import { ReadDetailFormComponent } from 'app/leader/read-detail-form/read-detail-form.component';
 import { UserDetailComponent } from 'app/admin/user-detail/user-detail.component';
 
+
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ListSubEquipmentComponent } from 'app/request-equipment/list-sub-equipment/list-sub-equipment.component';
 
 @NgModule({
   imports: [
@@ -61,6 +63,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     CheckFormComponent,
     ReadDetailFormComponent,
     UserDetailComponent,
+    ListSubEquipmentComponent
   ]
 })
 

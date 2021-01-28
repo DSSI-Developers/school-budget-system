@@ -1,3 +1,4 @@
+import { ListSubEquipmentComponent } from 'app/request-equipment/list-sub-equipment/list-sub-equipment.component';
 import { AuthGuard } from './../../services/auth.guard';
 import { ReadDetailFormComponent } from './../../leader/read-detail-form/read-detail-form.component';
 import { CheckFormComponent } from './../../leader/check-form/check-form.component';
@@ -73,4 +74,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'manageUser',  component: ManageUserComponent },
     { path: 'readForm',  component: CheckFormComponent },
     { path: 'readDetailForm/:equipmentId',  component: ReadDetailFormComponent },
+    { path: 'listSubEquipment', component: ListSubEquipmentComponent }
 ];

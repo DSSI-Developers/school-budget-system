@@ -38,6 +38,7 @@ import { MoreDetailComponent } from './dashboard/more-detail/more-detail.compone
 // import { DetailHistoryComponent } from './allproject/detail-history/detail-history.component';
 // import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 // import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { ListSubEquipmentComponent } from './request-equipment/list-sub-equipment/list-sub-equipment.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatMomentDateModule, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -73,7 +74,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     RegisterComponent,
     ExportPDFComponent,
     MoreDetailComponent,
-    ErrorComponent,
+    ErrorComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'th-TH' },
