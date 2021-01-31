@@ -32,7 +32,7 @@ import { ErrorComponent } from './../error/error.component';
           Swal.fire({
             icon: 'error',
             title: errorMessage,
-            text: error.message,
+            text: error.error.status,
           });
           // this.errorService.throwError(errorMessage);
           return throwError(error);

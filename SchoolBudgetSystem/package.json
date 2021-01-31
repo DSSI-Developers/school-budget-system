@@ -37,6 +37,7 @@
         "@editorjs/header": "^2.6.1",
         "@kolkov/angular-editor": "^1.1.4",
         "@sweetalert2/ngx-sweetalert2": "^9.0.0",
+        "@types/socket.io-client": "^1.4.35",
         "ajv": "6.12.5",
         "angular-froala-wysiwyg": "^3.2.4",
         "angular-moment-picker": "^0.10.2",

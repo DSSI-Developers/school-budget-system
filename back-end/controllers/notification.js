@@ -6,7 +6,8 @@ exports.pushNotification = (req, res, next) => {
         type: req.body.type,
         status: req.body.status,
         detail: req.body.detail,
-        note: req.body.note
+        note: req.body.note,
+        creator: req.userData.userId
     });
     console.log(notic);
     if (!notic) {
@@ -35,7 +36,8 @@ exports.getOneNotification = (req, res, next) => {
 }
 
 exports.getAllNotification = (req, res, next) => {
-    Notification.find({}).then(data => {
+    var mysort = { dateTime: -1 };
+    Notification.find({}).sort(mysort).then(data => {
         res.status(201).json({
             message: "All notification",
             notification: data

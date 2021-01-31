@@ -1,7 +1,7 @@
 export interface SubEquipments {
     _id: string;
     equipmentName: string;
-    pricePerunit: string;
-    number: number;
+    budgetPerPrice: string;
+    unit: number;
     budget: number;
 }

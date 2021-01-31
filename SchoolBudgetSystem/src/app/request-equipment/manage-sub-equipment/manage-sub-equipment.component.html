@@ -63,12 +63,15 @@
                                                         <mat-error *ngIf="subEquipment.get('unit').invalid">ยังไม่ได้กรอกจำนวน หน่วย</mat-error>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="fill">
+                                                    <!-- <mat-form-field appearance="fill">
                                                         <mat-label>งบประมาณ</mat-label>
                                                         <input matInput type="number" formControlName="budget">
                                                         <mat-hint matSuffix>/บาท</mat-hint>
                                                         <mat-error *ngIf="subEquipment.get('budget').invalid">ยังไม่ได้กรอกราคาของครุภัณฑ์ย่อย</mat-error>
-                                                    </mat-form-field>
+                                                    </mat-form-field> -->
+                                                    <div>
+                                                        <p>ราคารวม : {{ valueOfprice * valueOfunit }} บาท</p>
+                                                    </div>
                                                     <div class="center-align">
                                                         <button [disabled]="subEquipment.invalid" mat-raised-button color="primary" type="submit" (click)="addSubEupqment()"><mat-icon>save</mat-icon>เพิ่ม</button>
                                                     </div>
@@ -88,27 +91,34 @@
                                 <th>ราคาต่อหน่วย</th>
                                 <th>จำนวนหน่วย</th>
                                 <th>งบประมาณ</th>
-                                <th>แก้ไข</th>
+                                <!-- <th>แก้ไข</th> -->
                                 <th>ลบ</th>
                             </thead>
                             <tbody class="text-center">
 
                                 <tr *ngFor="let listSub of subEquipmentsData; let i = index">
-                                    <td *ngIf="listSub.length <= 0">
+                                    <!-- <td *ngIf="listSub.length <= 0">
                                         ยังไม่ได้เพิ่มรายการย่อย
-                                    </td>
+                                    </td> -->
 
                                     <td class="table-active text-left">{{ listSub.equipmentName }}</td>
                                     <td class="table-active">{{ listSub.budgetPerPrice }}</td>
                                     <td class="table-active">{{ listSub.unit }}</td>
                                     <td class="table-active">{{ listSub.budget }}</td>
-                                    <td class="table-active">
+                                    <!-- <td class="table-active">
                                         <button mat-raised-button color="primary" routerLink="/manageSubQuipment"><mat-icon>edit</mat-icon></button>
-                                    </td>
+                                    </td> -->
                                     <td class="table-active">
                                         <button mat-raised-button class="red" (click)="deleteEquipment(listSub._id)"><mat-icon>delete</mat-icon></button>
                                     </td>
 
+                                </tr>
+                                <tr>
+                                    <td>ราคารวม</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ totalBudget }}</td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

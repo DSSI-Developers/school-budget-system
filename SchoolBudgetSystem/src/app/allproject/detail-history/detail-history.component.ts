@@ -35,6 +35,7 @@ export class DetailHistoryComponent implements OnInit {
   value;
   isLoading = false;
   private authStatusSub: Subscription;
+  allData: Subscription;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { detail: string; id: string },
     public router: Router,
@@ -51,9 +52,10 @@ export class DetailHistoryComponent implements OnInit {
     this.value = this.data.detail;
     console.log(this.value['_id']);
     // Get data sub quipment
-    this.subServices.getEquipmentBySunId(this.data.id).subscribe((data) => {
+    this.subServices.getEquipmentBySunId(this.data.id);
+    this.allData = this.subServices.subEquipmentListenUpdate().subscribe((data) => {
       console.log(data);
-      this.detail = data.response;
+      this.detail = data;
     })
 
     console.log(this.data.id);

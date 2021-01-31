@@ -1,5 +1,9 @@
 /* s */
 
+.main-content {
+    margin: 50px;
+}
+
 .responsive {
     width: 60%;
     height: auto;

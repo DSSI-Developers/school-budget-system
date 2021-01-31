@@ -21,6 +21,8 @@ export class AllprojectComponent implements OnInit {
   equipments: Equipments[] = [];
   private getEquipmentsData: Subscription;
   dataDetail;
+  userId: string;
+  history;
   constructor(
     public dialog: MatDialog,
     private userServices: UsersService,
@@ -29,18 +31,21 @@ export class AllprojectComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStatusSub = this.userServices
-      .getAuthStatusListener()
-      .subscribe((authStatus) => {
-        this.isLoading = false;
-      });
+    .getAuthStatusListener()
+    .subscribe((authStatus) => {
+      this.isLoading = false;
+    });
 
     // Get data totable
+    this.userId = this.userServices.getUserId();
     this.equipmentServices.getAllEquipments();
     this.getEquipmentsData = this.equipmentServices
       .getEquipmentUpdateListener()
       .subscribe((objectData: Equipments[]) => {
         this.equipments = objectData;
         console.log('History : ', this.equipments);
+        this.history = this.equipments.filter((data) => data.creator === this.userId)
+        // console.log('Creator Id:', this.equipments.filter(data => data.creator === this.userId));
       });
   }
 

@@ -109,7 +109,8 @@ exports.deleteAllProject = (req, res, next) => {
 
 exports.getAllProject = (req, res, next) => {
     // const allProject = req.body;
-    MainEquipment.find({}).then((data) => {
+    const sortProject = { dateProject: -1 }
+    MainEquipment.find({}).sort(sortProject).then((data) => {
         res.status(201).json({
             message: 'All data',
             data: data

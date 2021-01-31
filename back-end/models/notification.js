@@ -18,7 +18,8 @@ const notification = mongoose.Schema({
     },
     note: {
         type: String
-    }
+    },
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "Users", require: true }
 });
 
 

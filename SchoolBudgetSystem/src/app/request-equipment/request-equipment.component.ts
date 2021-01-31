@@ -1,3 +1,4 @@
+import { SubEquipments } from './../../models/sub-equipments.model';
 import { UsersService } from './../services/users.service';
 import { EquipmentsService } from './../services/equipments.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -51,14 +52,16 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
 
   isLoading = false;
   private authStatusSub: Subscription;
-  
+  idForCheck: string;
   userId: string;
+  countDataInSubEquipment: string;
   // document: Equipments[] = [];
   constructor(
     private equipmentsService: EquipmentsService,
     private route: ActivatedRoute,
     private subEquipmentsService: SubEquipmentsService,
-    private userServices: UsersService
+    private userServices: UsersService,
+    private subServices: SubEquipmentsService
   ) {}
 
   ngOnInit(): void {
@@ -68,17 +71,30 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
 
     this.userId = this.userServices.getUserId();
     console.log('User ID :', this.userId);
+
     this.equipmentsService.getAllEquipments();
     this.allEquipment$ = this.equipmentsService
       .getEquipmentUpdateListener()
       .subscribe((equipments: Equipments[]) => {
         this.equipments = equipments;
-        console.log('Equipments :', this.equipments);
+        // console.log('Equipments :', this.equipments);
         this.document = this.equipments.filter(data => data.creator === this.userId)
-        console.log('Creator Id:', this.equipments.filter(data => data.creator === this.userId));
+        // console.log('Creator Id:', this.equipments.filter(data => data.creator === this.userId));
+        for (let i = 0; i < this.document.length; i++) {
+          console.log('Documents : ', this.document[i]['_id']);
+          this.idForCheck = this.document[i]['_id'];
+
+          this.subServices.getSubEquipment(this.idForCheck).subscribe((value) => {
+            console.log(value.response);
+            this.countDataInSubEquipment = value.response.length;
+          });
+          if (this.countDataInSubEquipment) {
+
+          }
+          // break;
+        }
+        // console.log('Id for check is :', this.idForCheck);
       });
-
-
   }
   manageSubQuipments() {}
 

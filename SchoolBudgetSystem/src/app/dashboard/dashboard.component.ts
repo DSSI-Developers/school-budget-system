@@ -15,14 +15,14 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { UsersService } from 'app/services/users.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-export interface DurableArticles {
-  no: string;
-  list: string;
-  unit: number;
-  unitMany: number;
-  priceUnit: number;
-  projectStatus: string;
-}
+// export interface DurableArticles {
+//   no: string;
+//   list: string;
+//   unit: number;
+//   unitMany: number;
+//   priceUnit: number;
+//   projectStatus: string;
+// }
 
 @Component({
   selector: 'app-dashboard',
@@ -45,8 +45,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   countSuccess: number;
   countPending: number;
   countFailed: number;
-
+  userId: string;
   statusDetail;
+  document: any;
   constructor(public dialog: MatDialog, private equipmentServices: EquipmentsService, private userServices: UsersService) { }
 
   ngOnInit() {
@@ -54,13 +55,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.isLoading = false
     });
     // Get data totable
+    this.userId = this.userServices.getUserId();
     this.equipmentServices.getAllEquipments();
     this.getEquipmentsData = this.equipmentServices.getEquipmentUpdateListener()
     .subscribe((objectData: Equipments[]) => {
       this.equipments = objectData;
-      this.pendingEquipments = this.equipments.filter((status) => status.status === 'กำลังดำเนินการ');
-      this.successEquipments = this.equipments.filter((status) => status.status === 'ผ่านการอนุมัติ');
-      this.failedEquipments = this.equipments.filter((status) => status.status === 'ไม่ผ่านการอนุมัติ');
+      this.document = this.equipments.filter(data => data.creator === this.userId);
+      this.pendingEquipments = this.document.filter((status) => status.status === 'กำลังดำเนินการ');
+      this.successEquipments = this.document.filter((status) => status.status === 'ผ่านการอนุมัติ');
+      this.failedEquipments = this.document.filter((status) => status.status === 'ไม่ผ่านการอนุมัติ');
 
       this.countSuccess = this.successEquipments.length;
       this.countPending = this.pendingEquipments.length;

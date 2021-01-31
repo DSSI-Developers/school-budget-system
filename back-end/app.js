@@ -9,6 +9,14 @@ const app = express();
 const passport = require('passport');
 const path = require('path');
 const config = require('./config/database');
+
+const http = require('http')
+const socketIO = require('socket.io');
+
+const server = http.createServer(app);
+const io = socketIO(server);
+app.set('io', io);
+
 //  Middleware
 app.use(cors());
 app.use(morgan('dev'));
@@ -53,6 +61,15 @@ mongoose.connection.on('error', (err) => {
     console.log('Cannot connected to database');
 });
 
+// Realtime data
+// io.on('connection', function(socket) {
+//     socket.on('newdata', function(data) {
+//         io.emit('new-data', { data: data });
+//     });
+//     socket.on('updatedata', function(data) {
+//         io.emit('update-data', { data: data });
+//     });
+// });
 
 const usersRouter = require('./routes/users');
 const mainEquipments = require('./routes/main-equipments');
@@ -60,6 +77,7 @@ const notification = require('./routes/notification');
 const metaEquipment = require('./routes/meta-equipments');
 const learningGroup = require('./routes/learningGroup');
 const subEquipments = require('./routes/sub-equipments');
+const { Server } = require('http');
 app.get('/', (req, res) => {
     res.json({ message: "Welcome to my site" });
 });

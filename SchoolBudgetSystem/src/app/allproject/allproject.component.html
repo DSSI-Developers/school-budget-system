@@ -29,8 +29,8 @@
                                 <th>หมายเหตุ</th>
                             </thead>
                             <tbody class="text-center">
-                                <tr *ngFor="let item of equipments" (click)="openDialog(item._id)">
-                                    <td>{{item.dateProject}}</td>
+                                <tr *ngFor="let item of history" (click)="openDialog(item._id)">
+                                    <td>{{item.dateProject | date: 'dd/MM/yyyy'}}</td>
                                     <td class="text-left">{{ item.majorList }}</td>
                                     <td>{{ item.necessary }}</td>
                                     <td>{{ item.budget }}</td>

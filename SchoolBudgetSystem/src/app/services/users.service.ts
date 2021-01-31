@@ -29,7 +29,7 @@ export class UsersService {
   private authStatusListener = new Subject<boolean>();
   private userId: string;
 
-    constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar,) {}
+    constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar) {}
 
   getToken() {
     return this.token;
@@ -73,7 +73,7 @@ export class UsersService {
             this.router.navigate(['/home']);
 
             this._snackBar.open('ยินดีต้อนรับ', 'ปิด', {
-              duration: 50000,
+              duration: 4000,
               horizontalPosition: 'right',
               verticalPosition: 'top',
             });

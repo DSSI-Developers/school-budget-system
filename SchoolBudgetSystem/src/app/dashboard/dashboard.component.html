@@ -71,7 +71,7 @@
                 <div class="card" *ngIf="!isLoading">
                     <div class="card-header card-header-danger">
                         <h4 class="card-title">โครงการทั้งหมด</h4>
-                        <p class="card-category">รายการโครงการทั้งหมดที่เสนอ</p>
+                        <p class="card-category">รายการโครงการทั้งหมดที่เสนอ (โครงการทั้งหมดจะเรียงลำดับจากข้อมูลล่าสุก่อน)</p>
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-hover">
@@ -85,7 +85,7 @@
                                 <th></th>
                             </thead>
                             <tbody class="text-center">
-                                <tr *ngFor="let allData of equipments; let i = index">
+                                <tr *ngFor="let allData of document; let i = index">
                                     <td>{{ i+1 }}</td>
                                     <!-- <td>{{ allData.typeEquipments }}</td> -->
                                     <td class="text-left">{{ allData.majorList }}</td>

@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import {
   animate,
   state,
   style,
   transition,
   trigger,
-} from '@angular/animations';
-import { NotifiedService } from './../services/notified.service';
-import { Notification } from './../../models/notified.model';
-import { Subscription } from 'rxjs';
-import { UsersService } from 'app/services/users.service';
+} from "@angular/animations";
+import { NotifiedService } from "./../services/notified.service";
+import { Notification } from "./../../models/notified.model";
+import { Subscription } from "rxjs";
+import { UsersService } from "app/services/users.service";
 
 declare var $: any;
 
@@ -23,16 +23,16 @@ declare var $: any;
 // }
 
 @Component({
-  selector: 'app-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.css'],
+  selector: "app-notifications",
+  templateUrl: "./notifications.component.html",
+  styleUrls: ["./notifications.component.css"],
   animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
+    trigger("detailExpand", [
+      state("collapsed", style({ height: "0px", minHeight: "0" })),
+      state("expanded", style({ height: "*" })),
       transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+        "expanded <=> collapsed",
+        animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")
       ),
     ]),
   ],
@@ -41,9 +41,10 @@ export class NotificationsComponent implements OnInit {
   notification: Notification[] = [];
   private allNotification: Subscription;
   closeDialig: boolean;
-
+  userId: string;
   isLoading = false;
   private authStatusSub: Subscription;
+  document;
   constructor(
     public notifiedService: NotifiedService,
     private userServices: UsersService
@@ -56,18 +57,23 @@ export class NotificationsComponent implements OnInit {
         this.isLoading = false;
       });
 
+    this.userId = this.userServices.getUserId();
     this.notifiedService.getAllNotified();
     this.allNotification = this.notifiedService
       .getNitifiedUpdateListener()
       .subscribe((result: Notification[]) => {
         this.notification = result;
+        this.document = this.notification.filter(
+          (data) => data.creator === this.userId
+        );
+
         // console.log('Result of notification : ', result);
         // this.notification$ = result.notification;
       });
   }
 
   closeNitification(id: string) {
-    this.closeDialig = window.confirm('ต้องการลบการแจ้งเตือนนี้หรือไม่');
+    this.closeDialig = window.confirm("ต้องการลบการแจ้งเตือนนี้หรือไม่");
     if (this.closeDialig === true) {
       this.notifiedService.deleteNotified(id);
     } else {

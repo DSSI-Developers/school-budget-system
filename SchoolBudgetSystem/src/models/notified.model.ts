@@ -4,5 +4,6 @@ export interface Notification {
     type: string,
     status: string,
     detail: string,
-    note: string
+    note: string,
+    creator: string
 }

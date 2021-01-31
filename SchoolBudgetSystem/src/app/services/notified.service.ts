@@ -22,6 +22,14 @@ export class NotifiedService {
       });
   }
 
+  getNitifiedUpdateListener() {
+    return this.notifiedUpdate.asObservable();
+  }
+
+  // getNotified(id: string) {
+  //   return { ...this.notified.filter((data) => data._id === id) };
+  // }
+
   // "type": "ครุภัณฑ์",
   // "status": "กำลังดำเนินการ",
   // "detail": "เอกสารโครงการของคุณกำลังอยู่ในระหว่างการดำเนินการ",
@@ -46,13 +54,7 @@ export class NotifiedService {
     })
   }
 
-  getNitifiedUpdateListener() {
-    return this.notifiedUpdate.asObservable();
-  }
 
-  getNotified(id: string) {
-    return { ...this.notified.filter((data) => data._id === id) };
-  }
 
   deleteNotified(id: string) {
     console.log(id + 'In Service file');

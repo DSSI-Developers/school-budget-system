@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
   // private authSub: Subscription;
   isLoading = false;
   private authStatusSub: Subscription;
+  status;
   constructor(
     private _snackBar: MatSnackBar,
     private route: ActivatedRoute,
@@ -77,14 +78,23 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.usersService.autoAuthUser();
+    this.status = this.usersService.getAuthStatusListener();
+    console.log(this.status);
+    if (this.status === true) {
+      this.router.navigate(['/home']);
+    }
+
     this.authStatusSub = this.usersService
       .getAuthStatusListener()
       .subscribe((authStatus) => {
         this.isLoading = false;
+        console.log('Authentication type : ', typeof authStatus);
       });
   }
 
   onLogin() {
+
     this.isLoading = true;
     this.usersService.userLogin(
       this.login.value.email,
