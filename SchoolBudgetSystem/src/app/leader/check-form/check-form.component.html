@@ -12,12 +12,12 @@
                         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
                         <mat-card-content>
                             <hr />
+                            <!-- <p>เหตุผล :</p>
+                            <div class="overflow" [innerHTML]="cardDetail.reason"></div>
 
-                            <p>เหตุผล :</p>
-                            <div>{{cardDetail.reason}}</div>
-
-                            <p>วัตถุประวงค์ : {{ cardDetail.objective }}</p>
-                            <p><b>วันที่ : </b> {{ cardDetail.dateProject }}</p>
+                            <p>วัตถุประวงค์ : </p>
+                            <div class="overflow" [innerHTML]="cardDetail.objective"></div> -->
+                            <p><b>วันที่ : </b> {{ cardDetail.dateProject | date:'dd MMMM yyyy':'UTC' }}</p>
                         </mat-card-content>
                         <hr />
                         <mat-card-actions>

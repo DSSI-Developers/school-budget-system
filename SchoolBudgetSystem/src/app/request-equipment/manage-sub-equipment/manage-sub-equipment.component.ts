@@ -128,7 +128,7 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
                   "ราคาแต่ละหน่วย :",
                   this.subEquipmentsData[i]["budget"]
                 );
-                this.totalBudget += this.subEquipmentsData[i]["budget"];
+                // this.totalBudget += this.subEquipmentsData[i]["budget"];
               }
               console.log("ราคารวม : ", this.totalBudget);
             });
@@ -139,16 +139,12 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
   addSubEupqment() {
     console.log("ราคารวม function add :", this.totalBudget);
     console.log("ราคาครุภัณฑ์หลัก :", this.budget);
-
-    if (
-      this.subEquipment.value.pricePerunit * this.subEquipment.value.unit &&
-      this.totalBudget > this.budget
-    ) {
+    this.totalUnitPerprice = this.subEquipment.value.pricePerunit * this.subEquipment.value.unit;
+    if (this.totalUnitPerprice > this.budget) {
       console.log(this.totalBudget);
       Swal.fire("ราคาครุภัณฑ์รองเกินราคาที่ตั้งไว้ !");
     } else {
-      this.totalUnitPerprice =
-        this.subEquipment.value.pricePerunit * this.subEquipment.value.unit;
+      this.totalBudget += this.totalUnitPerprice;
       this.subServices.addSubEquipments(
         this.majorId,
         this.majorList,
@@ -156,7 +152,6 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
         this.subEquipment.value.pricePerunit,
         this.subEquipment.value.unit,
         this.totalUnitPerprice
-        // this.subEquipment.value.budget
       );
       // Swal.fire('Thank you...', 'You submitted succesfully!', 'success');
       const type = ["", "info", "success", "warning", "danger"];
@@ -192,7 +187,9 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteEquipment(id: any) {
+  deleteEquipment(id: any, price: number) {
+    this.totalBudget = this.totalBudget - price;
+    console.log(this.totalBudget);
     Swal.fire({
       title: "Are you sure want to remove?",
       text: "You will not be able to recover this file!",

@@ -14,4 +14,19 @@
 
 mat-card {
     width: 250px;
+    max-height: 400px;
+}
+
+.overflow {
+    width: 100%;
+    max-height: 350px;
+    /* outline: 1px solid #000; */
+    margin: 0 0 2em 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 20px;
+    margin: 0;
+    background: white;
+    /* resize: horizontal; */
 }

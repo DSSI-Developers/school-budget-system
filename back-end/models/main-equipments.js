@@ -18,6 +18,8 @@ const mainEquipments = mongoose.Schema({
     dateProject: { type: Date },
     condition: { type: String },
     status: { type: String },
+    approveCondition: { type: String },
+    approveReason: { type: String },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "Users", require: true }
 }, { timestamp: true });
 

@@ -1,19 +1,19 @@
-import { Subscription } from "rxjs/Subscription";
-import { UsersService } from "./../../services/users.service";
-import { Component, OnInit } from "@angular/core";
+import { Subscription } from 'rxjs/Subscription';
+import { UsersService } from './../../services/users.service';
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
   FormBuilder,
   Validators,
-} from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
-} from "@angular/material/snack-bar";
+} from '@angular/material/snack-bar';
 declare var $: any;
 export interface UserProfile {
   firstName: string;
@@ -26,9 +26,9 @@ export interface UserProfile {
 }
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   // email: string;
@@ -37,34 +37,47 @@ export class LoginComponent implements OnInit {
   //   email: new FormControl(''),
   //   password: new FormControl('')
   // })
-  horizontalPosition: MatSnackBarHorizontalPosition = "right";
-  verticalPosition: MatSnackBarVerticalPosition = "top";
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  userProfile: UserProfile[] = [
-    {
-      firstName: "Kritsana",
-      lastName: "Prasit",
-      email: "admin@gmail.com",
-      password: "admin",
-      phone: "0987654321",
-      position: "admin",
-      role: "admin",
-    },
-    {
-      firstName: "Prasit",
-      lastName: "Kritsana",
-      email: "kritsana.pr.60@ubu.ac.th",
-      password: "1234567890",
-      phone: "0987654321",
-      position: "user",
-      role: "user",
-    },
-  ];
+  // userProfile: UserProfile[] = [
+  //   {
+  //     firstName: "Kritsana",
+  //     lastName: "Prasit",
+  //     email: "admin@gmail.com",
+  //     password: "admin",
+  //     phone: "0987654321",
+  //     position: "admin",
+  //     role: "admin",
+  //   },
+  //   {
+  //     firstName: "Prasit",
+  //     lastName: "Kritsana",
+  //     email: "kritsana.pr.60@ubu.ac.th",
+  //     password: "1234567890",
+  //     phone: "0987654321",
+  //     position: "user",
+  //     role: "user",
+  //   },
+  // ];
 
-  login = this.fb.group({
-    email: ["", Validators.required],
-    password: ["", Validators.required],
+  // login = this.fb.group({
+  //   email: ["", Validators.required],
+  //   password: ["", Validators.required],
+  // });
+
+  login: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.email, Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.min(3)]),
   });
+  hide = true;
+  get emailInput() {
+    return this.login.get('email');
+  }
+  get passwordInput() {
+    return this.login.get('password');
+  }
+
   // private authSub: Subscription;
   isLoading = false;
   private authStatusSub: Subscription;
@@ -94,7 +107,6 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-
     this.isLoading = true;
     this.usersService.userLogin(
       this.login.value.email,

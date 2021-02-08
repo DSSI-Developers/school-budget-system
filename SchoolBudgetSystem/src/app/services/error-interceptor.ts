@@ -31,7 +31,7 @@ import { ErrorComponent } from './../error/error.component';
           // this.dialog.open(ErrorComponent, {data: {message: errorMessage, status: errorStatus}});
           Swal.fire({
             icon: 'error',
-            title: errorMessage,
+            title: error.error.message,
             text: error.error.status,
           });
           // this.errorService.throwError(errorMessage);

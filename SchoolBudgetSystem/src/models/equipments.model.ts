@@ -17,5 +17,7 @@ export interface Equipments {
     dateProject: Date,
     condition: string,
     status: string,
+    approveCondition: string,
+    approveReason: string,
     creator: string
 }

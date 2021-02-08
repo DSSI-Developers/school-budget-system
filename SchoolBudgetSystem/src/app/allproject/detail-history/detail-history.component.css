@@ -19,3 +19,7 @@
 table {
     width: 100%;
 }
+
+.panel-body {
+    margin: 2rem;
+}

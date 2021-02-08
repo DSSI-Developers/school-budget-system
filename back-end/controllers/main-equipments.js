@@ -29,11 +29,13 @@ exports.saveProject = async(req, res, next) => {
         dateProject: req.body.dateProject,
         condition: req.body.condition,
         status: req.body.status,
+        approveCondition: req.body.approveCondition,
+        approveReason: req.body.approveReason,
         creator: req.userData.userId
     });
     if (!project) {
         res.status(401).json({
-            msg: "Don't have data !"
+            message: "Don't have data !"
         });
     }
     // console.log(req.userData);
@@ -42,33 +44,69 @@ exports.saveProject = async(req, res, next) => {
         res.status(201).send({ data: data });
     }).catch(err => {
         res.status(500).send({
-            msg: err.msg || "Some error occurred while creating the Project."
+            message: err.message || "Some error occurred while creating the Project."
         });
     });
 }
 
 exports.editProject = (req, res, next) => {
-    console.log(req.params.id)
-    console.log(req.body);
+    const project = new MainEquipment({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        position: req.body.position,
+        learningGroup: req.body.learningGroup,
+        subjectTeach: req.body.subjectTeach,
+        reason: req.body.reason,
+        objective: req.body.objective,
+        typeEquipments: req.body.typeEquipment,
+        learningGroups: req.body.learningGroups,
+        majorList: req.body.majorList,
+        budget: req.body.budget,
+        necessary: req.body.necessary,
+        existEquipment: req.body.existEquipment,
+        otherReason: req.body.otherReason,
+        dateProject: req.body.dateProject,
+        condition: req.body.condition,
+        status: req.body.status,
+        approveCondition: req.body.approveCondition,
+        approveReason: req.body.approveReason,
+        creator: req.userData.userId
+    });
     if (!req.body) {
         return res.status(400).send({
-            msg: "Data to update connot by empty"
+            message: "Data to update connot by empty"
         });
     }
-
+    // , function(err, docs) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(401).json({
+    //             message: "ไม่สามารถแก้ไขขอมูลได้ " + err
+    //         });
+    //         throw err;
+    //     } else {
+    //         console.log('Successful');
+    //         res.end();
+    //         res.status(201).json({
+    //             message: `Updated data ${id}`,
+    //             data: docs
+    //         })
+    //     }
+    // }
     const id = req.params.id;
-    MainEquipment.findByIdAndUpdate(id, req.body, { useFindAndModify: false }, function(err, docs) {
-        if (err) {
-            console.log(err);
-            throw err;
-        } else {
+    console.log(id);
+    MainEquipment.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then((result => {
+            console.log(result);
             res.status(201).json({
-                msg: `Updated data ${id}`,
-                data: docs
-            })
-        }
-    });
-
+                message: `Updated data ${result}`,
+            });
+        }))
+        .catch(err => {
+            console.log(err);
+            res.status(401).json({
+                message: "ไม่สามารถแก้ไขขอมูลได้ " + err
+            });
+        });
 }
 
 exports.deleteProject = (req, res, next) => {
@@ -76,15 +114,15 @@ exports.deleteProject = (req, res, next) => {
     MainEquipment.deleteOne({ _id: req.params.id }).then(data => {
         if (!data) {
             res.status(404).send({
-                msg: `Connot delete project with = ${id}. Maybe Project was not found! `
+                message: `Connot delete project with = ${id}. Maybe Project was not found! `
             });
         } else {
             res.send({
-                msg: "Project was deleted successfully!"
+                message: "Project was deleted successfully!"
             });
         }
     }).catch(err => {
-        res.status(500).send({ msg: "Could not delete Project with id" + id });
+        res.status(500).send({ message: "Could not delete Project with id" + id });
     });
 }
 
@@ -98,11 +136,11 @@ exports.deleteProject = (req, res, next) => {
 exports.deleteAllProject = (req, res, next) => {
     MainEquipment.deleteMany({}).then(data => {
         res.status(201).send({
-            msg: `${data.deleteCount} Project were deleted successfully`
+            message: `${data.deleteCount} Project were deleted successfully`
         });
     }).catch(err => {
         res.status(500).send({
-            msg: err.msg || "Some error occurred while removeing all Project"
+            message: err.message || "Some error occurred while removeing all Project"
         })
     });
 }
@@ -127,9 +165,9 @@ exports.getOneProject = (req, res, next) => {
     console.log(id);
     MainEquipment.findById(id).then((data) => {
         if (!data) {
-            res.status(404).send({ msg: "Not found Project with id " + id });
+            res.status(404).send({ message: "Not found Project with id " + id });
         } else res.send(data);
     }).catch(err => {
-        res.status(500).json({ msg: "Error retriving Project with id =" + id });
+        res.status(500).json({ message: "Error retriving Project with id =" + id });
     });
 }

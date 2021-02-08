@@ -6,7 +6,7 @@ import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
-} from "@angular/material/snack-bar";
+} from '@angular/material/snack-bar';
 
 // Model
 import { AuthData } from './../../models/auth-data.model';
@@ -15,7 +15,6 @@ import { Users } from './../../models/users.model';
 // RxJs lib
 import { Subject } from 'rxjs';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
@@ -29,7 +28,11 @@ export class UsersService {
   private authStatusListener = new Subject<boolean>();
   private userId: string;
 
-    constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private _snackBar: MatSnackBar
+  ) {}
 
   getToken() {
     return this.token;
@@ -87,7 +90,7 @@ export class UsersService {
 
   autoAuthUser() {
     const authInformation = this.getAuthData();
-    console.log('autoAtuthUser : ' , authInformation);
+    console.log('autoAtuthUser : ', authInformation);
     if (!authInformation) {
       console.log(`Don't have authInformation infunction : getAuthData`);
       return;
@@ -104,10 +107,13 @@ export class UsersService {
     } else {
       this.logout();
       this.router.navigate(['/']);
-        Swal.fire('Session Expired;', 'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ', 'info')
+      Swal.fire(
+        'Session Expired;',
+        'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ',
+        'info'
+      );
     }
   }
-
 
   private setAuthTimer(duration: number) {
     console.log('Setting timer: ' + duration);
@@ -121,7 +127,7 @@ export class UsersService {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
-    console.log('Save alredy daya of user : saveAuthData !')
+    console.log('Save alredy daya of user : saveAuthData !');
   }
 
   private clearAuthData() {
@@ -138,11 +144,13 @@ export class UsersService {
     if (!token || !expirationDate) {
       return;
     }
-    console.log(`Token : ${token}, expireationDate : ${expirationDate}, userId : ${userId} `);
+    console.log(
+      `Token : ${token}, expireationDate : ${expirationDate}, userId : ${userId} `
+    );
     return {
       token: token,
       expirationDate: new Date(expirationDate),
-      userId: userId
+      userId: userId,
     };
   }
 
@@ -233,7 +241,9 @@ export class UsersService {
   getUserDetail(id: string) {
     // const userId = this.getUserId();
     // console.log(userId);
-    return this.http.get<{ message: string, data: any}>('http://localhost:8080/users/getOneUser/' + id);
+    return this.http.get<{ message: string; data: any }>(
+      'http://localhost:8080/users/getOneUser/' + id
+    );
   }
 
   logout() {

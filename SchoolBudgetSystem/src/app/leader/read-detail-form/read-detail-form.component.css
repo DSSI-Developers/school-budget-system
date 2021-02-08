@@ -1,3 +1,11 @@
 .detail {
     margin: auto 5rem;
 }
+
+.panel-body {
+    margin: 2rem;
+}
+
+mat-radio-group {
+    margin: auto;
+}

@@ -17,6 +17,10 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { map } from 'rxjs/operators';
 
 
+import {Observable} from 'rxjs';
+import {startWith} from 'rxjs/operators';
+
+
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -88,6 +92,12 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
     },
   ];
 
+// Auto complete
+majorList = new FormControl();
+options: string[] = ['ครุภัณฑ์การเรียน', 'ครุภัณฑ์สำนักงาน', 'ครุภัณฑ์...'];
+filteredOptions: Observable<string[]>;
+
+
   equipments;
   private mode = 'create';
   private equipmentsId: string;
@@ -98,32 +108,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   equipmantsEdit;
   isLoading = false;
   private authStatusSub: Subscription;
-  // Equipments รายการคำร้องจัดตั้งครุภัณฑ์
-  // equipmentsRequest = this.fb.group({
-  //   responPerson: this.fb.group({
-  //     firstName: ['กฤษณะ'],
-  //     lastName: ['ประสิทธิ์'],
-  //     position: ['ผู้ดูแลระบบ'],
-  //     learningGroup: ['กลุ่มสาระการเรียนรู้วิทยาศาสตร์'],
-  //     subjectTeach: ['คอมพิวเตอร์'],
-  //   }),
-  //   data: this.fb.group({
-  //     reason: [''],
-  //     objective: [''],
-  //   }),
-  //   requestBudget: this.fb.group({
-  //     learningGroups: [''],
-  //     majorList: [''],
-  //     budget: [''],
-  //   }),
-  //   otherData: this.fb.group({
-  //     necessary: [''],
-  //     existEquipment: [''],
-  //     otherReason: [''],
-  //     dateProject: [''],
-  //     condition: [''],
-  //   }),
-  // });
+
   public Editor = ClassicEditor;
 
   constructor(
@@ -139,6 +124,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
      this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
       this.isLoading = false
     });
@@ -164,7 +150,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
       learningGroups: new FormControl(null, {
         validators: [Validators.required],
       }),
-      majorList: new FormControl(null, { validators: [Validators.required] }),
+      majorList: new FormControl(null),
       budget: new FormControl(null, { validators: [Validators.required] }),
 
       necessary: new FormControl(null, { validators: [Validators.required] }),
@@ -175,6 +161,12 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
       dateProject: new FormControl(null, { validators: [Validators.required] }),
       condition: new FormControl(null, { validators: [Validators.required] }),
     });
+    // Auto complete
+    this.filteredOptions = this.majorList.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
     this.route.paramMap.subscribe((paramMap) => {
       console.log('Param', paramMap.has('equipmentId'));
       if (paramMap.has('equipmentId')) {
@@ -231,6 +223,13 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
+
   ckeditorContent;
 
   addData() {
@@ -246,13 +245,16 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
         this.equipmentsRequest.value.objective,
         this.equipmentsRequest.value.typeEquipment,
         this.equipmentsRequest.value.learningGroups,
-        this.equipmentsRequest.value.majorList,
+        // this.equipmentsRequest.value.majorList,
+        this.majorList.value,
         this.equipmentsRequest.value.budget,
         this.equipmentsRequest.value.necessary,
         this.equipmentsRequest.value.existEquipment,
         this.equipmentsRequest.value.otherReason,
         this.equipmentsRequest.value.dateProject,
-        this.equipmentsRequest.value.condition
+        this.equipmentsRequest.value.condition,
+        '',
+        ''
       );
       const type = 'โครงการ';
       const status = 'กำลังดำเนินการ';
@@ -284,7 +286,10 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
         this.equipmentsRequest.value.existEquipment,
         this.equipmentsRequest.value.otherReason,
         this.equipmentsRequest.value.dateProject,
-        this.equipmentsRequest.value.condition
+        this.equipmentsRequest.value.condition,
+        'กำลังดำเนินการ',
+        '',
+        ''
       );
       Swal.fire('บันทึกรายการแก้ไขเรียบร้อย', 'You submitted succesfully!', 'success');
       // this._snackBar.open('แก้ไขข้อมูลเรียบร้อย', 'ปิด', {

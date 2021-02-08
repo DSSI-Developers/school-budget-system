@@ -12,10 +12,6 @@ import { ComponentsModule } from './components/components.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // Component
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { IconsComponent } from './icons/icons.component';
-import { NotificationsComponent } from './notifications/notifications.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -26,6 +22,10 @@ import { ExportPDFComponent } from './allproject/export-pdf/export-pdf.component
 import { MoreDetailComponent } from './dashboard/more-detail/more-detail.component';
 
 
+// import { DashboardComponent } from './dashboard/dashboard.component';
+// import { UserProfileComponent } from './user-profile/user-profile.component';
+// import { IconsComponent } from './icons/icons.component';
+// import { NotificationsComponent } from './notifications/notifications.component';
 // import { RequestEquipmentComponent } from './request-equipment/request-equipment.component';
 // import { ManageProfileComponent } from './user-profile/manage-profile/manage-profile.component';
 // import { ManageSubEquipmentComponent } from './request-equipment/manage-sub-equipment/manage-sub-equipment.component';

@@ -1,3 +1,5 @@
+import { catchError } from 'rxjs/operators';
+import { AppComponent } from './../app.component';
 import { Router } from '@angular/router';
 import { Equipments } from './../../models/equipments.model';
 import { HttpClient } from '@angular/common/http';
@@ -45,6 +47,8 @@ export class EquipmentsService {
       dateProject: Date,
       condition: string,
       status: string
+      approveCondition: string,
+      approveReason: string,
     }>(
       'http://localhost:8080/mainEquipment/getOneEquipment/' + equipmentsId
     );
@@ -79,7 +83,9 @@ export class EquipmentsService {
     existEquipment: number,
     otherReason: string,
     dateProject: Date,
-    condition: string
+    condition: string,
+    approveCondition: string,
+    approveReason: string,
   ) {
     const equipment = {
       id: null,
@@ -100,6 +106,8 @@ export class EquipmentsService {
       dateProject: dateProject,
       condition: condition,
       status: 'กำลังดำเนินการ',
+      approveCondition: approveCondition,
+      approveReason: approveReason
     };
     this._http
       .post<{ message: string; equipmentId: string }>(
@@ -128,7 +136,10 @@ export class EquipmentsService {
     existEquipment: number,
     otherReason: string,
     dateProject: Date,
-    condition: string
+    condition: string,
+    status: string,
+    approveCondition: string,
+    approveReason: string
   ) {
     const equipment = {
       id: id,
@@ -148,8 +159,11 @@ export class EquipmentsService {
       otherReason: otherReason,
       dateProject: dateProject,
       condition: condition,
-      status: 'กำลังดำเนินการ',
+      status: status,
+      approveCondition: approveCondition,
+      approveReason: approveReason
     };
+    console.log(equipment);
     this._http
       .put<{ message: string; equipmentId: string }>(
         'http://localhost:8080/mainEquipment/editEquipment/' + id,
@@ -159,6 +173,8 @@ export class EquipmentsService {
         const message = 'Success';
         console.log('Edit data success');
         this.router.navigate(['/requestEquipment']);
+      },(error) => {
+        console.log('Error');
       });
   }
 

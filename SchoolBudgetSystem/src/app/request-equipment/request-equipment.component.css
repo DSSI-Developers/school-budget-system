@@ -1,4 +1,4 @@
-:host {
+/* :host {
     .status {
         .complete {
             background-color: #94e185;
@@ -11,4 +11,12 @@
             box-shadow: 0px 0px 4px 1px #c9404d;
         }
     }
+} */
+
+.red {
+    background-color: #cc4e5b;
+}
+
+.white {
+    background-color: #cc4e5b;
 }

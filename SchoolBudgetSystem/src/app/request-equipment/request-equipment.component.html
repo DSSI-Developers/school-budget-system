@@ -26,7 +26,9 @@
                             </thead>
                             <tbody class="text-center">
                                 <tr *ngFor="let listProject of document; let i = index">
-                                    <td>{{ i+1 }}</td>
+                                    <td>
+                                        {{ i +1 }}
+                                    </td>
                                     <!-- <td>{{ listProject.type }}</td> -->
                                     <td class="text-left">{{ listProject.majorList }}</td>
                                     <td>{{ listProject.necessary }}</td>
@@ -43,6 +45,7 @@
                                 </tr>
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

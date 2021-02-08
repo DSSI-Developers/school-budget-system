@@ -79,22 +79,22 @@ exports.usersRegister = async(req, res, next) => {
 
 
 // User login
-exports.authentication = (req, res, next) => {
+exports.authentication = async(req, res, next) => {
     let fetchedUser;
-    Users.findOne({ email: req.body.email })
+    await Users.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
                 return res.status(401).json({
-                    message: "Auth failed"
+                    message: "ไม่พบผู้ใช้งาน"
                 });
             }
             fetchedUser = user;
-            return bcrypt.compare(req.body.password, user.password);
+            return bcrypt.compareSync(req.body.password, user.password);
         })
         .then(result => {
             if (!result) {
                 return res.status(401).json({
-                    message: "Auth failed"
+                    message: "รหัสผ่านหรือชื่อผู้ใช้งานไม่ถุกต้อง"
                 });
             }
             const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id },

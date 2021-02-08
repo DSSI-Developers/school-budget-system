@@ -25,8 +25,8 @@
                                     <!-- <td>{{ listProject.no }}</td> -->
                                     <!-- <td>{{ listProject.type }}</td> -->
                                     <td class="table-active">{{ majorList }}</td>
-                                    <td class="table-active">{{ necessary }}</td>
-                                    <td class="table-active">{{ budget }}</td>
+                                    <td class="table-active">{{ necessary | number }}</td>
+                                    <td class="table-active">{{ budget | number }}</td>
 
                                     <!-- <td class="text-red">{{ listProject.subEquipment }}</td> -->
                                     <!-- <td><button mat-raised-button class="red" (click)="daleteEquip()"><mat-icon>delete</mat-icon></button></td> -->
@@ -69,8 +69,8 @@
                                                         <mat-hint matSuffix>/บาท</mat-hint>
                                                         <mat-error *ngIf="subEquipment.get('budget').invalid">ยังไม่ได้กรอกราคาของครุภัณฑ์ย่อย</mat-error>
                                                     </mat-form-field> -->
-                                                    <div>
-                                                        <p>ราคารวม : {{ valueOfprice * valueOfunit }} บาท</p>
+                                                    <div *ngIf="valueOfprice * valueOfunit != null">
+                                                        <p>ราคารวม : {{ valueOfprice * valueOfunit | number }} บาท</p>
                                                     </div>
                                                     <div class="center-align">
                                                         <button [disabled]="subEquipment.invalid" mat-raised-button color="primary" type="submit" (click)="addSubEupqment()"><mat-icon>save</mat-icon>เพิ่ม</button>
@@ -102,14 +102,14 @@
                                     </td> -->
 
                                     <td class="table-active text-left">{{ listSub.equipmentName }}</td>
-                                    <td class="table-active">{{ listSub.budgetPerPrice }}</td>
-                                    <td class="table-active">{{ listSub.unit }}</td>
-                                    <td class="table-active">{{ listSub.budget }}</td>
+                                    <td class="table-active">{{ listSub.budgetPerPrice | number }}</td>
+                                    <td class="table-active">{{ listSub.unit | number}}</td>
+                                    <td class="table-active">{{ listSub.budget | number }}</td>
                                     <!-- <td class="table-active">
                                         <button mat-raised-button color="primary" routerLink="/manageSubQuipment"><mat-icon>edit</mat-icon></button>
                                     </td> -->
                                     <td class="table-active">
-                                        <button mat-raised-button class="red" (click)="deleteEquipment(listSub._id)"><mat-icon>delete</mat-icon></button>
+                                        <button mat-raised-button class="red" (click)="deleteEquipment(listSub._id, listSub.budget)"><mat-icon>delete</mat-icon></button>
                                     </td>
 
                                 </tr>

@@ -22,9 +22,12 @@
                                     <mat-card>
                                         <h4>คำขอตั้งงบประมาณ</h4>
                                         <hr>
-                                        <p>ประเภท : ครุภัณฑ์การศึกษา</p>
-                                        <p>หัวข้อรายการหลัก : ครุภัณฑ์โยทวาทิต</p>
-                                        <p>จำนวนงบประมาณที่จัดตั้ง : </p>
+                                        <p>เหตุผล : </p>
+                                        <div class="panel-body" [innerHTML]="reason"></div>
+                                        <p>วัตถุประสงค์ :</p>
+                                        <div class="panel-body" [innerHTML]="objective"></div>
+                                        <p>หัวข้อรายการหลัก : {{ majorList }}</p>
+                                        <p>จำนวนงบประมาณที่จัดตั้ง : {{ budget }}</p>
                                     </mat-card>
                                     <br>
 
@@ -33,7 +36,7 @@
                                         <hr>
                                         <p>เกณฑ์ความจำเป็นที่ควรมี : {{ condition }}</p>
                                         <p>อุปกรณ์ที่มีอยู่ : {{ existEquipment }}</p>
-                                        <p>เหตุผลเพิ่มเติม : {{ reason }}</p>
+                                        <p>เหตุผลเพิ่มเติม : {{ otherReason }}</p>
                                         <p>วันที่เอกสาร : {{dateProject}}</p>
                                         <p>เงื่อไขการขอ : </p>
                                         <form [formGroup]="conditionValue">
@@ -57,7 +60,7 @@
                                             <th>งบประมาณครุภัณฑ์ย่อย / โครงการย่อย</th>
                                         </thead>
                                         <tbody class="text-center">
-                                            <tr *ngFor="let listProject of listOfProject">
+                                            <tr>
                                                 <!-- <td>{{ listProject.no }}</td> -->
                                                 <!-- <td>{{ listProject.type }}</td> -->
                                                 <td>{{ majorList }}</td>
@@ -78,10 +81,10 @@
                                             <th>งบประมาณ</th>
                                         </thead>
                                         <tbody class="text-center">
-                                            <tr *ngFor="let listSub of listOfSubProject">
-                                                <td>{{ listSub.no }}</td>
-                                                <td>{{ listSub.list }}</td>
-                                                <td>{{ listSub.price }}</td>
+                                            <tr *ngFor="let listSub of subEquipmentList; let i = index">
+                                                <td>{{ i + 1 }}</td>
+                                                <td>{{ listSub.equipmentName }}</td>
+                                                <td>{{ listSub.budgetPerPrice }}</td>
                                                 <td>{{ listSub.unit }}</td>
                                                 <td>{{ listSub.budget }}</td>
                                             </tr>
@@ -94,39 +97,48 @@
                                                 <h4>อนุมัติเห็นชอบโครงการ</h4>
                                                 <hr>
                                             </div>
-                                            <div class="card-text">
-                                                ท่านเห็นชอบโครงการการจัดตั้งครุภัณฑ์...{{majorList}}...นี้หรือไม่
-                                                <br><br>
-                                                <mat-radio-group>
-                                                    <div class="row">
-                                                        <div class="col-md-6 text-center">
+                                            <form [formGroup]="formApprove">
+                                                <div class="card-text">
+                                                    ท่านเห็นชอบโครงการการจัดตั้งครุภัณฑ์...{{majorList}}...นี้หรือไม่
+                                                    <br><br>
+                                                    <mat-radio-group>
+                                                        <div class="row">
+                                                            <mat-radio-group formControlName="approveCondition">
+                                                                <mat-radio-button value="อนุมัติเห็นชอบโครงการนี้">อนุมัติเห็นชอบโครงการนี้
+                                                                </mat-radio-button>
+                                                                &nbsp;
+                                                                <mat-radio-button value="ไม่อนุมัติเห็นชอบโครงการนี้">ไม่อนุมัติเห็นชอบโครงการนี้
+                                                                </mat-radio-button>
+                                                            </mat-radio-group>
+                                                            <!-- <div class="col-md-6 text-center">
                                                             <mat-radio-button value="auto">อนุมัติเห็นชอบโครงการนี้</mat-radio-button>
                                                         </div>
                                                         <div class="col-md-6 text-center">
                                                             <mat-radio-button value="always">ไม่อนุมัติเห็นชอบโครงการนี้</mat-radio-button>
+                                                        </div> -->
+                                                        </div>
+                                                    </mat-radio-group>
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <hr>
+                                                                <mat-form-field appearance="outline">
+                                                                    <mat-label>เหตุผลเพิ่มเติม</mat-label>
+                                                                    <textarea matInput rows="3" placeholder="เหตุผลประกอบการพิจารณา" formControlName="approveReason"></textarea>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <b>ชื่อผู้อนุมัติโครงการ : {{fetchFirstName}}  {{fetchLastName}}</b>
+                                                                <br>
+                                                                <b>หมายเหตุ : </b>กรุณาตรวจสอบข้อมูลให้แน่ใจก่อนที่จะกดบันทึกข้อมูล เนื่องจากจะระบบจะส่งข้อมูลเข้าสู่กระบวนการถัดไป จึงไม่สามารถแก้ไขได้ในภายหลัง
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </mat-radio-group>
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <hr>
-                                                            <mat-form-field appearance="outline">
-                                                                <mat-label>เหตุผลเพิ่มเติม</mat-label>
-                                                                <textarea matInput rows="3" placeholder="เหตุผลประกอบการพิจารณา"></textarea>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <b>ชื่อผู้อนุมัติโครงการ : {{fetchFirstName}}  {{fetchLastName}}</b>
-                                                            <br>
-                                                            <b>หมายเหตุ : </b>กรุณาตรวจสอบข้อมูลให้แน่ใจก่อนที่จะกดบันทึกข้อมูล เนื่องจากจะระบบจะส่งข้อมูลเข้าสู่กระบวนการถัดไป จึงไม่สามารถแก้ไขได้ในภายหลัง
-                                                        </div>
+                                                    <div class="col-md-12 text-center">
+                                                        <button class="btn btn-success text-center" (click)="approveProject()" type="button">บันทึกข้อมูลพร้อมรายงานการแจ้งเตือน</button>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 text-center">
-                                                    <button class="btn btn-success text-center" type="button">บันทึกข้อมูลพร้อมรายงานการแจ้งเตือน</button>
-                                                </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
 
@@ -135,8 +147,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

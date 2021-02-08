@@ -1,48 +1,52 @@
-import { FormGroup, FormControl , Validators} from '@angular/forms';
-import { EquipmentsService } from './../../services/equipments.service';
-import { Equipments } from './../../../models/equipments.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UsersService } from 'app/services/users.service';
-import { Subscription } from 'rxjs';
-import { param } from 'jquery';
+import { SubEquipments } from './../../../models/sub-equipments.model';
+import { SubEquipmentsService } from './../../services/sub-equipments.service';
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { EquipmentsService } from "./../../services/equipments.service";
+import { Equipments } from "./../../../models/equipments.model";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { UsersService } from "app/services/users.service";
+import { Subscription } from "rxjs";
+import { param } from "jquery";
 
 @Component({
-  selector: 'app-read-detail-form',
-  templateUrl: './read-detail-form.component.html',
-  styleUrls: ['./read-detail-form.component.css']
+  selector: "app-read-detail-form",
+  templateUrl: "./read-detail-form.component.html",
+  styleUrls: ["./read-detail-form.component.css"],
 })
 export class ReadDetailFormComponent implements OnInit {
   listOfProject = [
-    {no: '1', type: 'โครงการ', list: 'วงโยธวาทิต', unit: '20', budget: 900000, subEquipment: 900000}
-  ]
-
-  listOfSubProject = [
-    {no: 1, list: 'กลองสเเนร์', price: 50000, unit: 4, budget: 200000, edit: 'edit', delete: 'delete'},
-    {no: 2, list: 'เซคโซโฟน', price: 25000, unit: 12, budget: 300000, edit: 'edit',delete: 'delete'},
-    {no: 3, list: 'กลองใหญ่', price: 50000, unit: 2, budget: 100000, edit: 'edit',delete: 'delete'},
-    {no: 4, list: 'ทอมโบน', price: 100000, unit: 3, budget: 300000, edit: 'edit',delete: 'delete'},
+    {
+      no: "1",
+      type: "โครงการ",
+      list: "วงโยธวาทิต",
+      unit: "20",
+      budget: 900000,
+      subEquipment: 900000,
+    },
   ];
+
+  
   dataDetail;
   isLoading = false;
   private authStatusSub: Subscription;
 
-  budget;
-  condition;
+  budget; number;
+  condition: string;
   dateProject;
   existEquipment;
-  firstName;
-  lastName;
-  learningGroup;
-  learningGroups;
-  majorList;
-  necessary;
+  firstName: string;
+  lastName: string;
+  learningGroup: string;
+  learningGroups: string;
+  majorList: string;
+  necessary: number;
   objective;
   otherReason;
   position;
   reason;
-  status;
-  subjectTeach;
+  status: string;
+  subjectTeach: string;
 
   conditionValue: FormGroup;
   // personalData
@@ -52,30 +56,48 @@ export class ReadDetailFormComponent implements OnInit {
   fetchEmail;
   fetchPhone;
   fetchPosition;
-  fetchAvatar
-  constructor(private userServices: UsersService, private  router: ActivatedRoute, private equipmentService: EquipmentsService) { }
+  fetchAvatar;
+
+  equipmentId: string;
+  subequipment_group: Subscription;
+  subEquipmentList: SubEquipments[] = []
+
+  formApprove: FormGroup;
+  typeEquipment: string;
+  constructor(
+    private userServices: UsersService,
+    private router: ActivatedRoute,
+    private equipmentService: EquipmentsService,
+    private subServices: SubEquipmentsService
+  ) {}
 
   ngOnInit(): void {
+    this.formApprove = new FormGroup({
+      approveCondition : new FormControl(null),
+      approveReason: new FormControl(null),
+    })
     this.conditionValue = new FormGroup({
-      condition: new FormControl(null, {validators: []})
+      condition: new FormControl(null, { validators: [] }),
     });
-    this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
-      this.isLoading = false
-    });
+    this.authStatusSub = this.userServices
+      .getAuthStatusListener()
+      .subscribe((authStatus) => {
+        this.isLoading = false;
+      });
 
     // Section user detail
     const userId = this.userServices.getUserId();
-    this.userServices.getUserDetail(userId).subscribe(data => {
+    this.userServices.getUserDetail(userId).subscribe((data) => {
       this.fetchFirstName = data.data.firstName;
       this.fetchLastName = data.data.lastName;
-      console.log(this.fetchFirstName + ' ' + this.fetchLastName);
+      console.log(this.fetchFirstName + " " + this.fetchLastName);
     });
 
     // Section fetch data of Project | Equipment
-    this.router.paramMap.subscribe(paramMap => {
-      const equipmentId = paramMap.get('equipmentId');
-      this.equipmentService.getOneEquipment(equipmentId)
-      .subscribe((data) => {
+    this.router.paramMap.subscribe((paramMap) => {
+      const equipmentId = paramMap.get("equipmentId");
+      this.equipmentService.getOneEquipment(equipmentId).subscribe((data) => {
+        this.equipmentId = data._id;
         this.dataDetail = data;
         this.budget = data.budget;
         this.condition = data.condition;
@@ -95,13 +117,45 @@ export class ReadDetailFormComponent implements OnInit {
         this.subjectTeach = data.subjectTeach;
 
         this.conditionValue.setValue({
-          condition: this.dataDetail.condition
+          condition: this.dataDetail.condition,
+        });
+        this.subServices.getEquipmentBySunId(this.equipmentId);
+        this.subequipment_group = this.subServices.subEquipmentListenUpdate().subscribe((value: SubEquipments[]) => {
+          this.subEquipmentList = value;
+          console.log('Sub Equipment : ', this.subEquipmentList);
         });
         console.log(this.dataDetail);
       });
     });
-
-
   }
 
+  approveProject() {
+    if (this.formApprove.value.approveCondition === 'อนุมัติเห็นชอบโครงการนี้') {
+      this.status = 'สำเร็จ';
+    } else {
+      this.status  = 'ไม่สำเร็จ';
+    }
+    this.equipmentService.editEquipment(
+      this.equipmentId,
+      this.firstName,
+      this.lastName,
+      this.position,
+      this.learningGroup,
+      this.subjectTeach,
+      this.reason,
+      this.objective,
+      this.typeEquipment,
+      this.learningGroups,
+      this.majorList,
+      this.budget,
+      this.necessary,
+      this.existEquipment,
+      this.otherReason,
+      this.dateProject,
+      this.condition,
+      this.status,
+      this.formApprove.value.approveCondition,
+      this.formApprove.value.approveReason
+    );
+  }
 }

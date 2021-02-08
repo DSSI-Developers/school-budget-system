@@ -16,23 +16,31 @@
                         <hr>
                     </div>
                     <div class=" card-body ">
+                        <!-- <form style="padding: 10px 20px;" [formGroup]="login"> -->
                         <form style="padding: 10px 20px;" [formGroup]="login">
                             <mat-form-field appearance="outline">
                                 <mat-label>อีเมล</mat-label>
                                 <input matInput placeholder="Enter your email" type="email" formControlName="email">
-                                <mat-icon matSuffix>email</mat-icon>
+                                <button mat-button *ngIf="login.value.email" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-icon matSuffix *ngIf="!login.value.email">email</mat-icon>
                                 <!-- <mat-error *ngIf="login.get('email').invalid">รูปแบบอีเมลไม่ถูกต้อง</mat-error> -->
                                 <mat-error *ngIf="login.value.email">รูปแบบอีเมลไม่ถุกต้อง</mat-error>
                                 <mat-error *ngIf="login.value.email === ''">กรุณากรอกอีเมลแอเดรส</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline">
+                                <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required>
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </mat-form-field>
+
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>รหัสผ่าน</mat-label>
                                 <input matInput placeholder="Enter your password" type="password" formControlName="password">
                                 <mat-icon matSuffix>password</mat-icon>
                                 <mat-error *ngIf="login.value.password === ''">กรุณากรอกรหัสผ่าน</mat-error>
-                                <mat-hint></mat-hint>
-                            </mat-form-field>
+                            </mat-form-field> -->
                             <!-- <div class="forgot-password">
                                 <a routerLink="/home">ลืมรหัสผ่าน ?</a>
                             </div> -->

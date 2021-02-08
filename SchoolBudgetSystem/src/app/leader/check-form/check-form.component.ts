@@ -40,7 +40,11 @@ export class CheckFormComponent implements OnInit {
       .getEquipmentUpdateListener()
       .subscribe((objectData: Equipments[]) => {
         this.equipments = objectData;
-        console.log(this.equipments);
+        this.equipments.forEach(result => {
+            console.log(result['dateProject']);
+            const date = result['dateProject'];
+        });
+        // console.log(this.equipments['dateProject']);
       });
   }
 }
