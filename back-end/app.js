@@ -9,14 +9,11 @@ const app = express();
 const passport = require('passport');
 const path = require('path');
 const config = require('./config/database');
-
+const fs = require('fs');
 
 //  Middleware
 app.use(cors());
 app.use(morgan('dev'));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -37,7 +34,10 @@ app.use(passport.session());
 require('./config/passport')(passport);
 
 // Static folder 
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images", express.static(path.join("images")));
 
 // Connect database 
 mongoose.connect(
@@ -62,6 +62,7 @@ const notification = require('./routes/notification');
 const metaEquipment = require('./routes/meta-equipments');
 const learningGroup = require('./routes/learningGroup');
 const subEquipments = require('./routes/sub-equipments');
+const subEquipmentList = require('./routes/sub-equipment-list');
 const { Server } = require('http');
 app.get('/', (req, res) => {
     res.json({ message: "Welcome to my site" });
@@ -74,6 +75,7 @@ app.use('/subEquipment', subEquipments);
 app.use('/notification', notification);
 app.use('/metaEquipments', metaEquipment);
 app.use('/learningGroup', learningGroup);
+app.use('/subEquipmentList', subEquipmentList);
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {

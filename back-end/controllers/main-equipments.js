@@ -35,7 +35,7 @@ exports.saveProject = async(req, res, next) => {
     });
     if (!project) {
         res.status(401).json({
-            message: "Don't have data !"
+            message: "ไม่พบข้อมูล กรุณากรอกข้อมูล !"
         });
     }
     // console.log(req.userData);
@@ -160,14 +160,53 @@ exports.getAllProject = (req, res, next) => {
     });
 }
 
+exports.getEquipment = (req, res, next) => {
+    const pageSize = +req.query.pagesize;
+    const currentPage = +req.query.page;
+    const equipmentQuery = MainEquipment.find();
+    let fetchedPosts;
+
+    if (pageSize && currentPage) {
+        equipmentQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+    }
+    equipmentQuery
+        .then(documents => {
+            fetchedPosts = documents;
+            return MainEquipment.count();
+        })
+        .then(count => {
+            res.status(200).json({
+                message: "Posts fetched successfully!",
+                posts: fetchedPosts,
+                maxPosts: count
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: "Fetching posts failed!"
+            });
+        });
+};
+
 exports.getOneProject = (req, res, next) => {
     const id = req.params.id;
     console.log(id);
     MainEquipment.findById(id).then((data) => {
         if (!data) {
-            res.status(404).send({ message: "Not found Project with id " + id });
-        } else res.send(data);
+            res.status(404).json({
+                message: "ไม่พบข้อมูล" + id
+            });
+        } else res.status(201).json({
+            message: data,
+            response: data
+        });
     }).catch(err => {
         res.status(500).json({ message: "Error retriving Project with id =" + id });
     });
+}
+
+exports.findByType = (req, res, next) => {
+    const name = req.body.name;
+    console.log(name);
+    res.end(name);
 }

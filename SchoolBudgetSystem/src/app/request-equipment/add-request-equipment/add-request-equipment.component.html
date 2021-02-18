@@ -18,22 +18,22 @@
                                     <div class="col-md">
                                         <mat-form-field appearance="outline">
                                             <mat-label>ชื่อ</mat-label>
-                                            <input matInput placeholder="กรอกชื่อ" type="text" formControlName="firstName" />
+                                            <input matInput placeholder="กรอกชื่อ" type="text" formControlName="firstName" value="{{firstName}}" readonly/>
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>นาสกุล</mat-label>
-                                            <input matInput placeholder="กรอกนาสกุล" type="text" formControlName="lastName" />
+                                            <input matInput placeholder="กรอกนาสกุล" type="text" formControlName="lastName" value="{{lastName}}" readonly/>
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>ตำแหน่ง</mat-label>
-                                            <input matInput placeholder="กรอกตำแหน่ง" type="text" formControlName="position" />
+                                            <input matInput placeholder="กรอกตำแหน่ง" type="text" formControlName="position" value="{{position}}" readonly/>
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
-                                            <input matInput placeholder="กลุ่มสาระการเรียนรู้" type="text" formControlName="learningGroup" />
+                                            <input matInput placeholder="กลุ่มสาระการเรียนรู้" type="text" formControlName="learningGroup" value="{{department}}" readonly/>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>รายวิชาที่สอน</mat-label>
@@ -86,26 +86,25 @@
                                                         <mat-option *ngFor="let learnGroup of learningGroup" value="{{ learnGroup.value }}">{{ learnGroup.valueView }}
                                                         </mat-option>
                                                     </mat-select>
-                                                    <mat-hint align="end">เลือกประเภทรายการที่ต้องการ</mat-hint>
+                                                    <mat-hint align="end">เลือกกลุ่มสาระการเรียนรู้ที่ต้องการ</mat-hint>
                                                 </mat-form-field>
                                             </div>
                                             <!-- &nbsp;&nbsp; -->
                                             <div class="col">
-                                                <mat-form-field appearance="outline">
+                                                <!-- <mat-form-field appearance="outline">
                                                     <mat-label>รายการ</mat-label>
-                                                    <input matInput placeholder="รายการที่ต้องการ
-                                                        เช่น อุปกรณ์คอมพิวเตอร์" type="text" formControlName="majorList" />
+                                                    <input matInput placeholder="รายการที่ต้องการเช่น อุปกรณ์คอมพิวเตอร์" type="text" formControlName="majorList" />
                                                     <mat-icon matSuffix></mat-icon>
-                                                </mat-form-field>
-                                                <!-- <mat-form-field class="example-full-width" appearance="fill">
+                                                </mat-form-field> -->
+                                                <mat-form-field class="example-full-width" appearance="fill">
                                                     <mat-label>ครุภัณฑ์</mat-label>
-                                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="majorList" [matAutocomplete]="auto">
+                                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="majorList" [matAutocomplete]="auto">
                                                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                                         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                                                             {{option}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field> -->
+                                                </mat-form-field>
                                             </div>
                                         </div>
                                         <mat-form-field appearance="outline">

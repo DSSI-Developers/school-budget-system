@@ -1,3 +1,4 @@
+import { ThaiDatePipe } from './../../directives/thaidate.pipe';
 import { MaterialModule } from './../../material/material.module';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -30,7 +31,10 @@ import { UserDetailComponent } from 'app/admin/user-detail/user-detail.component
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ListSubEquipmentComponent } from 'app/request-equipment/list-sub-equipment/list-sub-equipment.component';
+import { ManageEquipmentsComponent } from 'app/admin/manage-equipments/manage-equipments.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @NgModule({
   imports: [
     CommonModule,
@@ -45,7 +49,9 @@ import { ListSubEquipmentComponent } from 'app/request-equipment/list-sub-equipm
     MatTooltipModule,
     MaterialModule,
     MatProgressSpinnerModule,
-    CKEditorModule
+    CKEditorModule,
+    MatPaginatorModule,
+    Ng2SearchPipeModule
   ],
   declarations: [
     DashboardComponent,
@@ -63,7 +69,9 @@ import { ListSubEquipmentComponent } from 'app/request-equipment/list-sub-equipm
     CheckFormComponent,
     ReadDetailFormComponent,
     UserDetailComponent,
-    ListSubEquipmentComponent
+    ListSubEquipmentComponent,
+    ThaiDatePipe,
+    ManageEquipmentsComponent
   ]
 })
 

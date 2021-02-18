@@ -13,13 +13,13 @@ export class SubEquipmentsService {
   private subEquipments: SubEquipments[] = [];
   private subEquipmentUpdate = new Subject<SubEquipments[]>();
 
-  socket: any;
-  uri: string = 'http://localhost:8080/subEquipment/getAllSubEquip';
+  // socket: any;
+  // uri: string = 'http://localhost:8080/subEquipment/getAllSubEquip';
   constructor(private http: HttpClient, public router: Router) {
     // this.socket = io(this.uri);
   }
 
-  getEquipmentBySunId(mainId: string) {
+  getEquipmentBySubId(mainId: string) {
     return this.http
       .get<{ message: string; response: any }>(
         'http://localhost:8080/subEquipment/getSubId/' + mainId

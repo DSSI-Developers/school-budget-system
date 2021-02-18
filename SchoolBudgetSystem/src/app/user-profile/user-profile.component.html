@@ -12,11 +12,13 @@
                                         <div class="card-avatar">
                                             <div *ngIf="avatar == ''">
                                                 <!-- {{ avatar }} -->
-                                                <img class="img" src="../assets/img/faces/marc.jpg" alt="ไม่เจอรูปภาพ" />
+                                                <!-- <img class="img" src="../assets/img/faces/marc.jpg" alt="ไม่เจอรูปภาพ" /> -->
                                             </div>
+
                                             <div class="image-preview" *ngIf="avatar != '' && avatar != null && imagePreview !== '' && imagePreview && profile.get('avatar').valid">
                                                 <img [src]="imagePreview" [alt]="profile.value.firstName">
                                             </div>
+
                                         </div>
                                         <div class="card-body">
                                             <p class="card-description">
@@ -24,6 +26,10 @@
                                             </p>
                                             <hr>
 
+                                            <!-- <div>
+                                                <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+                                                <input type="file" #filePicker (change)="onImagePicked($event)">
+                                              </div> -->
                                             <div>
                                                 <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
                                                 <input type="file" #filePicker (change)="onImagePicked($event)">
@@ -66,7 +72,7 @@
                                                 </div>
 
                                                 <div class="row profile">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12">
                                                         <!-- <p class="card-category"><b>อีเมล : {{ email }}</b></p> -->
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>อีเมล</mat-label>
@@ -74,8 +80,8 @@
                                                             <mat-icon matSuffix>email</mat-icon>
                                                             <!-- <mat-error *ngIf="profile.get('email').invalid">Please enter a email.</mat-error> -->
                                                         </mat-form-field>
-                                                    </div>
-                                                    <div class="col-md-6">
+                                                        <!-- </div>
+                                                    <div class="col-md-6"> -->
                                                         <!-- <p class="card-category"><b>หมายเลขโทรศัพท์ : {{ phone }}</b></p> -->
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>โทรศัพท์</mat-label>
@@ -87,21 +93,26 @@
                                                 </div>
 
                                                 <div class="row profile">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12">
                                                         <!-- <p class="card-category"><b>ตำแหน่ง : {{ position }}</b></p> -->
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>ตำแหน่ง</mat-label>
-                                                            <input matInput type="text" formControlName="position" placeholder="ตำแหน่ง">
+                                                            <input matInput type="text" formControlName="department" placeholder="ตำแหน่ง">
                                                             <mat-icon matSuffix>person</mat-icon>
                                                             <!-- <mat-error *ngIf="profile.get('position').invalid">Please enter a position.</mat-error> -->
                                                         </mat-form-field>
-                                                    </div>
-                                                    <div class="col-md-6">
-
+                                                        <!-- </div>
+                                                    <div class="col-md-6"> -->
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>สถานะ</mat-label>
+                                                            <input matInput type="text" formControlName="position" placeholder="" readonly>
+                                                            <!-- <mat-icon matSuffix>person</mat-icon> -->
+                                                            <mat-icon matSuffix>verified_user</mat-icon>
+                                                        </mat-form-field>
                                                     </div>
                                                 </div>
                                                 <hr>
-                                                <button type="submit" class="btn btn-danger pull-right" (click)="editUser()">
+                                                <button type="submit" class="btn btn-danger pull-right" (click)="onSavePost()">
                                                 <mat-icon>edit</mat-icon> แก้ไขข้อมูลส่วนตัว
                                             </button>
                                                 <div class="clearfix"></div>

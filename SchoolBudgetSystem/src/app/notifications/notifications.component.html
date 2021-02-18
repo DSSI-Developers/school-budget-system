@@ -16,9 +16,9 @@
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeNitification(notic._id)">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                <h5 class="card-title" *ngIf="notic.status == 'สำเร็จ'"><span class="dot success"></span> {{ notic.dateTime |date: 'full' }}</h5>
-                                <h5 class="card-title" *ngIf="notic.status == 'กำลังดำเนินการ'"><span class="dot pending"></span> {{ notic.dateTime |date:'full':'UTC'}}</h5>
-                                <h5 class="card-title" *ngIf="notic.status == 'ไม่สำเร็จ'"><span class="dot reject"></span> {{ notic.dateTime |date }}</h5>
+                                <h5 class="card-title" *ngIf="notic.status == 'ผ่านการอนุมัติ'"><span class="dot success"></span> {{ notic.dateTime | thaidate: 'meduim' }}</h5>
+                                <h5 class="card-title" *ngIf="notic.status == 'กำลังดำเนินการ'"><span class="dot pending"></span> {{ notic.dateTime | thaidate:'full':'UTC'}}</h5>
+                                <h5 class="card-title" *ngIf="notic.status == 'ไม่ผ่านการอนุมัติ'"><span class="dot reject"></span> {{ notic.dateTime |thaidate }}</h5>
                                 <hr>
                                 <p class="card-text">{{ notic.detail }}</p>
                             </div>

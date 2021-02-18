@@ -1,3 +1,4 @@
+import { Equipments } from './../../models/equipments.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, observable, ObservedValueOf } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -17,6 +18,8 @@ import { Subject } from 'rxjs';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -107,11 +110,11 @@ export class UsersService {
     } else {
       this.logout();
       this.router.navigate(['/']);
-      Swal.fire(
-        'Session Expired;',
-        'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ',
-        'info'
-      );
+      // Swal.fire(
+      //   "Session Expired;",
+      //   "เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ",
+      //   "info"
+      // );
     }
   }
 
@@ -120,7 +123,8 @@ export class UsersService {
     this.tokenTimer = setTimeout(() => {
       this.logout();
       console.log('Now status you logout !');
-    }, duration * 1000);
+    }, duration * 10000);
+    // }, duration * 1000);
   }
 
   private saveAuthData(token: string, expirationDate: Date, userId: string) {
@@ -254,5 +258,68 @@ export class UsersService {
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/']);
+     Swal.fire(
+        'Session Expired;',
+        'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ',
+        'info'
+      );
+  }
+
+  userEditData(
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    phone: string,
+    position: string,
+    department: string,
+    role: string,
+    avatar: File | string
+  ) {
+    let userProfile = new  FormData;
+    if (typeof avatar === 'object') {
+      userProfile.append('_id', id);
+      userProfile.append('firstName', firstName);
+      userProfile.append('lastName', lastName);
+      userProfile.append('email', email);
+      userProfile.append('password', password);
+      userProfile.append('phone', phone);
+      userProfile.append('position', position);
+      userProfile.append('department', department);
+      userProfile.append('role', role);
+      userProfile.append('avatar', avatar, id);
+    } else {
+      let userProfile: Users = {
+        _id: id,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        phone: phone,
+        position: position,
+        department: department,
+        role: role,
+        avatar: avatar,
+        permission: null
+      }
+    }
+
+    console.log(userProfile);
+
+    this.http
+      .put<{ message: string; response: any }>(
+        'http://localhost:8080/users/editProfile/' + id,
+        userProfile
+      )
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
   }
 }

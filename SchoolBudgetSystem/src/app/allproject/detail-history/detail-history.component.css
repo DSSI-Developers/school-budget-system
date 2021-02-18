@@ -1,3 +1,11 @@
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 .success {
     background-color: #94e185;
     border-color: #78d965;

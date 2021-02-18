@@ -15,15 +15,6 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { UsersService } from 'app/services/users.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-// export interface DurableArticles {
-//   no: string;
-//   list: string;
-//   unit: number;
-//   unitMany: number;
-//   priceUnit: number;
-//   projectStatus: string;
-// }
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -48,6 +39,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userId: string;
   statusDetail;
   document: any;
+
+
+  e: string = 'Test';
+
+  searchEquipment: string;
   constructor(public dialog: MatDialog, private equipmentServices: EquipmentsService, private userServices: UsersService) { }
 
   ngOnInit() {
@@ -68,9 +64,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.countSuccess = this.successEquipments.length;
       this.countPending = this.pendingEquipments.length;
       this.countFailed = this.failedEquipments.length;
-      console.log(this.countSuccess);
-      console.log(this.countPending);
-      console.log(this.countFailed);
+      
+      console.log(this.successEquipments);
     });
   }
 
@@ -91,11 +86,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       },
     };
     const dd = {
-      header: {},
+      header: {
+        
+      },
       footer(currentPage, pageCount) {
         return {
           columns: [
-            { text: 'ท้ายกระดาษ’, fontSize: 15, alignment: ‘center' },
+            { text: 'โครงการจัดตั้งครุภัณฑ์', fontSize: 14, alignment: 'center' },
             {
               text:
                 'หน้าที่ ' +
@@ -109,18 +106,61 @@ export class DashboardComponent implements OnInit, OnDestroy {
           ],
         };
       },
+      
       content: [
-        { text: 'ทดสอบการสร้าง pdf ', fontSize: 18, alignment: 'center' },
+        { text: 'โครงการจัดตั้งครุภัณฑ์', fontSize: 18, alignment: 'center' ,bold: true },
+        {
+          columns: [
+            {
+              width: '20%',
+              text: 'ชื่อโครงการ', 
+              fontSize: 16,
+              bold: true
+            },
+            {
+              width: '*',
+              text: 'ครุภัณฑ์คอมพิวเตอร์',
+              fontSize: 16
+            }
+          ],
+          columnGap: 10
+        },
+        {
+          columns: [
+            {
+              width: '20%',
+              text: 'กลุ่มงานที่รับผิดชอบ', 
+              fontSize: 16,
+              bold: true
+            },
+            {
+              width: '*',
+              text: 'กลุ่มสาระการเรียนรู้วิทยาศาสตร์',
+              fontSize: 16
+            }
+          ],
+          columnGap: 10
+        },
+        {
+          columns: [
+            {
+              width: '20%',
+              text: 'ผู้รับผิดชอบ', 
+              fontSize: 16,
+              bold: true
+            },
+            {
+              width: '*',
+              text: 'กฤษณะ  ประสิทธิ์',
+              fontSize: 16
+            }
+          ],
+          columnGap: 10
+        },
       ],
       defaultStyle: {
         font: 'THSarabunNew',
       },
-      // watermark: {
-      //   text: 'ลายน้ำแบบคาด',
-      //   color: 'blue',
-      //   opacity: 0.1,
-      //   bold: true,
-      // },
     };
     pdfMake.createPdf(dd).open();
   }

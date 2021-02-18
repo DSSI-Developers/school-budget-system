@@ -8,6 +8,9 @@ router.put('/editEquipment/:id', checkAuth, mainEquipments.editProject);
 router.delete('/deleteAll', checkAuth, mainEquipments.deleteAllProject);
 router.delete('/deleteEquipment/:id', checkAuth, mainEquipments.deleteProject);
 router.get('/getAllEquipments', mainEquipments.getAllProject);
+router.get('/getAllEquipmentsByPage', mainEquipments.getEquipment); // Pagination
 router.get('/getOneEquipment/:id', checkAuth, mainEquipments.getOneProject);
+router.get('/getEquipmentByName/:name', checkAuth, mainEquipments.findByType);
+
 
 module.exports = router;

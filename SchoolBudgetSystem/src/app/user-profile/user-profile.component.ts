@@ -44,12 +44,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
    *
    * @memberof UserProfileComponent
    */
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
   phone: string;
   position: string;
   avatar: string;
+  department: string;
+  role: string;
   /**
    * Form Group for read and edit user datea
    *
@@ -67,11 +71,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       firstName: new FormControl(null, { validators: [Validators.required] }),
       lastName: new FormControl(null, { validators: [Validators.required] }),
       email: new FormControl(null, { validators: [Validators.required] }),
+      password: new FormControl(null, { validators: [Validators.required] }),
       phone: new FormControl(null, { validators: [Validators.required] }),
       position: new FormControl(null, { validators: [Validators.required] }),
+      department: new FormControl(null, { validators: [Validators.required] }),
       avatar: new FormControl(null, {
         validators: [Validators.required],
-        asyncValidators: [mimeType],
+        asyncValidators: [mimeType]
       }),
     });
     // Section user
@@ -79,21 +85,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userId = this.userServices.getUserId();
     console.log(this.userId);
     this.userServices.getUserDetail(this.userId).subscribe((oneUserDetail) => {
-      console.log(`Personal data : ${oneUserDetail}`);
+      console.log(`Personal data : ${oneUserDetail.data}`);
+      this.id = oneUserDetail.data._id;
       this.firstName = oneUserDetail.data.firstName;
       this.lastName = oneUserDetail.data.lastName;
       this.email = oneUserDetail.data.email;
+      this.password = oneUserDetail.data.password;
       this.phone = oneUserDetail.data.phone;
       this.position = oneUserDetail.data.position;
-      this.avatar  = oneUserDetail.data.avatar
+      this.avatar  = oneUserDetail.data.avatar,
+      this.department = oneUserDetail.data.department,
+      this.role = oneUserDetail.data.role,
+      console.log(this.avatar);
+      this.imagePreview = this.avatar;
 
       // Set data value in profile form control
       this.profile.setValue({
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
+        password: this.password,
         phone: this.phone,
         position: this.position,
+        department: this.department,
         avatar: this.avatar
       });
     });
@@ -108,14 +122,17 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
-    this.profile.patchValue({ image: file });
+    this.profile.patchValue({ avatar: file });
     this.profile.get('avatar').updateValueAndValidity();
+    console.log(file);
+    console.log(this.profile);
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
   }
+
 
   editUser() {
     if (this.profile.invalid) {
@@ -126,7 +143,25 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       console.log(`Dialog result: ${result}`);
     });
   }
-  onSavePost() {}
+
+  onSavePost() {
+    console.log(this.userId);
+    console.log(this.profile.value.firstName);
+    this.userServices.userEditData(
+      this.userId,
+      this.profile.value.firstName,
+      this.profile.value.lastName,
+      this.profile.value.email,
+      this.profile.value.password,
+      this.profile.value.phone,
+      this.profile.value.position,
+      this.profile.value.department,
+      this.role,
+      this.profile.value.avatar
+    );
+    // console.log(this.profile.value.avatar);
+    // console.log(typeof this.profile.value.avatar);
+  }
   ngOnDestroy(): void {
     this.authListenerSubs.unsubscribe();
   }

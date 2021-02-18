@@ -4,29 +4,117 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <h3><span class="badge badge-secondary">เอกสารโครงการทั้งหมด</span></h3>
                 <hr />
-                <div class="row">
-                    <mat-card class="example-card" *ngFor="let cardDetail of equipments">
-                        <mat-card-header>
-                            <mat-card-title> {{ cardDetail.majorList }}</mat-card-title>
-                        </mat-card-header>
-                        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-                        <mat-card-content>
-                            <hr />
-                            <!-- <p>เหตุผล :</p>
-                            <div class="overflow" [innerHTML]="cardDetail.reason"></div>
 
-                            <p>วัตถุประวงค์ : </p>
-                            <div class="overflow" [innerHTML]="cardDetail.objective"></div> -->
-                            <p><b>วันที่ : </b> {{ cardDetail.dateProject | date:'dd MMMM yyyy':'UTC' }}</p>
-                        </mat-card-content>
-                        <hr />
-                        <mat-card-actions>
-                            <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
-                                <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
-                            </button>
-                        </mat-card-actions>
-                    </mat-card>
-                </div>
+                <mat-tab-group>
+                    <mat-tab label="โครงการใหม่">
+                        <div class="row">
+                            <mat-card class="example-card" *ngFor="let cardDetail of pendingProject; let i = index">
+                                <mat-card-header>
+                                    <mat-card-title> {{ cardDetail.majorList }}
+                                        <!-- {{countDataInSubEquipment[i]}} -->
+                                    </mat-card-title>
+                                </mat-card-header>
+                                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+                                <mat-card-content>
+                                    <hr />
+                                    <p>
+                                        <!-- <b>วันที่ : </b> {{ cardDetail.dateProject | date: "dd MMMM yyyy":"UTC" }} -->
+                                        <b>วันที่ : </b> {{ dateDate | thaidate: 'meduim' }}
+
+                                    </p>
+                                    <div *ngIf="cardDetail.status == 'ผ่านการอนุมัติ'">
+                                        สถานะการอนุมัติ : <span class="dot success"></span> {{ cardDetail.status }}
+                                    </div>
+                                    <div *ngIf="cardDetail.status == 'กำลังดำเนินการ'">
+                                        สถานะการอนุมัติ : <span class="dot pending"></span> {{ cardDetail.status }}
+                                    </div>
+                                    <div *ngIf="cardDetail.status == 'ไม่ผ่านการอนุมัติ'">
+                                        สถานะการอนุมัติ : <span class="dot reject"></span> {{ cardDetail.status }}
+                                    </div>
+                                </mat-card-content>
+                                <hr />
+                                <mat-card-actions>
+                                    <div *ngIf="countDataInSubEquipment[i] > 0; else elseBlock">
+                                        <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
+                                            <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
+                                        </button>
+                                    </div>
+                                    <ng-template #elseBlock>
+                                        <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]" [disabled]="true" matTooltip="ข้อมูลไม่สมบูรณ์">
+                                            <mat-icon>chrome_reader_mode</mat-icon> ข้อมูลไม่สมบูรณ์
+                                        </button>
+                                    </ng-template>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="โครงการที่ผ่านอนุมัติแล้ว">
+                        <div class="row">
+
+                            <mat-card class="example-card" *ngFor="let cardDetail of successProject; let i = index">
+                                <mat-card-header>
+                                    <mat-card-title> {{ cardDetail.majorList }} </mat-card-title>
+                                </mat-card-header>
+                                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+                                <mat-card-content>
+                                    <hr />
+
+                                    <p>
+                                        <b>วันที่ : </b> {{ cardDetail.dateProject | date: "dd MMMM yyyy":"UTC" }}
+                                    </p>
+                                    <div *ngIf="cardDetail.status == 'ผ่านการอนุมัติ'">
+                                        สถานะการอนุมัติ : <span class="dot success"></span> {{ cardDetail.status }}
+                                    </div>
+                                    <div *ngIf="cardDetail.status == 'กำลังดำเนินการ'">
+                                        สถานะการอนุมัติ : <span class="dot pending"></span> {{ cardDetail.status }}
+                                    </div>
+                                    <div *ngIf="cardDetail.status == 'ไม่ผ่านการอนุมัติ'">
+                                        สถานะการอนุมัติ : <span class="dot reject"></span> {{ cardDetail.status }}
+                                    </div>
+                                </mat-card-content>
+                                <hr />
+                                <mat-card-actions>
+                                    <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
+                                    <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
+                                </button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="โครงการที่ไม่ผ่านการอนุมัติ">
+                        <div class="row">
+                            <mat-card class="example-card" *ngFor="let cardDetail of rejectProject; let i = index">
+                                <mat-card-header>
+                                    <mat-card-title> {{ cardDetail.majorList }} </mat-card-title>
+                                </mat-card-header>
+                                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+                                <mat-card-content>
+                                    <hr />
+
+                                    <p>
+                                        <b>วันที่ : </b> {{ cardDetail.dateProject | date: "dd MMMM yyyy":"UTC" }}
+                                    </p>
+                                    <div *ngIf="cardDetail.status == 'ผ่านการอนุมัติ'">
+                                        สถานะการอนุมัติ : <span class="dot success"></span> {{ cardDetail.status }}
+                                    </div>
+                                    <div *ngIf="cardDetail.status == 'กำลังดำเนินการ'">
+                                        สถานะการอนุมัติ : <span class="dot pending"></span> {{ cardDetail.status }}
+                                    </div>
+                                    <div *ngIf="cardDetail.status == 'ไม่ผ่านการอนุมัติ'">
+                                        สถานะการอนุมัติ : <span class="dot reject"></span> {{ cardDetail.status }}
+                                    </div>
+                                </mat-card-content>
+                                <hr />
+                                <mat-card-actions>
+                                    <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
+                                    <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
+                                </button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+
             </div>
         </div>
     </div>

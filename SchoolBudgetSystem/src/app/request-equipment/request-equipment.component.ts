@@ -6,11 +6,12 @@ import { Equipments } from './../../models/equipments.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SubEquipmentsService } from './../services/sub-equipments.service';
+import {PageEvent} from '@angular/material/paginator';
 
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+declare var count: number;
 export interface Type {
   value: string;
   valueView: string;
@@ -38,6 +39,13 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
         alert: string;
         countDataInSubEquipment: Array<number> = [];
         dataSub;
+
+        totalPosts = 0;
+        postsPerPage = 2;
+        currentPage = 1;
+        pageSizeOptions = [1, 2, 5, 10];
+
+        subEquipment: SubEquipments[] = [];
   // document: Equipments[] = [];
   constructor(
     private equipmentsService: EquipmentsService,
@@ -56,23 +64,35 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
     console.log('User ID :', this.userId);
 
     this.equipmentsService.getAllEquipments();
+    // this.equipmentsService.getAllEquipmentsByPag(this.postsPerPage, this.currentPage);
+
     this.allEquipment$ = this.equipmentsService
       .getEquipmentUpdateListener()
       .subscribe((equipments: Equipments[]) => {
         this.equipments = equipments;
         this.document = this.equipments.filter(data => data.creator === this.userId)
+        // Count sub equipment in for loop
         for (let i = 0; i < this.document.length; i++) {
           console.log('Documents : ', this.document[i]['_id']);
           this.idForCheck = this.document[i]['_id'];
           this.subServices.getSubEquipment(this.idForCheck).subscribe((value) => {
-            console.log(value.response);
-            this.countDataInSubEquipment = value.response.length;
+            console.log('Sub equipment : ', value.response);
+            this.countDataInSubEquipment.push(value.response.length);
+            // this.countDataInSubEquipment = value.response.length;
             console.log('Count sub equipment : ', this.countDataInSubEquipment);
           });
         }
       });
       // console.log('Count data sub : ', this.countDataInSubEquipment);
   }
+
+  onChangedPage(pageData: PageEvent) {
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.postsPerPage = pageData.pageSize;
+    this.equipmentsService.getAllEquipmentsByPag(this.postsPerPage, this.currentPage);
+  }
+
   manageSubQuipments() {}
 
   deleteEquipment(equipmentId: string) {

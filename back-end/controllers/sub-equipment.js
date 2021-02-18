@@ -12,7 +12,6 @@ const SubEquipments = require('../models/sub-equipment');
 
 exports.addsubEquipment = (req, res, next) => {
     // const { mainId, mainEquipmentsName, subEquipmentName, pricePerunit, number, budget } = req.body;
-    const io = req.app.get('io');
     const subEquipment = new SubEquipments({
         mainId: req.body.mainId,
         mainName: req.body.mainEquipmentsName,
@@ -26,7 +25,6 @@ exports.addsubEquipment = (req, res, next) => {
     // console.log(req.userData.userId);
     // return res.status(201).json({})
     subEquipment.save().then((data) => {
-        io.emit('newEquipment');
         res.status(201).json({
             message: "OK Google !",
             response: data

@@ -1,3 +1,4 @@
+import { Users } from './../../../models/users.model';
 import { UsersService } from './../../services/users.service';
 import { NotifiedService } from './../../services/notified.service';
 import { EquipmentsService } from './../../services/equipments.service';
@@ -16,10 +17,8 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { map } from 'rxjs/operators';
 
-
-import {Observable} from 'rxjs';
-import {startWith} from 'rxjs/operators';
-
+import { Observable } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import {
   MatSnackBar,
@@ -28,8 +27,7 @@ import {
 } from '@angular/material/snack-bar';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { Subscription } from 'rxjs'
-
+import { Subscription } from 'rxjs';
 
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -92,11 +90,27 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
     },
   ];
 
-// Auto complete
-majorList = new FormControl();
-options: string[] = ['ครุภัณฑ์การเรียน', 'ครุภัณฑ์สำนักงาน', 'ครุภัณฑ์...'];
-filteredOptions: Observable<string[]>;
-
+  // Auto complete
+  majorList = new FormControl();
+  options: string[] = [
+    'ครุภัณฑ์สำนักงาน',
+    'ครุภัณฑ์การศึกษา',
+    'ครุภัณฑ์ยานพาหนะและขนส฽่ง',
+    'ครุภัณฑ์การเกษตร',
+    'ครุภัณฑ์ก฽่อสร้฾าง',
+    'ครุภัณฑ์ไฟฟ้าและวิทยุ',
+    'ครุภัณฑ์โฆษณาและเผยแพร่',
+    'ครุภัณฑ์วิทยาศาสตร์การแพทย์',
+    'ครุภัณฑ์อาวุธ',
+    'ครุภัณฑ์งานบ฾านงานครัว',
+    'ครุภัณฑ์โรงงาน',
+    'ครุภัณฑ์กีฬา',
+    'ครุภัณฑ์สำรวจ',
+    'ครุภัณฑ์ดนตรีและนาฏศิลป฼์',
+    'ครุภัณฑ์คอมพิวเตอร์',
+    'ครุภัณฑ์สนาม'
+  ];
+  filteredOptions: Observable<string[]>;
 
   equipments;
   private mode = 'create';
@@ -110,7 +124,12 @@ filteredOptions: Observable<string[]>;
   private authStatusSub: Subscription;
 
   public Editor = ClassicEditor;
-
+  // Data about user
+  firstName: string;
+  lastName: string;
+  position: string;
+  department: string;
+  private userDetail;
   constructor(
     public fb: FormBuilder,
     private equipmentsService: EquipmentsService,
@@ -119,22 +138,21 @@ filteredOptions: Observable<string[]>;
     private router: Router,
     private _snackBar: MatSnackBar,
     private userServices: UsersService
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
-
-     this.authStatusSub = this.userServices.getAuthStatusListener().subscribe(authStatus => {
-      this.isLoading = false
-    });
+    this.authStatusSub = this.userServices
+      .getAuthStatusListener()
+      .subscribe((authStatus) => {
+        this.isLoading = false;
+      });
 
     this.equipmentsRequest = new FormGroup({
-      firstName: new FormControl(null, { validators: [Validators.required] }),
-      lastName: new FormControl(null, { validators: [Validators.required] }),
-      position: new FormControl(null, { validators: [Validators.required] }),
+      firstName: new FormControl(this.firstName, { validators: [] }),
+      lastName: new FormControl(null, { validators: [] }),
+      position: new FormControl(null, { validators: [] }),
       learningGroup: new FormControl(null, {
-        validators: [Validators.required],
+        validators: [],
       }),
       subjectTeach: new FormControl(null, {
         validators: [Validators.required],
@@ -164,9 +182,25 @@ filteredOptions: Observable<string[]>;
     // Auto complete
     this.filteredOptions = this.majorList.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map((value) => this._filter(value))
     );
-
+    // Get user detail
+    const userId = this.userServices.getUserId();
+    console.log('User ID : ', userId);
+    this.userServices.getUserDetail(userId).subscribe((userDetail) => {
+      this.userDetail = userDetail.data;
+      this.firstName = this.userDetail.firstName;
+      this.lastName = this.userDetail.lastName;
+      this.position = this.userDetail.position;
+      this.department = this.userDetail.department;
+      console.log(
+        'User Detail',
+        this.firstName,
+        this.lastName,
+        this.position,
+        this.department
+      );
+    });
     this.route.paramMap.subscribe((paramMap) => {
       console.log('Param', paramMap.has('equipmentId'));
       if (paramMap.has('equipmentId')) {
@@ -177,24 +211,24 @@ filteredOptions: Observable<string[]>;
           .subscribe((equipmentData) => {
             console.log(equipmentData);
             this.equipmantsEdit = {
-              _id: equipmentData._id,
-              firstName: equipmentData.firstName,
-              lastName: equipmentData.lastName,
-              position: equipmentData.position,
-              learningGroup: equipmentData.learningGroup,
-              subjectTeach: equipmentData.subjectTeach,
-              reason: equipmentData.reason,
-              objective: equipmentData.objective,
-              typeEquipments: equipmentData.typeEquipments,
-              learningGroups: equipmentData.learningGroups,
-              majorList: equipmentData.majorList,
-              budget: equipmentData.budget,
-              necessary: equipmentData.necessary,
-              existEquipment: equipmentData.existEquipment,
-              otherReason: equipmentData.otherReason,
-              dateProject: equipmentData.dateProject,
-              condition: equipmentData.condition,
-              status: equipmentData.status
+              _id: equipmentData.response._id,
+              firstName: equipmentData.response.firstName,
+              lastName: equipmentData.response.lastName,
+              position: equipmentData.response.position,
+              learningGroup: equipmentData.response.learningGroup,
+              subjectTeach: equipmentData.response.subjectTeach,
+              reason: equipmentData.response.reason,
+              objective: equipmentData.response.objective,
+              typeEquipments: equipmentData.response.typeEquipments,
+              learningGroups: equipmentData.response.learningGroups,
+              majorList: equipmentData.response.majorList,
+              budget: equipmentData.response.budget,
+              necessary: equipmentData.response.necessary,
+              existEquipment: equipmentData.response.existEquipment,
+              otherReason: equipmentData.response.otherReason,
+              dateProject: equipmentData.response.dateProject,
+              condition: equipmentData.response.condition,
+              status: equipmentData.response.status,
             };
             console.log(this.mode);
             console.log(this.equipmantsEdit);
@@ -213,7 +247,7 @@ filteredOptions: Observable<string[]>;
               existEquipment: this.equipmantsEdit.existEquipment,
               otherReason: this.equipmantsEdit.otherReason,
               dateProject: this.equipmantsEdit.dateProject,
-            condition: this.equipmantsEdit.condition,
+              condition: this.equipmantsEdit.condition,
             });
           });
       } else {
@@ -223,30 +257,35 @@ filteredOptions: Observable<string[]>;
     });
   }
 
-
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    return this.options.filter(
+      (option) => option.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   ckeditorContent;
 
   addData() {
     if (this.mode === 'create') {
-      console.log(this.equipmentsRequest);
+      console.log('Form insert data : ', this.equipmentsRequest);
       this.equipmentsService.addEquipment(
-        this.equipmentsRequest.value.firstName,
-        this.equipmentsRequest.value.lastName,
-        this.equipmentsRequest.value.position,
-        this.equipmentsRequest.value.learningGroup,
+        this.firstName,
+        this.lastName,
+        this.position,
+        this.department,
+        // this.equipmentsRequest.value.firstName,
+        // this.equipmentsRequest.value.lastName,
+        // this.equipmentsRequest.value.position,
+        // this.equipmentsRequest.value.learningGroup,
         this.equipmentsRequest.value.subjectTeach,
         this.equipmentsRequest.value.reason,
         this.equipmentsRequest.value.objective,
         this.equipmentsRequest.value.typeEquipment,
         this.equipmentsRequest.value.learningGroups,
-        // this.equipmentsRequest.value.majorList,
-        this.majorList.value,
+        this.equipmentsRequest.value.majorList,
+        // this.majorList.value,
         this.equipmentsRequest.value.budget,
         this.equipmentsRequest.value.necessary,
         this.equipmentsRequest.value.existEquipment,
@@ -262,7 +301,11 @@ filteredOptions: Observable<string[]>;
       const note = '';
       // Notification
       this.notifiedService.addNotification(type, status, detail, note);
-      Swal.fire('บันทึกรายการเรียบร้อย', 'You submitted succesfully!', 'success');
+      Swal.fire(
+        'บันทึกรายการเรียบร้อย',
+        'You submitted succesfully!',
+        'success'
+      );
       // this._snackBar.open('เพิ่มข้อมูลเรียบร้อย', 'ปิด', {
       //   duration: 5000,
       //   horizontalPosition: this.horizontalPosition,
@@ -291,7 +334,12 @@ filteredOptions: Observable<string[]>;
         '',
         ''
       );
-      Swal.fire('บันทึกรายการแก้ไขเรียบร้อย', 'You submitted succesfully!', 'success');
+      this.router.navigate(['/requestEquipment']);
+      Swal.fire(
+        'บันทึกรายการแก้ไขเรียบร้อย',
+        'You submitted succesfully!',
+        'success'
+      );
       // this._snackBar.open('แก้ไขข้อมูลเรียบร้อย', 'ปิด', {
       //   duration: 5000,
       //   horizontalPosition: this.horizontalPosition,

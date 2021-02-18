@@ -2,7 +2,77 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <mat-tab-group>
             <mat-tab label="ข้อมูลผู้ใช้งาน">
-                <table class="table table-hover table-responsive-md">
+                <div class="container">
+                    <div class="row">
+                        <form class="example-form " *ngFor="let user of dataUser">
+                            <div class="image-preview">
+                                <img [src]="user.avatar" [alt]="user.firstName">
+                            </div>
+                            <mat-card>
+                                <table class="example-full-width" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <mat-label>ชื่อ</mat-label>
+                                                <input matInput disabled value="{{ user.firstName }}">
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <mat-label>นามสกุล</mat-label>
+                                                <input matInput disabled value="{{ user.lastName }}">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <mat-label>อีเมง</mat-label>
+                                                <input matInput disabled value="{{ user.email }}">
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <mat-label>โทรศัพท์</mat-label>
+                                                <input matInput disabled value="{{ user.phone }}">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
+                                                <input matInput disabled value="{{ user.department }}">
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <mat-label>ตำแหน่ง</mat-label>
+                                                <input matInput disabled value="{{ user.position }}">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </mat-card>
+
+                            <!-- <div class="col-6">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Company (disabled)</mat-label>
+                                    <input matInput disabled value="{{ user.firstName }}">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Company (disabled)</mat-label>
+                                    <input matInput disabled value="{{ user.lastName }}">
+                                </mat-form-field>
+                            </div> -->
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- <table class="table table-hover table-responsive-md">
                     <thead class="thead-dark text-center">
                         <th>ชื่อ - นามสกุล</th>
                         <th>ตำแหน่ง</th>
@@ -19,14 +89,14 @@
                             <td>{{ user.phone }}</td>
                             <td><span class="dot success"></span> {{ user.permission }}</td>
                             <td><button mat-button (click)="ondeleteUser(user._id,user.firstName)"><mat-icon>delete</mat-icon> </button>
-                                <!-- <button *ngIf="user.permission === 'anonymous'" mat-button (click)="verified(user._id, user.firstName)"><mat-icon>verified_user</mat-icon> </button> -->
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
             </mat-tab>
             <mat-tab label="แก้ไขข้อมูลผู้ใช้งาน">
                 <div class="col-md-12">
+                    <!-- <div *ngFor="let user of dataUser"> -->
                     <form style="padding: 10px 20px;" [formGroup]="formUserData">
                         <div class="form-row mb-4">
                             <div class="col">
@@ -112,6 +182,7 @@
 
                         {{ formUserData.value | json }}
                     </form>
+                    <!-- </div> -->
                 </div>
             </mat-tab>
         </mat-tab-group>

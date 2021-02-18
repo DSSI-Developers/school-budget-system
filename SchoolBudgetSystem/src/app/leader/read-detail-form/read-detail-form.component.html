@@ -14,7 +14,7 @@
                                     <mat-card>
                                         <h4>ข้อมูลผู้รับผิดชอบ</h4>
                                         <hr>
-                                        <p>ชื่อ - นามสกุล : {{firstName}} {{lastName}}</p>
+                                        <p>ชื่อ - นามสกุล : {{fetchFirstName}} {{fetchLastName}}</p>
                                         <p>ตำแหน่ง : {{ position }}</p>
                                         <p>กลุ่มสาระการเรียนรู้ : {{ learningGroup }}</p>
                                     </mat-card>
@@ -37,7 +37,7 @@
                                         <p>เกณฑ์ความจำเป็นที่ควรมี : {{ condition }}</p>
                                         <p>อุปกรณ์ที่มีอยู่ : {{ existEquipment }}</p>
                                         <p>เหตุผลเพิ่มเติม : {{ otherReason }}</p>
-                                        <p>วันที่เอกสาร : {{dateProject}}</p>
+                                        <p>วันที่เอกสาร : {{dateProject | date: "meduim"}}</p>
                                         <p>เงื่อไขการขอ : </p>
                                         <form [formGroup]="conditionValue">
                                             <mat-radio-group formControlName="condition">
@@ -109,6 +109,7 @@
                                                                 &nbsp;
                                                                 <mat-radio-button value="ไม่อนุมัติเห็นชอบโครงการนี้">ไม่อนุมัติเห็นชอบโครงการนี้
                                                                 </mat-radio-button>
+                                                                <mat-error *ngIf="formApprove.value.invalid">กรุณากรอกข้อมูล</mat-error>
                                                             </mat-radio-group>
                                                             <!-- <div class="col-md-6 text-center">
                                                             <mat-radio-button value="auto">อนุมัติเห็นชอบโครงการนี้</mat-radio-button>
@@ -125,6 +126,7 @@
                                                                 <mat-form-field appearance="outline">
                                                                     <mat-label>เหตุผลเพิ่มเติม</mat-label>
                                                                     <textarea matInput rows="3" placeholder="เหตุผลประกอบการพิจารณา" formControlName="approveReason"></textarea>
+                                                                    <mat-error *ngIf="formApprove.invalid">กรุณากรอกข้อมูล</mat-error>
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-12">
@@ -135,7 +137,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 text-center">
-                                                        <button class="btn btn-success text-center" (click)="approveProject()" type="button">บันทึกข้อมูลพร้อมรายงานการแจ้งเตือน</button>
+                                                        <button class="btn btn-success text-center" [disabled]="formApprove.invalid" (click)="approveProject()" type="button">บันทึกข้อมูลพร้อมรายงานการแจ้งเตือน</button>
                                                     </div>
                                                 </div>
                                             </form>

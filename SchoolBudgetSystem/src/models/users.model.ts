@@ -4,7 +4,7 @@ export interface Users {
     lastName: string,
     email: string,
     password: string,
-    phone: number,
+    phone: string,
     position: string,
     department: string,
     role: string,

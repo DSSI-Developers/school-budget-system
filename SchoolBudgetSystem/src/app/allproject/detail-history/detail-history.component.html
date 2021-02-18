@@ -3,9 +3,14 @@
     <hr>
     <h3>รายละเอียดรายการ : {{ item.majorList }}</h3>
 
-    <p>
-        <a class="success"> </a>
-        สถานะโครงการ : {{ item.status }}
+    <p *ngIf="item.status == 'ผ่านการอนุมัติ'">
+        <span class="dot success"></span> สถานะโครงการ : {{ item.status }}
+    </p>
+    <p *ngIf="item.status == 'กำลังดำเนินการ'">
+        <span class="dot pending"></span> สถานะโครงการ : {{ item.status }}
+    </p>
+    <p *ngIf="item.status == 'ไม่ผ่านการอนุมัติ'">
+        <span class="dot reject"></span> สถานะโครงการ : {{ item.status }}
     </p>
 
 
@@ -28,14 +33,14 @@
             <th>รายการครุภัณฑ์ย่อย</th>
             <th>ราคาต่อหน่วย</th>
             <th>จำนวนหน่วย</th>
-            <th>งบประมาณ</th>
+            <th>ราคา</th>
         </thead>
         <tbody class="text-center">
             <tr *ngFor="let itemDetail of detail">
                 <td class="table-active">{{ itemDetail.equipmentName }}</td>
-                <td class="table-active">{{ itemDetail.budgetPerPrice }}</td>
+                <td class="table-active">{{ itemDetail.budgetPerPrice | number }}</td>
                 <td class="table-active">{{ itemDetail.unit }}</td>
-                <td class="table-active">{{ itemDetail.budget }}</td>
+                <td class="table-active">{{ itemDetail.budget | number}}</td>
             </tr>
         </tbody>
     </table>

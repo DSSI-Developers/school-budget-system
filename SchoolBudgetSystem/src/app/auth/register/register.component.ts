@@ -30,9 +30,9 @@ interface Department {
 export class RegisterComponent implements OnInit {
   durationInSeconds = 3;
   posite: Position[] = [
-    { value: 'USER', viewValue: 'ครู' },
+    { value: 'ครู', viewValue: 'ครู' },
     {
-      value: 'LEADER',
+      value: 'หัวหน้ากลุ่มสาระการเรียนรู้',
       viewValue: 'หัวหน้ากลุ่มสาระการเรียนรู้',
     },
   ];
@@ -69,6 +69,7 @@ export class RegisterComponent implements OnInit {
     },
   ];
 
+  userRole: string;
   // formUserData: FormGroup;
   formUserData = this.fb.group({
     firstName: ['', [Validators.required]],
@@ -79,7 +80,7 @@ export class RegisterComponent implements OnInit {
     phone: ['', [Validators.required]],
     position: ['', [Validators.required]],
     department: ['', [Validators.required]],
-    role: ['USER'],
+    role: [''],
     avatar: [''],
     permission: ['anvonymous'],
   });
@@ -96,40 +97,54 @@ export class RegisterComponent implements OnInit {
     if (this.formUserData.value.phone.length < 10) {
       window.alert('หมายเลขโทรศัพท์ไม่ครบ 10 หลัก');
     }
+    if (this.formUserData.value.position == 'ครู') {
+      // USER
+      this.formUserData.value.role = 'USER';
+      this.userRole = 'USER';
+      const user = {
+        data: this.formUserData.value,
+      };
+      this.usersServices.userSignup(
+        this.formUserData.value.firstName,
+        this.formUserData.value.lastName,
+        this.formUserData.value.email,
+        this.formUserData.value.password,
+        this.formUserData.value.phone,
+        this.formUserData.value.position,
+        this.formUserData.value.department,
+        // this.formUserData.value.role,
+        this.userRole,
+        this.formUserData.value.avatar,
+        this.formUserData.value.permission
+      );
+      console.log(this.formUserData.value.role );
+    } else {
+      // LEADER
+      this.userRole = 'LEADER';
+      this.formUserData.value.role  = 'LEADER';
+      const user = {
+        data: this.formUserData.value,
+      };
+      this.usersServices.userSignup(
+        this.formUserData.value.firstName,
+        this.formUserData.value.lastName,
+        this.formUserData.value.email,
+        this.formUserData.value.password,
+        this.formUserData.value.phone,
+        this.formUserData.value.position,
+        this.formUserData.value.department,
+        // this.formUserData.value.role,
+        this.userRole,
+        this.formUserData.value.avatar,
+        this.formUserData.value.permission
+      );
 
-    // this.formUserData = new FormGroup({
-    //   firstName: new FormControl(null, { validators: [Validators.required] }),
-    //   lastName: new FormControl(null, { validators: [Validators.required] }),
-    //   email: new FormControl(null, { validators: [Validators.required] }),
-    //   password: new FormControl(null, { validators: [Validators.required] }),
-    //   confirm_password: new FormControl(null, {
-    //     validators: [Validators.required],
-    //   }),
-    //   phone: new FormControl(null, { validators: [Validators.required] }),
-    //   position: new FormControl(null, { validators: [Validators.required] }),
-    //   department: new FormControl(null, { validators: [Validators.required] }),
-    //   role: new FormControl(null, { validators: [Validators.required] }),
-    //   avatar: new FormControl(null, { validators: [Validators.required] }),
-    //   permission: new FormControl(null, { validators: [Validators.required] }),
-    // });
-    const user = {
-      data: this.formUserData.value,
-    };
-    this.usersServices.userSignup(
-      this.formUserData.value.firstName,
-      this.formUserData.value.lastName,
-      this.formUserData.value.email,
-      this.formUserData.value.password,
-      this.formUserData.value.phone,
-      this.formUserData.value.position,
-      this.formUserData.value.department,
-      this.formUserData.value.role,
-      this.formUserData.value.avatar,
-      this.formUserData.value.permission
-    );
-    // console.log(user);
-    // console.log(this.formUserData.value);
-    // console.log(`Data from form register :${this.formUserData.value}`);
+      // Debug data
+      console.log(user);
+      console.log(this.formUserData.value);
+      console.log(`Data from form register :${this.formUserData.value}`);
+      console.log(this.formUserData.value.role );
+    }
   }
 
   openSnackBar() {

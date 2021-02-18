@@ -1,12 +1,8 @@
 const Users = require('../models/users.model')
-const usersMockup = require('../mockup-data/usersMockup.json');
-const { randomString } = require("../helpers/common");
-const { validationResult } = require("express-validator");
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const express = require('express');
-const config = require('../config/database');
+
 
 // const jwt = require("jsonwebtoken");
 // const fs = require('fs');
@@ -28,6 +24,7 @@ const config = require('../config/database');
     -> Edit position user 
     -> Approve users permission
 */
+
 
 // User register
 exports.usersRegister = async(req, res, next) => {
@@ -220,7 +217,6 @@ exports.deleteUser = (req, res) => {
         });
 }
 
-
 // Verified User 
 exports.verfiedUser = (req, res, next) => {
     const id = req.params.id;
@@ -255,39 +251,105 @@ exports.deleteAllUser = (req, res) => {
 }
 
 
-const UserTest = require('../models/userTest');
-const fs = require('fs');
+// const UserTest = require('../models/userTest');
+// const fs = require('fs');
 
-exports.drumpUsers = (req, res, next) => {
-    res.status(201).json({
-        message: "Drump user work"
-    });
-}
+// exports.drumpUsers = (req, res, next) => {
+//     res.status(201).json({
+//         message: "Drump user work"
+//     });
+// }
 
 // Edit position user 
-// exports.editPositionuser = () => {
-//     if (!req.body) {
-//         return res.status(400).send({
-//             message: "Data to update can not be empty!"
-//         });
-//     }
+exports.editProfile = (req, res, next) => {
+    // const url = req.protocol + "://" + req.get("host");
+    let imagePath = req.body.imagePath;
+    console.log(req.file);
+    if (req.file) {
+        const url = req.protocol + "://" + req.get("host");
+        imagePath = url + "/images/" + req.file.filename;
+    }
 
-//     const id = req.params.id;
+    // Edit part
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Data to update can not be empty!"
+        });
+    }
 
-//     Users.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-//         .then(data => {
-//             if (!data) {
-//                 res.status(404).send({
-//                     message: `Cannot update User with id=${id}. Maybe User was not found!`
-//                 });
-//             } else res.send({ message: "Tutorial was updated successfully." });
-//         })
-//         .catch(err => {
-//             res.status(500).send({
-//                 message: "Error updating Tutorial with id=" + id
-//             });
-//         });
-// }
+    const id = req.params.id;
+    console.log(req.file);
+    console.log(imagePath);
+    const user = {
+        id: req.body.id,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        phone: req.body.phone,
+        position: req.body.position,
+        department: req.body.department,
+        role: req.body.role,
+        avatar: imagePath
+    };
+    // avatar: url + "/images/" + req.file.filename
+
+    // console.log(id);
+    console.log(imagePath);
+    console.log(user);
+    // return res.status(200).json({
+    //     message: "Success"
+    // });
+
+    Users.findOneAndUpdate(id, user, { useFindAndModify: false })
+        .then((result => {
+            console.log(result);
+            res.status(201).json({
+                message: `Updated data ${result}`,
+                response: result
+            });
+        }))
+        .catch(err => {
+            console.log(err);
+            res.status(401).json({
+                message: "ไม่สามารถแก้ไขขอมูลได้ " + err
+            });
+        });
+    // .then(result => {
+    //     res.status(200).json({
+    //         message: "Update successful!",
+    //         response: result
+    //     });
+    //     // if (result.n > 0) {
+    //     // } else {
+    //     //     res.status(401).json({ message: "Not authorized!" });
+    //     // }
+    // })
+    // .catch(error => {
+    //     console.log(error);
+    //     res.status(500).json({
+    //         message: error
+    //     });
+    // });
+
+    // Users.findByIdAndUpdate(id, user, { useFindAndModify: false })
+    //     .then(data => {
+    //         if (!data) {
+    //             res.status(404).json({
+    //                 message: `Cannot update User with id=${id}. Maybe User was not found!`
+    //             });
+    //         } else res.json({ message: "Tutorial was updated successfully." });
+    //     })
+    //     .catch(err => {
+    //         res.status(500).json({
+    //             message: "Error updating user detail with id=" + id,
+    //             response: err
+    //         });
+    //     });
+}
+
+
+
+
 
 // Approve users permission
 // exports.approveUser = (req, res, next) => {

@@ -74,6 +74,15 @@
                         <p class="card-category">รายการโครงการทั้งหมดที่เสนอ (โครงการทั้งหมดจะเรียงลำดับจากข้อมูลล่าสุก่อน)</p>
                     </div>
                     <div class="card-body table-responsive">
+                        <div class="col-12">
+                            <!-- <form>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>ค้นหา</mat-label>
+                                    <input matInput placeholder="ปี พ.ศ. | หมวดหมู่ | สถานะ" name="searchEquipment" [(ngModel)]="searchEquipment">
+                                    <mat-icon matSuffix type="submit">search</mat-icon>
+                                </mat-form-field>
+                            </form> -->
+                        </div>
                         <table class="table table-hover">
                             <thead class="text-center">
                                 <th>ลำดับ</th>
@@ -85,14 +94,14 @@
                                 <th></th>
                             </thead>
                             <tbody class="text-center">
-                                <tr *ngFor="let allData of document; let i = index">
+                                <tr *ngFor="let allData of document | filter:searchEquipment index as i">
                                     <td>{{ i+1 }}</td>
                                     <!-- <td>{{ allData.typeEquipments }}</td> -->
                                     <td class="text-left">{{ allData.majorList }}</td>
-                                    <td>{{ allData.budget }}</td>
+                                    <td class="text-left">{{ allData.budget | number }}</td>
                                     <td>{{ allData.necessary }}</td>
                                     <td>{{ allData.status }}</td>
-                                    <td><button mat-raised-button type="button" (click)="generatePdf()"><mat-icon>insert_drive_file</mat-icon> PDF</button></td>
+                                    <td *ngIf="allData.status === 'ผ่านการอนุมัติ'"><button mat-raised-button type="button" (click)="generatePdf()"><mat-icon>insert_drive_file</mat-icon> PDF</button></td>
                                 </tr>
                             </tbody>
                         </table>

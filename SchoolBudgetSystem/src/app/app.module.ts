@@ -49,6 +49,10 @@ import { ErrorInterceptor } from './services/error-interceptor';
 
 // import { CKEditorModule } from 'ng2-ckeditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+// import { ManageEquipmentsComponent } from './admin/manage-equipments/manage-equipments.component';
+
+// import { ThaiDatePipe } from './directives/thaidate.pipe';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,

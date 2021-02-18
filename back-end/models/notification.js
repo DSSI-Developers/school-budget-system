@@ -13,7 +13,6 @@ const notification = mongoose.Schema({
     },
     detail: {
         type: String,
-        minLength: 5,
         maxLength: 200
     },
     note: {

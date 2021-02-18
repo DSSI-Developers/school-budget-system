@@ -11,15 +11,18 @@ exports.pushNotification = (req, res, next) => {
     });
     console.log(notic);
     if (!notic) {
-        res.status(401).send({
-            msg: "Don't have data"
+        res.status(401).json({
+            message: "Don't have data"
         });
     }
     notic.save().then((data) => {
-        res.send(data);
+        // res.send(data);
+        res.status(201).json({
+            message: data
+        });
     }).catch(err => {
-        res.status(500).send({
-            msg: err.msg || "Some error occurred while create the Notification"
+        res.status(401).json({
+            message: err.message || "ไม่สามารถสร้างการเเจ้งเตือนได้ Notification"
         });
     });
 }
@@ -32,7 +35,7 @@ exports.getOneNotification = (req, res, next) => {
         } else res.send(data);
     }).catch(err => {
         res.status(500).json({ msg: "Error get notification" + err })
-    })
+    });
 }
 
 exports.getAllNotification = (req, res, next) => {

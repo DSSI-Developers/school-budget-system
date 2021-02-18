@@ -1,4 +1,55 @@
-mat-tab-group {
+/* mat-tab-group {
     max-width: 1000px;
     min-width: 750px;
+} */
+
+
+/* example-full-width {
+    width: 100%;
+    margin: auto;
+} */
+
+.image-preview {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
+
+.image-preview img {
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+}
+
+mat-card {
+    margin: 2rem;
+}
+
+.example-full-width-one-line {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.example-form {
+    min-width: 100%;
+    max-width: 100%;
+    width: 100%;
+    margin: 5px;
+}
+
+.example-full-width {
+    width: 100%;
+    margin: auto;
+}
+
+
+/* example-full-width-table {
+    max-width: 100%;
+} */
+
+
+/* .user-profile {
+    margin-top: 5px;
+} */

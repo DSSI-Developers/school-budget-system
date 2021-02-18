@@ -1,4 +1,4 @@
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder, FormGroup , FormControl} from "@angular/forms";
 import { Component, OnInit, Input, Inject } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
@@ -42,6 +42,7 @@ export class UserDetailComponent implements OnInit {
       value: "หัวหน้ากลุ่มสาระการเรียนรู้",
       viewValue: "หัวหน้ากลุ่มสาระการเรียนรู้",
     },
+    { value: "ผู้ดูแลระบบ", viewValue: "ผู้ดูแลระบบ" },
   ];
 
   departments: Department[] = [
@@ -76,12 +77,12 @@ export class UserDetailComponent implements OnInit {
     },
   ];
 
+  // formUserData: FormGroup;
+
   formUserData = this.fb.group({
     firstName: ["", [Validators.required]],
     lastName: ["", [Validators.required]],
     email: ["", [Validators.required, Validators.email]],
-    // password: ['', [Validators.required]],
-    // confirm_password: ['', [Validators.required]],
     phone: ["", [Validators.required]],
     position: ["", [Validators.required]],
     department: ["", [Validators.required]],
@@ -91,6 +92,15 @@ export class UserDetailComponent implements OnInit {
   });
   dataUser;
 
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  position: string;
+  department: string;
+  role: string;
+  avatar: any;
+  permission: any;
   // @Input("passingData") passingData: Array<any>;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { user: string },
@@ -100,6 +110,27 @@ export class UserDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const userID =  this.usersService.getUserId();
+    console.log(userID);
+    this.usersService.getUserDetail(userID).subscribe((userDetail) => {
+      console.log(userDetail);
+      this.firstName = userDetail.data.firstName;
+      this.lastName = userDetail.data.lastName;
+      this.email = userDetail.data.email;
+      this.phone = userDetail.data.phone;
+      this.position = userDetail.data.position;
+      this.department = userDetail.data.department;
+      this.avatar = userDetail.data.avatar;
+      this.permission = userDetail.data.permission;
+    });
+    // this.formUserData.setValue({
+    //   firstName: this.firstName,
+    //   lastName: this.lastName,
+    //   email: this.email,
+    //   phone: this.phone,
+    //   position: this.position,
+    //   department: this.department
+    // });
     this.dataUser = this.data.user;
     console.log(`User ID in dialog component: ${this.data.user}`);
   }
@@ -112,36 +143,36 @@ export class UserDetailComponent implements OnInit {
     this.dialog.closeAll();
   }
 
-  // editUser() {
-  //   console.log(this.formUserData.value);
-  //   window.alert(this.formUserData.value);
+  editUser() {
+    console.log(this.formUserData.value);
+    window.alert(this.formUserData.value);
+  }
+
+  // editUser(id: string, firstName: string) {
+  //   const valueConfirm = window.confirm(
+  //     `ต้องการ verified ${firstName} หรือไม่`
+  //   );
+  //   if (valueConfirm === true) {
+  //     this.dataUser.forEach((fied) => {
+  //       console.log(fied);
+  //       this.usersService.editUser(
+  //         fied._id,
+  //         fied.firstName,
+  //         fied.lastName,
+  //         fied.email,
+  //         fied.password,
+  //         fied.phone,
+  //         fied.position,
+  //         fied.department,
+  //         fied.role,
+  //         fied.avatar,
+  //         fied.permission
+  //       );
+  //     });
+  //     console.log('Verified');
+  //   } else {
+  //     console.log('Cancle verified');
+  //   }
   // }
 
-  editUser(id: string, firstName: string) {
-    const valueConfirm = window.confirm(
-      `ต้องการ verified ${firstName} หรือไม่`
-    );
-    if (valueConfirm === true) {
-      this.dataUser.forEach((fied) => {
-        console.log(fied);
-        this.usersService.editUser(
-          fied._id,
-          fied.firstName,
-          fied.lastName,
-          fied.email,
-          fied.password,
-          fied.phone,
-          fied.position,
-          fied.department,
-          fied.role,
-          fied.avatar,
-          fied.permission
-        );
-      });
-      console.log('Verified');
-    } else {
-      console.log('Cancle verified');
-    }
-    console.log(id);
-  }
 }

@@ -1,3 +1,4 @@
+import { NotifiedService } from './../../services/notified.service';
 import { SubEquipments } from './../../../models/sub-equipments.model';
 import { SubEquipmentsService } from './../../services/sub-equipments.service';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -9,12 +10,14 @@ import { UsersService } from "app/services/users.service";
 import { Subscription } from "rxjs";
 import { param } from "jquery";
 
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
 @Component({
   selector: "app-read-detail-form",
   templateUrl: "./read-detail-form.component.html",
   styleUrls: ["./read-detail-form.component.css"],
 })
-export class ReadDetailFormComponent implements OnInit {
+export class ReadDetailFormComponent implements OnInit, OnDestroy {
   listOfProject = [
     {
       no: "1",
@@ -67,14 +70,16 @@ export class ReadDetailFormComponent implements OnInit {
   constructor(
     private userServices: UsersService,
     private router: ActivatedRoute,
+    private route: Router,
     private equipmentService: EquipmentsService,
-    private subServices: SubEquipmentsService
+    private subServices: SubEquipmentsService,
+    private notifiedService: NotifiedService
   ) {}
 
   ngOnInit(): void {
     this.formApprove = new FormGroup({
-      approveCondition : new FormControl(null),
-      approveReason: new FormControl(null),
+      approveCondition : new FormControl(null, {validators: [Validators.required]}),
+      approveReason: new FormControl(null, {validators: [Validators.required, Validators.min(5)]}),
     })
     this.conditionValue = new FormGroup({
       condition: new FormControl(null, { validators: [] }),
@@ -97,29 +102,31 @@ export class ReadDetailFormComponent implements OnInit {
     this.router.paramMap.subscribe((paramMap) => {
       const equipmentId = paramMap.get("equipmentId");
       this.equipmentService.getOneEquipment(equipmentId).subscribe((data) => {
-        this.equipmentId = data._id;
-        this.dataDetail = data;
-        this.budget = data.budget;
-        this.condition = data.condition;
-        this.dateProject = data.dateProject;
-        this.existEquipment = data.existEquipment;
-        this.firstName = data.firstName;
-        this.lastName = data.lastName;
-        this.learningGroup = data.learningGroup;
-        this.learningGroups = data.learningGroups;
-        this.majorList = data.majorList;
-        this.necessary = data.necessary;
-        this.objective = data.objective;
-        this.otherReason = data.otherReason;
-        this.position = data.position;
-        this.reason = data.reason;
-        this.status = data.status;
-        this.subjectTeach = data.subjectTeach;
+        this.equipmentId = data.response._id;
+        this.dataDetail = data.response;
+        this.budget = data.response.budget;
+        this.condition = data.response.condition;
+        this.dateProject = data.response.dateProject;
+        this.existEquipment = data.response.existEquipment;
+        this.firstName = data.response.firstName;
+        this.lastName = data.response.lastName;
+        this.learningGroup = data.response.learningGroup;
+        this.learningGroups = data.response.learningGroups;
+        this.majorList = data.response.majorList;
+        this.necessary = data.response.necessary;
+        this.objective = data.response.objective;
+        this.otherReason = data.response.otherReason;
+        this.position = data.response.position;
+        this.reason = data.response.reason;
+        this.status = data.response.status;
+        this.subjectTeach = data.response.subjectTeach;
+        console.log(this.dataDetail);
+
 
         this.conditionValue.setValue({
-          condition: this.dataDetail.condition,
+          condition: this.condition
         });
-        this.subServices.getEquipmentBySunId(this.equipmentId);
+        this.subServices.getEquipmentBySubId(this.equipmentId);
         this.subequipment_group = this.subServices.subEquipmentListenUpdate().subscribe((value: SubEquipments[]) => {
           this.subEquipmentList = value;
           console.log('Sub Equipment : ', this.subEquipmentList);
@@ -130,32 +137,56 @@ export class ReadDetailFormComponent implements OnInit {
   }
 
   approveProject() {
-    if (this.formApprove.value.approveCondition === 'อนุมัติเห็นชอบโครงการนี้') {
-      this.status = 'สำเร็จ';
-    } else {
-      this.status  = 'ไม่สำเร็จ';
-    }
-    this.equipmentService.editEquipment(
-      this.equipmentId,
-      this.firstName,
-      this.lastName,
-      this.position,
-      this.learningGroup,
-      this.subjectTeach,
-      this.reason,
-      this.objective,
-      this.typeEquipment,
-      this.learningGroups,
-      this.majorList,
-      this.budget,
-      this.necessary,
-      this.existEquipment,
-      this.otherReason,
-      this.dateProject,
-      this.condition,
-      this.status,
-      this.formApprove.value.approveCondition,
-      this.formApprove.value.approveReason
-    );
+    Swal.fire({
+      title: 'คุณต้องการอนุมัติโครงการนี้ ?',
+      text: 'หากอนุมัติโครงการแล้วจะไม่สามารถเปลี่ยนหรือแก้ไขข้อมูลได้ !',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'ตกลง',
+      cancelButtonText: 'ยกเลิก',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.formApprove.value.approveCondition === 'อนุมัติเห็นชอบโครงการนี้') {
+          this.status = 'ผ่านการอนุมัติ';
+        } else {
+          this.status  = 'ไม่ผ่านการอนุมัติ';
+        }
+        this.equipmentService.editEquipment(
+          this.equipmentId,
+          this.firstName,
+          this.lastName,
+          this.position,
+          this.learningGroup,
+          this.subjectTeach,
+          this.reason,
+          this.objective,
+          this.typeEquipment,
+          this.learningGroups,
+          this.majorList,
+          this.budget,
+          this.necessary,
+          this.existEquipment,
+          this.otherReason,
+          this.dateProject,
+          this.condition,
+          this.status,
+          this.formApprove.value.approveCondition,
+          this.formApprove.value.approveReason
+        );
+
+        const note = '';
+        // Add notification
+        this.notifiedService.addNotification(this.typeEquipment, this.status, this.majorList, this.formApprove.value.approveReason );
+        this.route.navigate(['/readForm']);
+        Swal.fire('อนุมัติโครงการสำเร็จ', 'You submitted succesfully!', 'success');
+      } else if (result.isDismissed) {
+
+      }
+    });
+  }
+
+
+  ngOnDestroy() {
+    this.subequipment_group.unsubscribe();
   }
 }

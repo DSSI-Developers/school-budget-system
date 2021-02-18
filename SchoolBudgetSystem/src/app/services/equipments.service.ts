@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 export class EquipmentsService {
   private equipments: Equipments[] = [];
   private equipmentUpdated = new Subject<Equipments[]>();
@@ -18,7 +19,7 @@ export class EquipmentsService {
 
   getAllEquipments() {
     // เพิ่ม User ID ด้วย
-    return this._http.get<{ data: any }>(
+    return this._http.get<{ data: any  }>(
       'http://localhost:8080/mainEquipment/getAllEquipments'
     ).subscribe((data) => {
       console.log(data);
@@ -27,28 +28,41 @@ export class EquipmentsService {
     });
   }
 
+  getAllEquipmentsByPag(postsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
+    return this._http.get<{ data: any , maxPosts: number }>(
+      'http://localhost:8080/mainEquipment/getAllEquipmentsByPage' +  queryParams
+    ).subscribe((data) => {
+      console.log(data);
+      this.equipments = data.data;
+      this.equipmentUpdated.next([...this.equipments]);
+    });
+  }
+
   getOneEquipment(equipmentsId: string) {
+      // _id: string,
+      // firstName: string,
+      // lastName: string,
+      // position: string,
+      // learningGroup: string,
+      // subjectTeach: string,
+      // reason: string,
+      // objective: string,
+      // typeEquipments: string,
+      // learningGroups: string,
+      // majorList: string,
+      // budget: number,
+      // necessary: number,
+      // existEquipment: number,
+      // otherReason: string,
+      // dateProject: Date,
+      // condition: string,
+      // status: string
+      // approveCondition: string,
+      // approveReason: string,
     return this._http.get<{
-      _id: string,
-      firstName: string,
-      lastName: string,
-      position: string,
-      learningGroup: string,
-      subjectTeach: string,
-      reason: string,
-      objective: string,
-      typeEquipments: string,
-      learningGroups: string,
-      majorList: string,
-      budget: number,
-      necessary: number,
-      existEquipment: number,
-      otherReason: string,
-      dateProject: Date,
-      condition: string,
-      status: string
-      approveCondition: string,
-      approveReason: string,
+      message: string,
+      response: any
     }>(
       'http://localhost:8080/mainEquipment/getOneEquipment/' + equipmentsId
     );
@@ -64,6 +78,11 @@ export class EquipmentsService {
   // จะเอาข้อมูล Equipment ทั้งหมด มาหา ID ที่ตรงกัน เเล้ว return กลับ
   getEquipment(id: string) {
     return this._http.get<{message: string, data: any }>('http://localhost:8080/mainEquipment/getAllEquipments');
+    // return { ...this.equipments.find((data) => data._id === id) };
+  }
+
+  getEquipmentByName(name: string) {
+    return this._http.get<{message: string, data: any }>('http://localhost:8080/mainEquipment/getEquipmentByName/' + name);
     // return { ...this.equipments.find((data) => data._id === id) };
   }
 
@@ -172,8 +191,8 @@ export class EquipmentsService {
       .subscribe((responseData) => {
         const message = 'Success';
         console.log('Edit data success');
-        this.router.navigate(['/requestEquipment']);
-      },(error) => {
+        // this.router.navigate(['/requestEquipment']);
+      }, (error) => {
         console.log('Error');
       });
   }

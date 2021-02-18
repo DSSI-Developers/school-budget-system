@@ -1,3 +1,7 @@
+.card .card-stats {
+    min-height: 250px;
+}
+
 .dot {
     height: 15px;
     width: 15px;
