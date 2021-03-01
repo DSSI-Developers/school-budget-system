@@ -1,12 +1,10 @@
 import { Subscription } from 'rxjs/Subscription';
-import { map } from 'rxjs/operators';
+
 import { Equipments } from './../../models/equipments.model';
 import { EquipmentsService } from './../services/equipments.service';
 import { MoreDetailComponent } from './more-detail/more-detail.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as Chartist from 'chartist';
 import {MatDialog} from '@angular/material/dialog';
-import { Subject } from 'rxjs';
 
 
 // Export PDF 
@@ -21,9 +19,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  // allProject: DurableArticles[] = [
-  // {no: '1', list: 'Project', unit: 2, unitMany: 2, priceUnit: 2000, projectStatus: 'สำเร็จ'},
-  // ];
 
   equipments: Equipments[] = [];
   successEquipments: Equipments[] = [];
@@ -39,9 +34,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userId: string;
   statusDetail;
   document: any;
-
-
-  e: string = 'Test';
 
   searchEquipment: string;
   constructor(public dialog: MatDialog, private equipmentServices: EquipmentsService, private userServices: UsersService) { }
@@ -65,7 +57,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.countPending = this.pendingEquipments.length;
       this.countFailed = this.failedEquipments.length;
       
-      console.log(this.successEquipments);
     });
   }
 
@@ -165,17 +156,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     pdfMake.createPdf(dd).open();
   }
 
-  moreDetail(status: string) {
+  moreDetail(status: any) {
     this.statusDetail = status;
+    console.log('Status : ', this.statusDetail);
     const dialogRef = this.dialog.open(MoreDetailComponent, {
       data: {
         data: this.statusDetail
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
   }
   ngOnDestroy(): void {
 

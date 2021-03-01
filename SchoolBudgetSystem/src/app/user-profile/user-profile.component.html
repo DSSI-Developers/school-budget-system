@@ -10,15 +10,19 @@
                                 <div class="col-md-4">
                                     <div class="card card-profile">
                                         <div class="card-avatar">
-                                            <div *ngIf="avatar == ''">
-                                                <!-- {{ avatar }} -->
-                                                <!-- <img class="img" src="../assets/img/faces/marc.jpg" alt="ไม่เจอรูปภาพ" /> -->
+                                            <!-- <div *ngIf="imagePreview == '' || imagePreview == null || avatar === 'ADMIN' || avatar === 'USER' || avatar === 'LEADER'; else noImage"> -->
+                                            <div *ngIf="imagePreview !== '' || avatar !== 'ADMIN' && avatar !== 'USER' && avatar !== 'LEADER' ; else noImage">
+                                                <img class="img" [src]="imagePreview" [alt]="profile.value.firstName" />
                                             </div>
-
-                                            <div class="image-preview" *ngIf="avatar != '' && avatar != null && imagePreview !== '' && imagePreview && profile.get('avatar').valid">
+                                            <ng-template #noImage>
+                                                <img class="img" src="../assets/img/faces/no-image.png" [alt]="profile.value.firstName" />
+                                            </ng-template>
+                                            <!-- <div class="image-preview" *ngIf="avatar != '' && avatar != null && imagePreview !== '' && imagePreview && profile.get('avatar').valid; else noImage">
                                                 <img [src]="imagePreview" [alt]="profile.value.firstName">
                                             </div>
-
+                                            <ng-template #noImage>
+                                                <img class="img" [src]="imagePreview" [alt]="profile.value.firstName" />
+                                            </ng-template> -->
                                         </div>
                                         <div class="card-body">
                                             <p class="card-description">
@@ -95,11 +99,16 @@
                                                 <div class="row profile">
                                                     <div class="col-md-12">
                                                         <!-- <p class="card-category"><b>ตำแหน่ง : {{ position }}</b></p> -->
-                                                        <mat-form-field appearance="outline">
+                                                        <!-- <mat-form-field appearance="outline">
                                                             <mat-label>ตำแหน่ง</mat-label>
                                                             <input matInput type="text" formControlName="department" placeholder="ตำแหน่ง">
                                                             <mat-icon matSuffix>person</mat-icon>
-                                                            <!-- <mat-error *ngIf="profile.get('position').invalid">Please enter a position.</mat-error> -->
+                                                        </mat-form-field> -->
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>ตำแหน่ง</mat-label>
+                                                            <mat-select formControlName="department">
+                                                                <mat-option *ngFor="let item of departments" value="{{item.value}}">{{ item.viewValue }}</mat-option>
+                                                            </mat-select>
                                                         </mat-form-field>
                                                         <!-- </div>
                                                     <div class="col-md-6"> -->

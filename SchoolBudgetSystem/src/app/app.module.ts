@@ -19,7 +19,7 @@ import { RegisterComponent } from './auth/register/register.component';
 
 import { ValidateEqualModule } from 'ng-validate-equal';
 import { ExportPDFComponent } from './allproject/export-pdf/export-pdf.component';
-import { MoreDetailComponent } from './dashboard/more-detail/more-detail.component';
+// import { MoreDetailComponent } from './dashboard/more-detail/more-detail.component';
 
 
 // import { DashboardComponent } from './dashboard/dashboard.component';
@@ -49,13 +49,14 @@ import { ErrorInterceptor } from './services/error-interceptor';
 
 // import { CKEditorModule } from 'ng2-ckeditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 // import { ManageEquipmentsComponent } from './admin/manage-equipments/manage-equipments.component';
 
 // import { ThaiDatePipe } from './directives/thaidate.pipe';
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule,
+  BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -77,7 +78,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     LoginComponent,
     RegisterComponent,
     ExportPDFComponent,
-    MoreDetailComponent,
+    // MoreDetailComponent,
     ErrorComponent
   ],
   providers: [

@@ -90,6 +90,9 @@ export class UserDetailComponent implements OnInit {
     avatar: [""],
     permission: ["anonymous"],
   });
+
+  userprofile: FormGroup;
+
   dataUser;
 
   firstName: string;
@@ -101,7 +104,7 @@ export class UserDetailComponent implements OnInit {
   role: string;
   avatar: any;
   permission: any;
-  // @Input("passingData") passingData: Array<any>;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { user: string },
     public dialog: MatDialog,
@@ -110,6 +113,18 @@ export class UserDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.userprofile = new FormGroup({
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      email: new FormControl(''),
+      phone: new FormControl(''),
+      position: new FormControl(''),
+      department: new FormControl(''),
+      role: new FormControl(''),
+      avatar: new FormControl(''),
+      permission: new FormControl('')
+    });
+
     const userID =  this.usersService.getUserId();
     console.log(userID);
     this.usersService.getUserDetail(userID).subscribe((userDetail) => {
@@ -123,14 +138,18 @@ export class UserDetailComponent implements OnInit {
       this.avatar = userDetail.data.avatar;
       this.permission = userDetail.data.permission;
     });
-    // this.formUserData.setValue({
-    //   firstName: this.firstName,
-    //   lastName: this.lastName,
-    //   email: this.email,
-    //   phone: this.phone,
-    //   position: this.position,
-    //   department: this.department
-    // });
+    this.userprofile.patchValue({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      phone: this.phone,
+      position: this.position,
+      department: this.department,
+      role: this.role,
+      avatar: this.avatar,
+      permission: this.permission
+    });
+
     this.dataUser = this.data.user;
     console.log(`User ID in dialog component: ${this.data.user}`);
   }

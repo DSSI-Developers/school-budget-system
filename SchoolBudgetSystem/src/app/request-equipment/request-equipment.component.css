@@ -20,3 +20,7 @@
 .green {
     background-color: #bffd96;
 }
+
+p .info-text {
+    text-align: center;
+}

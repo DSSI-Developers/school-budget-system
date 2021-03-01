@@ -6,7 +6,6 @@ import { ManageUserComponent } from './../../admin/manage-user/manage-user.compo
 import { ManageSubEquipmentComponent } from './../../request-equipment/manage-sub-equipment/manage-sub-equipment.component';
 import { AddRequestEquipmentComponent } from './../../request-equipment/add-request-equipment/add-request-equipment.component';
 import { RequestEquipmentComponent } from './../../request-equipment/request-equipment.component';
-import { NewprojectComponent } from './../../newproject/newproject.component';
 import { AllprojectComponent } from './../../allproject/allproject.component';
 import { Routes } from '@angular/router';
 
@@ -16,6 +15,7 @@ import { UserProfileComponent } from '../../user-profile/user-profile.component'
 import { IconsComponent } from '../../icons/icons.component';
 // import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
+// import { NewprojectComponent } from './../../newproject/newproject.component';
 // import { UpgradeComponent } from '../../upgrade/upgrade.component';
 
 export const AdminLayoutRoutes: Routes = [
@@ -66,7 +66,7 @@ export const AdminLayoutRoutes: Routes = [
     // { path: 'icons',          component: IconsComponent },
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'allproject',  component: AllprojectComponent },
-    { path: 'newproject',  component: NewprojectComponent },
+    // { path: 'newproject',  component: NewprojectComponent },
     { path: 'requestEquipment',  component: RequestEquipmentComponent },
     { path: 'addRequestEquip',  component: AddRequestEquipmentComponent, canActivate: [AuthGuard] },
     { path: 'editRequestEquip/:equipmentId',  component: AddRequestEquipmentComponent, canActivate: [AuthGuard] },

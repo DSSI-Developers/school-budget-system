@@ -17,10 +17,16 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 <h5 class="card-title" *ngIf="notic.status == 'ผ่านการอนุมัติ'"><span class="dot success"></span> {{ notic.dateTime | thaidate: 'meduim' }}</h5>
-                                <h5 class="card-title" *ngIf="notic.status == 'กำลังดำเนินการ'"><span class="dot pending"></span> {{ notic.dateTime | thaidate:'full':'UTC'}}</h5>
-                                <h5 class="card-title" *ngIf="notic.status == 'ไม่ผ่านการอนุมัติ'"><span class="dot reject"></span> {{ notic.dateTime |thaidate }}</h5>
+                                <h5 class="card-title" *ngIf="notic.status == 'กำลังดำเนินการ'"><span class="dot pending"></span> {{ notic.dateTime | thaidate:'meduim'}}</h5>
+                                <h5 class="card-title" *ngIf="notic.status == 'ไม่ผ่านการอนุมัติ'"><span class="dot reject"></span> {{ notic.dateTime |thaidate: 'meduim' }}</h5>
                                 <hr>
                                 <p class="card-text">{{ notic.detail }}</p>
+                            </div>
+                        </div>
+                        <div class="card" *ngIf="document <= 0">
+                            <div class="card-body text-center">
+                                ไม่มีการแจ้งเตือน
+                                <!-- <p class="text-center"></p> -->
                             </div>
                         </div>
                     </div>

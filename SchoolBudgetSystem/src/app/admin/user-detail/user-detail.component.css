@@ -9,6 +9,19 @@
     margin: auto;
 } */
 
+div.ng-star-inserted {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1rem;
+}
+
+.img {
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+}
+
 .image-preview {
     display: flex;
     flex-direction: row;
@@ -16,14 +29,15 @@
     align-items: center;
 }
 
-.image-preview img {
+
+/* .image-preview img {
     width: 25%;
     height: 25%;
     border-radius: 50%;
-}
+} */
 
 mat-card {
-    margin: 2rem;
+    margin: auto;
 }
 
 .example-full-width-one-line {
@@ -42,6 +56,13 @@ mat-card {
 .example-full-width {
     width: 100%;
     margin: auto;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 

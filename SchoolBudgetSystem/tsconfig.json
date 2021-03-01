@@ -1,5 +1,11 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "enableIvy": false,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "preserveWhitespaces": true,
+  },
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",

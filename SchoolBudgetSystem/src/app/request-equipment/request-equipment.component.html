@@ -57,6 +57,11 @@
                                         </button>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td colspan="12" class="text-center">
+                                        <p class="info-text" *ngIf="document <= 0">ไม่มีข้อมูล</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <!-- <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)">

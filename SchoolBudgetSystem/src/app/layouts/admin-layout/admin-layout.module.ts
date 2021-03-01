@@ -27,6 +27,7 @@ import { ManageUserComponent } from 'app/admin/manage-user/manage-user.component
 import { CheckFormComponent } from 'app/leader/check-form/check-form.component';
 import { ReadDetailFormComponent } from 'app/leader/read-detail-form/read-detail-form.component';
 import { UserDetailComponent } from 'app/admin/user-detail/user-detail.component';
+import { MoreDetailComponent } from 'app/dashboard/more-detail/more-detail.component';
 
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -35,6 +36,7 @@ import { ManageEquipmentsComponent } from 'app/admin/manage-equipments/manage-eq
 import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { AddUserComponent } from 'app/admin/add-user/add-user.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -71,8 +73,11 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     UserDetailComponent,
     ListSubEquipmentComponent,
     ThaiDatePipe,
-    ManageEquipmentsComponent
-  ]
+    ManageEquipmentsComponent,
+    MoreDetailComponent,
+    AddUserComponent
+  ],
+  entryComponents: [MoreDetailComponent, UserDetailComponent, DetailHistoryComponent, AddUserComponent]
 })
 
 export class AdminLayoutModule {}

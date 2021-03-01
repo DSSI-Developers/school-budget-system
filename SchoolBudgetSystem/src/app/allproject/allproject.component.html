@@ -67,10 +67,15 @@
                                         <span class="dot reject"></span> {{ item.status }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td colspan="12" class="text-center">
+                                        <p class="info-text" *ngIf="history <= 0">ไม่มีข้อมูล</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-                        </mat-paginator>
+                        <!-- <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                        </mat-paginator> -->
                     </div>
                 </div>
             </div>

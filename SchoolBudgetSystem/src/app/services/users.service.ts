@@ -15,7 +15,6 @@ import { Users } from './../../models/users.model';
 
 // RxJs lib
 import { Subject } from 'rxjs';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
@@ -30,6 +29,8 @@ export class UsersService {
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
   private userId: string;
+
+  private userAll = new Subject<Users[]>();
 
   constructor(
     private http: HttpClient,
@@ -186,7 +187,8 @@ export class UsersService {
       .post('http://localhost:8080/users/userRegister', userDatail)
       .subscribe(
         () => {
-          this.router.navigate(['/']);
+          // this.router.navigate(['/']);
+          Swal.fire('เพิ่มผู้ใช้งานสำเร็จแล้ว', 'You added user succesfully!', 'success');
         },
         (error) => {
           this.authStatusListener.next(false);
@@ -200,12 +202,29 @@ export class UsersService {
     );
   }
 
+  updateUser() {
+    return this.userAll.asObservable();
+  }
+
+  getUserAll() {
+    return this.http.get<{ message: string; users: any }>(
+      'http://localhost:8080/users/getAllUsers'
+    ).subscribe((userAll) => {
+      this.userAll.next([...userAll.users]);
+    }
+    );
+  };
+
   deleteUser(userId: string) {
     this.http
       .delete('http://localhost:8080/users/deleteUser/' + userId)
-      .subscribe((userDelete) => {
+      .subscribe(
+        (userDelete) => {
         console.log(userDelete);
-      });
+      }, (error) => {
+        console.log(error);
+      }
+      );
   }
 
   editUser(
@@ -258,11 +277,11 @@ export class UsersService {
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/']);
-     Swal.fire(
-        'Session Expired;',
-        'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ',
-        'info'
-      );
+    //  Swal.fire(
+    //     'Session Expired;',
+    //     'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ',
+    //     'info'
+    //   );
   }
 
   userEditData(
@@ -305,7 +324,7 @@ export class UsersService {
       }
     }
 
-    console.log(userProfile);
+    // console.log(userProfile.forEach(data => data ));
 
     this.http
       .put<{ message: string; response: any }>(
@@ -315,11 +334,16 @@ export class UsersService {
       .subscribe(
         (response) => {
           console.log(response);
+          Swal.fire('แก้ไขข้อมูลเรียบร้อยแล้ว', 'You submitted succesfully!', 'success');
         },
         (error) => {
           console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'แก้ข้อมูลส่วนตัวไม่สำเร็จ!',
+          })
         }
       );
-
   }
 }

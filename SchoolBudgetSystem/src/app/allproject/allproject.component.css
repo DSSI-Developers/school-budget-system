@@ -2,6 +2,14 @@ table {
     width: 100%;
 }
 
+p .info-text {
+    text-align: center;
+}
+
+.color-user {
+    color: #78d965;
+}
+
 
 /* .status {
     &.accept:before {

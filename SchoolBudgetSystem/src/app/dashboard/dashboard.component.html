@@ -1,13 +1,15 @@
-<div class="main-content">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="main-content" *ngIf="!isLoading">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6">
 
-                <div class="card card-stats">
-                    <div class="card-header card-header-warning card-header-icon">
-                        <div class="card-icon">
+                <div class="card card-stats card-success">
+                    <!-- <div class="card-header card-header-warning card-header-icon"> -->
+                    <div class="card-header">
+                        <!-- <div class="card-icon">
                             <i class="material-icons">sync</i>
-                        </div>
+                        </div> -->
                         <p class="card-category">โครงการที่อยู่ระหว่างรอดำเนินการ</p>
                         <h3 class="card-title">{{ countPending }}
                             <small>โครงการ</small>
@@ -24,11 +26,12 @@
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-success card-header-icon">
-                        <div class="card-icon">
+                <div class="card card-stats card-pending">
+                    <!-- <div class="card-header card-header-success card-header-icon"> -->
+                    <div class="card-header">
+                        <!-- <div class="card-icon">
                             <i class="material-icons">done_all</i>
-                        </div>
+                        </div> -->
                         <p class="card-category">โครงการที่ได้รับการอนุมัติ</p>
                         <h3 class="card-title">{{ countSuccess }}
                             <small>โครงการ</small>
@@ -44,11 +47,12 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="card card-stats">
-                    <div class="card-header card-header-danger card-header-icon">
-                        <div class="card-icon">
+                <div class="card card-stats card-reject">
+                    <!-- <div class="card-header card-header-danger card-header-icon"> -->
+                    <div class="card-header">
+                        <!-- <div class="card-icon">
                             <i class="material-icons">cancel_presentation</i>
-                        </div>
+                        </div> -->
                         <p class="card-category">โครงการที่ไม่ผ่านการอนุมัติ</p>
                         <h3 class="card-title">{{countFailed}}
                             <small>โครงการ</small>
@@ -102,6 +106,11 @@
                                     <td>{{ allData.necessary }}</td>
                                     <td>{{ allData.status }}</td>
                                     <td *ngIf="allData.status === 'ผ่านการอนุมัติ'"><button mat-raised-button type="button" (click)="generatePdf()"><mat-icon>insert_drive_file</mat-icon> PDF</button></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12" class="text-center">
+                                        <p class="info-text" *ngIf="document <= 0">ไม่มีข้อมูล</p>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

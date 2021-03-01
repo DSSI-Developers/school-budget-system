@@ -27,3 +27,15 @@
     border-color: #c42c3b;
     box-shadow: 0px 0px 4px 1px #c9404d;
 }
+
+.card .card-status .card-success {
+    box-shadow: 0px 0px 4px 1px #94e185;
+}
+
+.card .card-status .card-pending {
+    box-shadow: 0px 0px 4px 1px #ffc182;
+}
+
+.card .card-status.card-reject {
+    box-shadow: 0px 0px 4px 1px #c9404d;
+}

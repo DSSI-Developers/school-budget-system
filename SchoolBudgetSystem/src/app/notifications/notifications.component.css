@@ -71,3 +71,7 @@ tr.example-element-row:not(.example-expanded-row):active {
     border-color: #c42c3b;
     box-shadow: 0px 0px 4px 1px #c9404d;
 }
+
+.text-center {
+    text-align: center;
+}

@@ -19,7 +19,7 @@
                                     <hr />
                                     <p>
                                         <!-- <b>วันที่ : </b> {{ cardDetail.dateProject | date: "dd MMMM yyyy":"UTC" }} -->
-                                        <b>วันที่ : </b> {{ dateDate | thaidate: 'meduim' }}
+                                        <b>วันที่ : </b> {{ cardDetail.dateProject | thaidate: 'meduim' }}
 
                                     </p>
                                     <div *ngIf="cardDetail.status == 'ผ่านการอนุมัติ'">
@@ -47,6 +47,10 @@
                                 </mat-card-actions>
                             </mat-card>
                         </div>
+                        <div>
+                            <p class="text-center" *ngIf="pendingProject <= 0">ไม่มีข้อมูล</p>
+                        </div>
+
                     </mat-tab>
                     <mat-tab label="โครงการที่ผ่านอนุมัติแล้ว">
                         <div class="row">
@@ -80,6 +84,10 @@
                                 </mat-card-actions>
                             </mat-card>
                         </div>
+                        <div>
+                            <p class="text-center" *ngIf="successProject <= 0">ไม่มีข้อมูล</p>
+                        </div>
+
                     </mat-tab>
                     <mat-tab label="โครงการที่ไม่ผ่านการอนุมัติ">
                         <div class="row">
@@ -112,9 +120,11 @@
                                 </mat-card-actions>
                             </mat-card>
                         </div>
+                        <div>
+                            <p class="text-center" *ngIf="rejectProject <= 0">ไม่มีข้อมูล</p>
+                        </div>
                     </mat-tab>
                 </mat-tab-group>
-
             </div>
         </div>
     </div>

@@ -7,6 +7,16 @@ import { MatDialog } from "@angular/material/dialog";
 import { UsersService } from "./../services/users.service";
 import { mimeType } from "./mime-type.validator";
 
+interface Position {
+  viewValue: string;
+  value: string;
+}
+
+interface Department {
+  viewValue: string;
+  value: string;
+}
+
 export interface UserData {
   firstName: string;
   lastName: string;
@@ -23,15 +33,56 @@ export interface UserData {
   styleUrls: ["./user-profile.component.css"],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-  userData: UserData[] = [
+  // userData: UserData[] = [
+  //   {
+  //     firstName: "กฤษณะ",
+  //     lastName: "ประสิทธิ์",
+  //     email: "kritsana.pr.60@ubu.ac.th",
+  //     phone: "09876543221",
+  //     gender: "ชาย",
+  //     age: "22",
+  //     position: "ผู้ดูแลระบบ",
+  //   },
+  // ];
+
+  posite: Position[] = [
+    { value: "ครู", viewValue: "ครู" },
     {
-      firstName: "กฤษณะ",
-      lastName: "ประสิทธิ์",
-      email: "kritsana.pr.60@ubu.ac.th",
-      phone: "09876543221",
-      gender: "ชาย",
-      age: "22",
-      position: "ผู้ดูแลระบบ",
+      value: "หัวหน้ากลุ่มสาระการเรียนรู้",
+      viewValue: "หัวหน้ากลุ่มสาระการเรียนรู้",
+    },
+    { value: "ผู้ดูแลระบบ", viewValue: "ผู้ดูแลระบบ" },
+  ];
+
+  departments: Department[] = [
+    {
+      value: "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+      viewValue: "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+    },
+    {
+      value: "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
+      viewValue: "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
+    },
+    {
+      value: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
+      viewValue: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
+    },
+    { value: "กลุ่มสาระการเรียนรู้", viewValue: "กลุ่มสาระการเรียนรู้ภาษาไทย" },
+    {
+      value: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
+      viewValue: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
+    },
+    {
+      value: "กลุ่มสาระการเรียนรู้",
+      viewValue: "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
+    },
+    {
+      value: "กลุ่มสาระการเรียนรู้ศิลปะ",
+      viewValue: "กลุ่มสาระการเรียนรู้ศิลปะ",
+    },
+    {
+      value: "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
+      viewValue: "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
     },
   ];
 
@@ -62,20 +113,21 @@ export class UserProfileComponent implements OnInit, OnDestroy {
    */
   profile: FormGroup;
   imagePreview: string;
+  noImagePath: string = '../assets/img/faces/no-image.png';
 
   constructor(public dialog: MatDialog, private userServices: UsersService) {}
 
   ngOnInit() {
     // Section user detail
     this.profile = new FormGroup({
-      firstName: new FormControl(null, { validators: [Validators.required] }),
-      lastName: new FormControl(null, { validators: [Validators.required] }),
-      email: new FormControl(null, { validators: [Validators.required] }),
-      password: new FormControl(null, { validators: [Validators.required] }),
-      phone: new FormControl(null, { validators: [Validators.required] }),
-      position: new FormControl(null, { validators: [Validators.required] }),
-      department: new FormControl(null, { validators: [Validators.required] }),
-      avatar: new FormControl(null, {
+      firstName: new FormControl(this.firstName, { validators: [Validators.required] }),
+      lastName: new FormControl(this.lastName, { validators: [Validators.required] }),
+      email: new FormControl(this.email, { validators: [Validators.required] }),
+      password: new FormControl(this.password, { validators: [Validators.required] }),
+      phone: new FormControl(this.phone, { validators: [Validators.required] }),
+      position: new FormControl(this.position, { validators: [Validators.required] }),
+      department: new FormControl(this.department, { validators: [Validators.required] }),
+      avatar: new FormControl(this.avatar, {
         validators: [Validators.required],
         asyncValidators: [mimeType]
       }),
@@ -85,7 +137,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userId = this.userServices.getUserId();
     console.log(this.userId);
     this.userServices.getUserDetail(this.userId).subscribe((oneUserDetail) => {
-      console.log(`Personal data : ${oneUserDetail.data}`);
+      console.log(`Personal data : ${oneUserDetail.data.toString()}`);
       this.id = oneUserDetail.data._id;
       this.firstName = oneUserDetail.data.firstName;
       this.lastName = oneUserDetail.data.lastName;
@@ -111,6 +163,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         avatar: this.avatar
       });
     });
+    if (this.avatar != 'ADMIN', this.avatar != 'USER' ,this.avatar != 'LEADER') {
+      this.imagePreview = '../assets/img/faces/no-image.png';
+    }
 
     this.userIsAuthenticated = this.userServices.getIsAuth();
     this.authListenerSubs = this.userServices

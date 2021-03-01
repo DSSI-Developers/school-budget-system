@@ -47,6 +47,7 @@ exports.usersRegister = async(req, res, next) => {
     });
     bcrypt.hash(req.body.password, 10).then(hash => {
         const user = new Users({
+
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
@@ -95,7 +96,7 @@ exports.authentication = async(req, res, next) => {
                 });
             }
             const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id },
-                "secret_this_should_be_longer", { expiresIn: "1h" }
+                "secret_this_should_be_longer", { expiresIn: "2h" } // Old 1h
             );
             res.status(200).json({
                 token: token,
@@ -197,8 +198,9 @@ exports.getuserByGroup = (req, res, next) => {
 
 // Delete one user
 exports.deleteUser = (req, res) => {
-    const userId = req.body.id;
-    Users.findByIdAndRemove(id)
+    const userId = req.params.id;
+    console.log(userId);
+    Users.findByIdAndRemove(userId)
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -264,7 +266,7 @@ exports.deleteAllUser = (req, res) => {
 exports.editProfile = (req, res, next) => {
     // const url = req.protocol + "://" + req.get("host");
     let imagePath = req.body.imagePath;
-    console.log(req.file);
+    console.log('File : ', req.file);
     if (req.file) {
         const url = req.protocol + "://" + req.get("host");
         imagePath = url + "/images/" + req.file.filename;
@@ -281,7 +283,7 @@ exports.editProfile = (req, res, next) => {
     console.log(req.file);
     console.log(imagePath);
     const user = {
-        id: req.body.id,
+        id: id,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -294,8 +296,8 @@ exports.editProfile = (req, res, next) => {
     // avatar: url + "/images/" + req.file.filename
 
     // console.log(id);
-    console.log(imagePath);
-    console.log(user);
+    console.log('Image path :', imagePath);
+    console.log('User :', user);
     // return res.status(200).json({
     //     message: "Success"
     // });
