@@ -18,15 +18,11 @@
     <!-- <div *ngFor="let item of value"> -->
     <h3>ที่มาและเหตุผล</h3>
     <div class="panel-body" [innerHTML]="item.reason"></div>
-    <p>สืบเนื่องจากโรงเรียนได้จัดท าโครงการดูแลช่วยเหลือนักเรียนโดยการเยี่ยมบ้านนักเรียนในทุกๆ ปีการศึกษา พบว่ามีนักเรียนหลายคนที่ไม่ได้อยู่กับบิดามารดาโดยมีญาติ ปู่ ย่า ตา ยาย คอยดูแลนักเรียน และในจ านวนนั้นมีฐานะยากจน บางคนอยู่กับบิดามารดาแต่ก็หาเช้ากินค่
-        า รับจ้างไปวันๆ แต่ด้วยความรักและ เอาใจใส่ของญาติ ปู่ ย่า ตา ยาย อยากให้เด็กได้เรียนในสถานศึกษาที่ดี มีคุณภาพ แม้จะขัดสนก็ตาม จนบาง เทอมไม่มีเงินจ่ายค่าเล่าเรียน บางรายไม่มีจ่ายเลยหลายเทอมแต่ทางโรงเรียนก็ไม่ได้ทวงถามเมื่อทราบว่าฐานะ ทางครอบครัวไม่ค่อยดีนัก
-    </p>
+
     <hr>
     <h3>วัตถุประสงค์</h3>
     <div class="panel-body" [innerHTML]="item.objective"></div>
-    <p>สืบเนื่องจากโรงเรียนได้จัดท าโครงการดูแลช่วยเหลือนักเรียนโดยการเยี่ยมบ้านนักเรียนในทุกๆ ปีการศึกษา พบว่ามีนักเรียนหลายคนที่ไม่ได้อยู่กับบิดามารดาโดยมีญาติ ปู่ ย่า ตา ยาย คอยดูแลนักเรียน และในจ านวนนั้นมีฐานะยากจน บางคนอยู่กับบิดามารดาแต่ก็หาเช้ากินค่
-        า รับจ้างไปวันๆ แต่ด้วยความรักและ เอาใจใส่ของญาติ ปู่ ย่า ตา ยาย อยากให้เด็กได้เรียนในสถานศึกษาที่ดี มีคุณภาพ แม้จะขัดสนก็ตาม จนบาง เทอมไม่มีเงินจ่ายค่าเล่าเรียน บางรายไม่มีจ่ายเลยหลายเทอมแต่ทางโรงเรียนก็ไม่ได้ทวงถามเมื่อทราบว่าฐานะ ทางครอบครัวไม่ค่อยดีนัก
-    </p>
+
     <hr>
     <table class="table table-hover">
         <thead class="thead-dark text-center">
@@ -35,8 +31,17 @@
             <th>จำนวนหน่วย</th>
             <th>ราคา</th>
         </thead>
-        <tbody class="text-center">
-            <tr *ngFor="let itemDetail of detail">
+        <!-- <tbody class="text-center"> 
+            <tr *ngFor="let itemDetail of value">
+                <td class="table-active">{{ itemDetail.equipmentName }}</td>
+                <td class="table-active">{{ itemDetail.budgetPerPrice | number }}</td>
+                <td class="table-active">{{ itemDetail.unit }}</td>
+                <td class="table-active">{{ itemDetail.budget | number}}</td>
+            </tr>
+        </tbody> -->
+        <tbody class="text-center" *ngFor="let item of value; let i = index">
+            <tr *ngFor="let itemDetail of item['listSubEquipment']">
+                <!-- {{ itemDetail | json}} -->
                 <td class="table-active">{{ itemDetail.equipmentName }}</td>
                 <td class="table-active">{{ itemDetail.budgetPerPrice | number }}</td>
                 <td class="table-active">{{ itemDetail.unit }}</td>
@@ -48,7 +53,10 @@
     <h3>สร้างและส่งออกไฟล์เอกสาร ของรายละเอียดรายการย่อย</h3>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button color="accent" mat-dialog-close><mat-icon>close</mat-icon> ปิด</button>
-    <button mat-raised-button mat-dialog-close (click)="exportPDF()"><span class="material-icons">import_export</span> ส่งออกหเอกสาร </button>
+    <button mat-raised-button color="accent" mat-dialog-close>
+        <mat-icon>close</mat-icon> ปิด
+    </button>
+    <button mat-raised-button mat-dialog-close (click)="exportPDF()"><span class="material-icons">import_export</span>
+        ส่งออกหเอกสาร </button>
     <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
 </mat-dialog-actions>

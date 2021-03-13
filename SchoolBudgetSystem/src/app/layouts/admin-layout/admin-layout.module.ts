@@ -37,6 +37,14 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AddUserComponent } from 'app/admin/add-user/add-user.component';
+
+import { ChartModule } from 'angular2-chartjs';
+import { ChartsModule } from 'ng2-charts';
+import { ReadProjectDetailComponent } from 'app/users/read-project-detail/read-project-detail.component';
+import { ReadNotificationComponent } from 'app/notifications/read-notification/read-notification.component';
+
+// import 'chart.piecelabel.js';
+import 'chart.piecelabel.js';
 @NgModule({
   imports: [
     CommonModule,
@@ -53,7 +61,9 @@ import { AddUserComponent } from 'app/admin/add-user/add-user.component';
     MatProgressSpinnerModule,
     CKEditorModule,
     MatPaginatorModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    ChartModule,
+    ChartsModule
   ],
   declarations: [
     DashboardComponent,
@@ -75,9 +85,11 @@ import { AddUserComponent } from 'app/admin/add-user/add-user.component';
     ThaiDatePipe,
     ManageEquipmentsComponent,
     MoreDetailComponent,
-    AddUserComponent
+    AddUserComponent,
+    ReadProjectDetailComponent,
+    ReadNotificationComponent,
   ],
-  entryComponents: [MoreDetailComponent, UserDetailComponent, DetailHistoryComponent, AddUserComponent]
+  entryComponents: [MoreDetailComponent, UserDetailComponent, DetailHistoryComponent, AddUserComponent, ReadNotificationComponent]
 })
 
 export class AdminLayoutModule {}

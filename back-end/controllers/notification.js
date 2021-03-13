@@ -7,6 +7,8 @@ exports.pushNotification = (req, res, next) => {
         status: req.body.status,
         detail: req.body.detail,
         note: req.body.note,
+        userId: req.body.userId,
+        readStatus: false,
         creator: req.userData.userId
     });
     console.log(notic);
@@ -29,12 +31,14 @@ exports.pushNotification = (req, res, next) => {
 
 exports.getOneNotification = (req, res, next) => {
     const id = req.params.id;
+    console.log(id);
+    // res.end(id);
     Notification.findById(id).then(data => {
         if (!data) {
-            res.status(404).send({ msg: "Not found Notification" })
-        } else res.send(data);
+            res.status(404).json({ message: "Not found Notification" })
+        } else res.status(201).json({ response: data });
     }).catch(err => {
-        res.status(500).json({ msg: "Error get notification" + err })
+        res.status(500).json({ message: "Error get notification" + err })
     });
 }
 
@@ -84,6 +88,7 @@ exports.editNotification = (req, res, next) => {
     const id = req.params.id;
     const notific = req.body;
     console.log(id)
+    console.log(notific);
     Notification.findByIdAndUpdate(id, notific, { useFindAndModify: false }, function(err, docs) {
         if (err) {
             res.send({ msg: err.msg })

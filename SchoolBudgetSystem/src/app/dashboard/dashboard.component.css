@@ -28,6 +28,10 @@
     box-shadow: 0px 0px 4px 1px #c9404d;
 }
 
+.card .card-stats .card-success {
+    background-color: #198754;
+}
+
 .card .card-status .card-success {
     box-shadow: 0px 0px 4px 1px #94e185;
 }
@@ -38,4 +42,17 @@
 
 .card .card-status.card-reject {
     box-shadow: 0px 0px 4px 1px #c9404d;
+}
+
+.chart-wrapper {
+    margin: 5px;
+}
+
+.chart-container {
+    height: 350px;
+}
+
+chart {
+    height: 350px;
+    margin: 5px;
 }

@@ -41,13 +41,13 @@ export class ManageUserComponent implements OnInit, OnDestroy {
       value: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
       viewValue: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
     },
-    { value: "กลุ่มสาระการเรียนรู้", viewValue: "กลุ่มสาระการเรียนรู้ภาษาไทย" },
+    { value: "กลุ่มสาระการเรียนรู้ภาษาไทย", viewValue: "กลุ่มสาระการเรียนรู้ภาษาไทย" },
     {
       value: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
       viewValue: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
     },
     {
-      value: "กลุ่มสาระการเรียนรู้",
+      value: "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
       viewValue: "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
     },
     {
@@ -67,6 +67,8 @@ export class ManageUserComponent implements OnInit, OnDestroy {
   searchUser: string;
   selectedDepartment: string = "";
   userId: string;
+
+
   constructor(public dialog: MatDialog, private usersServices: UsersService) {}
   ngOnInit(): void {
     this.usersServices.getUserAll();
@@ -84,10 +86,10 @@ export class ManageUserComponent implements OnInit, OnDestroy {
       width: "90%",
       // data: {name: this.name, animal: this.animal}
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    // });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   selectChangeHandler(event: any) {

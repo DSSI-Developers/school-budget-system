@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Notification } from './../../models/notified.model';
 import { Subject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class NotifiedService {
   private notified: Notification[] = [];
   private notifiedUpdate = new Subject<Notification[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
   getAllNotified() {
     return this.http
       .get<{ message: string; notification; any }>(
@@ -26,15 +27,20 @@ export class NotifiedService {
     return this.notifiedUpdate.asObservable();
   }
 
-  // getNotified(id: string) {
-  //   return { ...this.notified.filter((data) => data._id === id) };
-  // }
+  getNotified(id: string) {
+    console.log(id);
+    return this.http
+      .get<{ message: string; response; any }>(
+        'http://localhost:8080/notification/getOneNotification/' + id
+      )
+  }
 
   // "type": "ครุภัณฑ์",
   // "status": "กำลังดำเนินการ",
   // "detail": "เอกสารโครงการของคุณกำลังอยู่ในระหว่างการดำเนินการ",
   // "note": "ไม่มีหมายเหตุ",
   addNotification(
+    userId: string,
     type: string,
     status: string,
     detail: string,
@@ -45,7 +51,9 @@ export class NotifiedService {
       type: type,
       status: status,
       detail: detail,
-      note: note
+      note: note,
+      userId: userId,
+      readStatus: false
     }
 
     this.http.post<{message: string, notification: any}>('http://localhost:8080/notification/pushNotification', notification)
@@ -54,7 +62,29 @@ export class NotifiedService {
     })
   }
 
+  editNotification(
+    id: string,
+    userId: string,
+    type: string,
+    status: string,
+    detail: string,
+    note: string
+  ) {
+    const notification = {
+      id: id,
+      type: type,
+      status: status,
+      detail: detail,
+      note: note,
+      userId: userId,
+      readStatus: true
+    }
 
+    this.http.put('http://localhost:8080/notification/editNotification/' + id, notification).subscribe(response => {
+      this.router.navigate(['/notifications']);
+      console.log('readed !');
+    });
+  }
 
   deleteNotified(id: string) {
     console.log(id + 'In Service file');

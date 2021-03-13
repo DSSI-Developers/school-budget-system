@@ -3,7 +3,6 @@ const passport = require('passport');
 const router = express.Router();
 const checkAuth = require("../middlewares/check-auth");
 const userController = require('../controllers/users');
-const multer = require('multer');
 const extractFile = require('../middlewares/file');
 require('../config/passport');
 // const jwt = require('jsonwebtoken');
@@ -19,6 +18,8 @@ router.delete('/deleteUser/:id', checkAuth, userController.deleteUser);
 // router.get('/profile', checkAuth, userController.profile);
 // router.put('/verified/:id', userController.verfiedUser);
 router.put('/editProfile/:id', checkAuth, extractFile, userController.editProfile);
+router.post('/addUser', extractFile, userController.addUser);
+// router.put('/adminEditUser/:id', checkAuth, extractFile, userController.adminEditUserData);
 // router.put('/approveUser/:id', userController.approveUser);
 
 module.exports = router;

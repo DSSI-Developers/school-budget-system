@@ -22,7 +22,7 @@ export class EquipmentsService {
     return this._http.get<{ data: any  }>(
       'http://localhost:8080/mainEquipment/getAllEquipments'
     ).subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       this.equipments = data.data;
       this.equipmentUpdated.next([...this.equipments]);
     });
@@ -33,7 +33,7 @@ export class EquipmentsService {
     return this._http.get<{ data: any , maxPosts: number }>(
       'http://localhost:8080/mainEquipment/getAllEquipmentsByPage' +  queryParams
     ).subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       this.equipments = data.data;
       this.equipmentUpdated.next([...this.equipments]);
     });

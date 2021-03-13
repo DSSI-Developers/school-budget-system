@@ -75,6 +75,52 @@ exports.usersRegister = async(req, res, next) => {
     });
 }
 
+// Add user in system
+exports.addUser = async(req, res, next) => {
+    const myPlaintextPassword = req.body.password;
+    const saltRounds = 10;
+    const newUser = new Users({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+        phone: req.body.phone,
+        position: req.body.position,
+        department: req.body.department,
+        role: req.body.role,
+        avatar: req.body.role,
+        permission: req.body.permission,
+    });
+    bcrypt.hash(req.body.password, 10).then(hash => {
+        const user = new Users({
+
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: hash,
+            phone: req.body.phone,
+            position: req.body.position,
+            department: req.body.department,
+            role: req.body.role,
+            avatar: req.body.role,
+            permission: req.body.permission,
+        });
+        user
+            .save()
+            .then(result => {
+                res.status(201).json({
+                    message: "User created!",
+                    result: result
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                });
+            });
+    });
+}
+
 
 // User login
 exports.authentication = async(req, res, next) => {
@@ -100,7 +146,7 @@ exports.authentication = async(req, res, next) => {
             );
             res.status(200).json({
                 token: token,
-                expiresIn: 3600,
+                expiresIn: 7200, // 3600
                 userId: fetchedUser._id
             });
         })
@@ -203,17 +249,17 @@ exports.deleteUser = (req, res) => {
     Users.findByIdAndRemove(userId)
         .then(data => {
             if (!data) {
-                res.status(404).send({
+                res.status(404).json({
                     message: `Cannot delete user with id=${userId}. Maybe user was not found!`
                 });
             } else {
-                res.send({
+                res.json({
                     message: "Users was deleted successfully!"
                 });
             }
         })
         .catch(err => {
-            res.status(500).send({
+            res.status(500).json({
                 message: "Could not delete User with id=" + userId
             });
         });
@@ -270,6 +316,11 @@ exports.editProfile = (req, res, next) => {
     if (req.file) {
         const url = req.protocol + "://" + req.get("host");
         imagePath = url + "/images/" + req.file.filename;
+        console.log(imagePath);
+    } else {
+        const url = req.protocol + "://" + req.get("host");
+        imagePath = req.body.avatar;
+        console.log(imagePath);
     }
 
     // Edit part
@@ -280,10 +331,10 @@ exports.editProfile = (req, res, next) => {
     }
 
     const id = req.params.id;
-    console.log(req.file);
-    console.log(imagePath);
+    // console.log(req.file);
+    // console.log(imagePath);
     const user = {
-        id: id,
+        _id: req.userData.userId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -293,14 +344,12 @@ exports.editProfile = (req, res, next) => {
         role: req.body.role,
         avatar: imagePath
     };
-    // avatar: url + "/images/" + req.file.filename
-
-    // console.log(id);
+    console.log(id);
     console.log('Image path :', imagePath);
     console.log('User :', user);
-    // return res.status(200).json({
-    //     message: "Success"
-    // });
+    return res.status(200).json({
+        message: "Success"
+    });
 
     Users.findOneAndUpdate(id, user, { useFindAndModify: false })
         .then((result => {
@@ -316,22 +365,46 @@ exports.editProfile = (req, res, next) => {
                 message: "ไม่สามารถแก้ไขขอมูลได้ " + err
             });
         });
-    // .then(result => {
-    //     res.status(200).json({
-    //         message: "Update successful!",
-    //         response: result
-    //     });
-    //     // if (result.n > 0) {
-    //     // } else {
-    //     //     res.status(401).json({ message: "Not authorized!" });
-    //     // }
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    //     res.status(500).json({
-    //         message: error
-    //     });
-    // });
+
+
+    exports.adminEditUserData = () => {
+            const userId = req.params.id;
+            const userData = req.body;
+            console.log();
+            if (!userId) {
+                res.status(401).json({
+                    message: "ไมพบ ID ที่ตรงกัน"
+                })
+            }
+            return res.status(202).send("success", userId, userData);
+            Users.findByIdAndUpdate(userId, userData, { useFindAndModify: false })
+                .then(result => {
+                    res.status(404).json({
+                        message: "แก้ไขจ้อมูลสำเร็จ"
+                    })
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        message: `Error message at ${err}`
+                    })
+                })
+        }
+        // .then(result => {
+        //     res.status(200).json({
+        //         message: "Update successful!",
+        //         response: result
+        //     });
+        //     // if (result.n > 0) {
+        //     // } else {
+        //     //     res.status(401).json({ message: "Not authorized!" });
+        //     // }
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        //     res.status(500).json({
+        //         message: error
+        //     });
+        // });
 
     // Users.findByIdAndUpdate(id, user, { useFindAndModify: false })
     //     .then(data => {
@@ -348,12 +421,3 @@ exports.editProfile = (req, res, next) => {
     //         });
     //     });
 }
-
-
-
-
-
-// Approve users permission
-// exports.approveUser = (req, res, next) => {
-
-// }

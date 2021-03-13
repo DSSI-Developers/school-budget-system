@@ -23,7 +23,7 @@
                                 <th>งบประมาณ</th>
                                 <th>ครุภัณฑ์ย่อย</th>
                                 <th></th>
-                                <th></th>
+                                <!-- <th></th> -->
                             </thead>
                             <tbody class="text-center">
                                 <tr *ngFor="let listProject of document; let i = index">
@@ -47,15 +47,18 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <button mat-raised-button color="primary" matTooltip="แก้ไข {{ listProject._id }}" matTooltipPosition="above" [routerLink]="['/editRequestEquip', listProject._id]">
+                                        <button mat-icon-button matTooltip="ดูรายละเอียดโครงการ {{ listProject._id }}" matTooltipPosition="above" [routerLink]="['/readDetailForm', listProject._id]">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                        <button mat-icon-button matTooltip="แก้ไข {{ listProject._id }}" matTooltipPosition="above" [routerLink]="['/editRequestEquip', listProject._id]">
                                             <mat-icon>edit</mat-icon>
                                         </button>
-                                    </td>
-                                    <td>
-                                        <button mat-raised-button color="warn" matTooltip="ลบ {{ listProject._id }}" matTooltipPosition="above" (click)="deleteEquipment(listProject._id)">
+                                        <button mat-icon-button color="warn" matTooltip="ลบ {{ listProject._id }}" matTooltipPosition="above" (click)="deleteEquipment(listProject._id)">
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </td>
+                                    <!-- <td>
+                                    </td> -->
                                 </tr>
                                 <tr>
                                     <td colspan="12" class="text-center">

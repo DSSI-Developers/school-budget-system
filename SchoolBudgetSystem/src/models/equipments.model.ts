@@ -19,5 +19,6 @@ export interface Equipments {
     status: string,
     approveCondition: string,
     approveReason: string,
-    creator: string
+    creator: string,
+    listSubEquipment: Array<any>
 }

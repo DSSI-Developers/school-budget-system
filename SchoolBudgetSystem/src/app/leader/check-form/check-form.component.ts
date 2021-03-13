@@ -51,7 +51,7 @@ export class CheckFormComponent implements OnInit, OnDestroy {
         this.equipments = equipments;
         this.userServices.getUserDetail(this.userId).subscribe((result) => {
           this.userDepartment = result.data['department'];
-
+          console.log('กลุ่ม :', this.userDepartment);
           this.separateDepartment = this.equipments.filter(
             (department) => department.learningGroups === this.userDepartment
           );

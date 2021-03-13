@@ -1,27 +1,27 @@
-import { Equipments } from './../../models/equipments.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable, observable, ObservedValueOf } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Equipments } from "./../../models/equipments.model";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Observable, observable, ObservedValueOf } from "rxjs";
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+} from "@angular/material/snack-bar";
 
 // Model
-import { AuthData } from './../../models/auth-data.model';
-import { Users } from './../../models/users.model';
+import { AuthData } from "./../../models/auth-data.model";
+import { Users } from "./../../models/users.model";
 
 // RxJs lib
-import { Subject } from 'rxjs';
+import { Subject } from "rxjs";
 
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
-import { first } from 'rxjs/operators';
+import { first } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class UsersService {
   private token: string;
@@ -58,7 +58,7 @@ export class UsersService {
     const authData: AuthData = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number; userId: string }>(
-        'http://localhost:8080/users/authentication',
+        "http://localhost:8080/users/authentication",
         authData
       )
       .subscribe(
@@ -77,12 +77,12 @@ export class UsersService {
             );
             console.log(expirationDate);
             this.saveAuthData(token, expirationDate, this.userId);
-            this.router.navigate(['/home']);
+            this.router.navigate(["/home"]);
 
-            this._snackBar.open('ยินดีต้อนรับ', 'ปิด', {
+            this._snackBar.open("ยินดีต้อนรับ", "ปิด", {
               duration: 4000,
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
+              horizontalPosition: "right",
+              verticalPosition: "top",
             });
           }
         },
@@ -94,7 +94,7 @@ export class UsersService {
 
   autoAuthUser() {
     const authInformation = this.getAuthData();
-    console.log('autoAtuthUser : ', authInformation);
+    console.log("autoAtuthUser : ", authInformation);
     if (!authInformation) {
       console.log(`Don't have authInformation infunction : getAuthData`);
       return;
@@ -110,7 +110,7 @@ export class UsersService {
       this.authStatusListener.next(true);
     } else {
       this.logout();
-      this.router.navigate(['/']);
+      this.router.navigate(["/"]);
       // Swal.fire(
       //   "Session Expired;",
       //   "เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ",
@@ -120,32 +120,32 @@ export class UsersService {
   }
 
   private setAuthTimer(duration: number) {
-    console.log('Setting timer: ' + duration);
+    console.log("Setting timer: " + duration);
     this.tokenTimer = setTimeout(() => {
       this.logout();
-      console.log('Now status you logout !');
+      console.log("Now status you logout !");
     }, duration * 10000);
     // }, duration * 1000);
   }
 
   private saveAuthData(token: string, expirationDate: Date, userId: string) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('expiration', expirationDate.toISOString());
-    localStorage.setItem('userId', userId);
-    console.log('Save alredy daya of user : saveAuthData !');
+    localStorage.setItem("token", token);
+    localStorage.setItem("expiration", expirationDate.toISOString());
+    localStorage.setItem("userId", userId);
+    console.log("Save alredy daya of user : saveAuthData !");
   }
 
   private clearAuthData() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiration');
-    localStorage.removeItem('userId');
-    console.log('Clear Authentication data : clearAuthData');
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiration");
+    localStorage.removeItem("userId");
+    console.log("Clear Authentication data : clearAuthData");
   }
 
   private getAuthData() {
-    const token = localStorage.getItem('token');
-    const expirationDate = localStorage.getItem('expiration');
-    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem("token");
+    const expirationDate = localStorage.getItem("expiration");
+    const userId = localStorage.getItem("userId");
     if (!token || !expirationDate) {
       return;
     }
@@ -184,11 +184,16 @@ export class UsersService {
       permission: permission,
     };
     this.http
-      .post('http://localhost:8080/users/userRegister', userDatail)
+      .post("http://localhost:8080/users/userRegister", userDatail)
       .subscribe(
         () => {
           // this.router.navigate(['/']);
-          Swal.fire('เพิ่มผู้ใช้งานสำเร็จแล้ว', 'You added user succesfully!', 'success');
+          // Swal.fire(
+          //   "เพิ่มผู้ใช้งานสำเร็จแล้ว",
+          //   "You added user succesfully!",
+          //   "success"
+          // );
+          this.router.navigate(["/"]);
         },
         (error) => {
           this.authStatusListener.next(false);
@@ -196,9 +201,51 @@ export class UsersService {
       );
   }
 
+
+  addUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    phone: string,
+    position: string,
+    department: string,
+    role: string,
+    avatar: string,
+    permission: string
+  ) {
+    const userDatail = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      phone: phone,
+      position: position,
+      department: department,
+      role: role,
+      avatar: null,
+      permission: permission,
+    };
+    this.http
+      .post("http://localhost:8080/users/userRegister", userDatail)
+      .subscribe(
+        () => {
+          // this.router.navigate(['/']);
+          Swal.fire(
+            "เพิ่มผู้ใช้งานสำเร็จแล้ว",
+            "You added user succesfully!",
+            "success"
+          );
+        },
+        (error) => {
+          // this.authStatusListener.next(false);
+        }
+      );
+  }
+
   getAllUsers() {
     return this.http.get<{ message: string; users: any }>(
-      'http://localhost:8080/users/getAllUsers'
+      "http://localhost:8080/users/getAllUsers"
     );
   }
 
@@ -207,23 +254,25 @@ export class UsersService {
   }
 
   getUserAll() {
-    return this.http.get<{ message: string; users: any }>(
-      'http://localhost:8080/users/getAllUsers'
-    ).subscribe((userAll) => {
-      this.userAll.next([...userAll.users]);
-    }
-    );
-  };
+    return this.http
+      .get<{ message: string; users: any }>(
+        "http://localhost:8080/users/getAllUsers"
+      )
+      .subscribe((userAll) => {
+        this.userAll.next([...userAll.users]);
+      });
+  }
 
   deleteUser(userId: string) {
     this.http
-      .delete('http://localhost:8080/users/deleteUser/' + userId)
+      .delete("http://localhost:8080/users/deleteUser/" + userId)
       .subscribe(
         (userDelete) => {
-        console.log(userDelete);
-      }, (error) => {
-        console.log(error);
-      }
+          console.log(userDelete);
+        },
+        (error) => {
+          console.log(error);
+        }
       );
   }
 
@@ -253,7 +302,7 @@ export class UsersService {
       avatar: avatar,
       permission: permission,
     };
-    console.log('User detail : ', user);
+    console.log("User detail : ", user);
     // this.http
     //   .put(`${this.url_API}/users/verified/${id}`, user)
     //   .subscribe((response) => {
@@ -265,7 +314,7 @@ export class UsersService {
     // const userId = this.getUserId();
     // console.log(userId);
     return this.http.get<{ message: string; data: any }>(
-      'http://localhost:8080/users/getOneUser/' + id
+      "http://localhost:8080/users/getOneUser/" + id
     );
   }
 
@@ -276,7 +325,7 @@ export class UsersService {
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
     //  Swal.fire(
     //     'Session Expired;',
     //     'เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งครับ',
@@ -296,18 +345,18 @@ export class UsersService {
     role: string,
     avatar: File | string
   ) {
-    let userProfile = new  FormData;
-    if (typeof avatar === 'object') {
-      userProfile.append('_id', id);
-      userProfile.append('firstName', firstName);
-      userProfile.append('lastName', lastName);
-      userProfile.append('email', email);
-      userProfile.append('password', password);
-      userProfile.append('phone', phone);
-      userProfile.append('position', position);
-      userProfile.append('department', department);
-      userProfile.append('role', role);
-      userProfile.append('avatar', avatar, id);
+    let userProfile = new FormData();
+    if (typeof avatar === "object") {
+      userProfile.append("_id", id);
+      userProfile.append("firstName", firstName);
+      userProfile.append("lastName", lastName);
+      userProfile.append("email", email);
+      userProfile.append("password", password);
+      userProfile.append("phone", phone);
+      userProfile.append("position", position);
+      userProfile.append("department", department);
+      userProfile.append("role", role);
+      userProfile.append("avatar", avatar, id);
     } else {
       let userProfile: Users = {
         _id: id,
@@ -320,11 +369,25 @@ export class UsersService {
         department: department,
         role: role,
         avatar: avatar,
-        permission: null
-      }
+        permission: null,
+      };
     }
 
-    // console.log(userProfile.forEach(data => data ));
+    console.log(userProfile);
+    // const user = {
+    //   _id: id,
+    //   firstName: firstName,
+    //   lastName: lastName,
+    //   email: email,
+    //   password: password,
+    //   phone: phone,
+    //   position: position,
+    //   department: department,
+    //   role: role,
+    //   avatar: avatar,
+    //   permission: null,
+    // };
+    // console.log(user);
 
     this.http
       .put<{ message: string; response: any }>(
@@ -345,5 +408,9 @@ export class UsersService {
           })
         }
       );
+  }
+
+  adminEditUserData() {
+    
   }
 }

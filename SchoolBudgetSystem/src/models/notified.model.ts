@@ -5,5 +5,6 @@ export interface Notification {
     status: string,
     detail: string,
     note: string,
+    readStatus: boolean,
     creator: string
 }

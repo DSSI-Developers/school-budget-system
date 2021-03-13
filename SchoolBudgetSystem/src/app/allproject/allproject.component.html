@@ -53,6 +53,7 @@
                             </thead>
                             <tbody class="text-center">
                                 <tr *ngFor="let item of history | filter:searchEquipment index as i" (click)="openDialog(item._id)">
+                                    <!-- <tr *ngFor="let item of history | filter:searchEquipment index as i"> -->
                                     <td>{{item.dateProject | thaidate: 'dd/MM/yyyy'}}</td>
                                     <td class="text-left">{{ item.majorList }}</td>
                                     <td>{{ item.necessary }}</td>

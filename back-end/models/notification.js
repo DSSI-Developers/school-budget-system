@@ -18,6 +18,13 @@ const notification = mongoose.Schema({
     note: {
         type: String
     },
+    userId: {
+        type: String
+    },
+    readStatus: {
+        type: Boolean,
+        default: false
+    },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "Users", require: true }
 });
 

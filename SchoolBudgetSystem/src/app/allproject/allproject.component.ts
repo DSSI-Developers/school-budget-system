@@ -8,6 +8,7 @@ import { Subscription } from "rxjs";
 import { Equipments } from "models/equipments.model";
 import { EquipmentsService } from "app/services/equipments.service";
 import { data } from "jquery";
+import { EquipmentsHistoryService } from "../services/equipments-history.service";
 
 interface SearchOption {
   value: string;
@@ -66,7 +67,8 @@ export class AllprojectComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private userServices: UsersService,
-    private equipmentServices: EquipmentsService
+    private equipmentServices: EquipmentsService,
+    private histories: EquipmentsHistoryService
   ) {}
 
   ngOnInit(): void {
@@ -78,36 +80,48 @@ export class AllprojectComponent implements OnInit {
 
     // Get data totable
     this.userId = this.userServices.getUserId();
-    this.equipmentServices.getAllEquipments();
-    this.getEquipmentsData = this.equipmentServices
-      .getEquipmentUpdateListener()
-      .subscribe((objectData: Equipments[]) => {
-        this.equipments = objectData;
-        console.log("History : ", this.equipments);
-        this.history = this.equipments.filter(
-          (data) => data.creator === this.userId
-        );
-        // console.log('Creator Id:', this.equipments.filter(data => data.creator === this.userId));
-      });
+    this.histories.getHistory().subscribe((result) => {
+      this.equipments = result.response;
+      console.log("result :", this.equipments);
+      console.log("Creator :", this.equipments['creator']);
+      console.log("USerId :", this.userId);
+
+      this.history = this.equipments.filter(
+        (data) => data.creator === this.userId
+      );
+      console.log('Filter :', this.history);
+    });
+
+    // this.equipmentServices.getAllEquipments();
+    // this.getEquipmentsData = this.equipmentServices
+    //   .getEquipmentUpdateListener()
+    //   .subscribe((objectData: Equipments[]) => {
+    //     this.equipments = objectData;
+    //     console.log("History : ", this.equipments);
+    //     this.history = this.equipments.filter(
+    //       (data) => data.creator === this.userId
+    //     );
+    //     // console.log('Creator Id:', this.equipments.filter(data => data.creator === this.userId));
+    //   });
   }
 
   openDialog(id: string) {
     this.dataDetail = this.equipments.filter((data) => data._id === id);
     const dialogRef = this.dialog.open(DetailHistoryComponent, {
+      width: '45%',
       data: {
         detail: this.dataDetail,
         id: id,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
   }
   onChange(newValue) {
     console.log(newValue);
     this.selectOption = newValue;
     // ... do other stuff here ...
-}
-
+  }
 }

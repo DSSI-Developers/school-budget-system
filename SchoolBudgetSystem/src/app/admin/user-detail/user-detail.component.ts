@@ -1,4 +1,9 @@
-import { Validators, FormBuilder, FormGroup , FormControl} from "@angular/forms";
+import {
+  Validators,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+} from "@angular/forms";
 import { Component, OnInit, Input, Inject } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
@@ -78,11 +83,11 @@ export class UserDetailComponent implements OnInit {
   ];
 
   // formUserData: FormGroup;
-
   formUserData = this.fb.group({
     firstName: ["", [Validators.required]],
     lastName: ["", [Validators.required]],
     email: ["", [Validators.required, Validators.email]],
+    password: ["", [Validators.required]],
     phone: ["", [Validators.required]],
     position: ["", [Validators.required]],
     department: ["", [Validators.required]],
@@ -114,18 +119,18 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.userprofile = new FormGroup({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      email: new FormControl(''),
-      phone: new FormControl(''),
-      position: new FormControl(''),
-      department: new FormControl(''),
-      role: new FormControl(''),
-      avatar: new FormControl(''),
-      permission: new FormControl('')
+      firstName: new FormControl(""),
+      lastName: new FormControl(""),
+      email: new FormControl(""),
+      phone: new FormControl(""),
+      position: new FormControl(""),
+      department: new FormControl(""),
+      role: new FormControl(""),
+      avatar: new FormControl(""),
+      permission: new FormControl(""),
     });
 
-    const userID =  this.usersService.getUserId();
+    const userID = this.usersService.getUserId();
     console.log(userID);
     this.usersService.getUserDetail(userID).subscribe((userDetail) => {
       console.log(userDetail);
@@ -147,7 +152,7 @@ export class UserDetailComponent implements OnInit {
       department: this.department,
       role: this.role,
       avatar: this.avatar,
-      permission: this.permission
+      permission: this.permission,
     });
 
     this.dataUser = this.data.user;
@@ -193,5 +198,4 @@ export class UserDetailComponent implements OnInit {
   //     console.log('Cancle verified');
   //   }
   // }
-
 }

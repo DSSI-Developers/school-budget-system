@@ -20,6 +20,7 @@ const mainEquipments = mongoose.Schema({
     status: { type: String },
     approveCondition: { type: String },
     approveReason: { type: String },
+    userId: { type: String },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "Users", require: true }
 }, { timestamp: true });
 

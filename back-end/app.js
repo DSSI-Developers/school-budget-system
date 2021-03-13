@@ -63,7 +63,9 @@ const metaEquipment = require('./routes/meta-equipments');
 const learningGroup = require('./routes/learningGroup');
 const subEquipments = require('./routes/sub-equipments');
 const subEquipmentList = require('./routes/sub-equipment-list');
+const historys = require('./routes/history');
 const { Server } = require('http');
+const historySubEquipment = require('./routes/history-sub-equipment');
 app.get('/', (req, res) => {
     res.json({ message: "Welcome to my site" });
 });
@@ -76,6 +78,9 @@ app.use('/notification', notification);
 app.use('/metaEquipments', metaEquipment);
 app.use('/learningGroup', learningGroup);
 app.use('/subEquipmentList', subEquipmentList);
+app.use('/history', historys);
+app.use('/historyList', historySubEquipment);
+
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {

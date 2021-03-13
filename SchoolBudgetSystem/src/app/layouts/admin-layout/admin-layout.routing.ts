@@ -17,6 +17,7 @@ import { IconsComponent } from '../../icons/icons.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 // import { NewprojectComponent } from './../../newproject/newproject.component';
 // import { UpgradeComponent } from '../../upgrade/upgrade.component';
+import { ReadProjectDetailComponent } from '../../users/read-project-detail/read-project-detail.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -74,5 +75,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'manageUser',  component: ManageUserComponent },
     { path: 'readForm',  component: CheckFormComponent },
     { path: 'readDetailForm/:equipmentId',  component: ReadDetailFormComponent },
-    { path: 'listSubEquipment', component: ListSubEquipmentComponent }
+    { path: 'listSubEquipment', component: ListSubEquipmentComponent },
+    { path: 'user-read-project/:id', component: ReadProjectDetailComponent }
 ];

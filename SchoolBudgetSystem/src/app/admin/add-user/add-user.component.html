@@ -59,8 +59,9 @@
                             <br>
                             <mat-form-field appearance="outline">
                                 <mat-label>รหัสผ่าน</mat-label>
-                                <input matInput placeholder="Enter your password" type="password" formControlName="password">
-                                <mat-icon matSuffix>password</mat-icon>
+                                <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" formControlName="password">
+                                <!-- <mat-icon matSuffix>password</mat-icon> -->
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 <mat-error *ngIf="formUserData.value.password == ''">
                                     กรุณากรอกรหัสผ่าน
                                 </mat-error>
@@ -73,10 +74,17 @@
                                 <mat-hint>รหัสผ่านต้องมี 8 ตัวขึ้นไป</mat-hint>
                             </mat-form-field>
                             <br>
+
+                            <!-- <mat-form-field appearance="outline">
+                                <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required>
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </mat-form-field> -->
+
                             <mat-form-field appearance="outline">
                                 <mat-label>ยืนยันรหัสผ่าน</mat-label>
-                                <input matInput placeholder="กรอกรหัสผ่านอีกครั้ง" ngValidateEqual="password" type="password" formControlName="confirm_password">
-                                <mat-icon matSuffix>password</mat-icon>
+                                <input matInput placeholder="กรอกรหัสผ่านอีกครั้ง" ngValidateEqual="password" [type]="hide ? 'password' : 'text'" formControlName="confirm_password">
+                                <!-- <mat-icon matSuffix>password</mat-icon> -->
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 <mat-error *ngIf="formUserData.value.confirm_password == ''">
                                     กรุณายืนยันรหัสผ่าน
                                 </mat-error>
@@ -127,7 +135,7 @@
                             </mat-form-field>
                             <hr>
                             <div class="button-group">
-                                <button mat-raised-button color="primary" (click)="addUser()">
+                                <button mat-raised-button color="primary" [disabled]="formUserData.invalid" (click)="addUser()">
                                     <mat-icon>save</mat-icon> สมัครสมาชิก
                                 </button> &nbsp;
                                 <button mat-raised-button color="warn" mat-dialog-close>

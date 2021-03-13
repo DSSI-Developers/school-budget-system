@@ -14,7 +14,7 @@
                                     <mat-card>
                                         <h4>ข้อมูลผู้รับผิดชอบ</h4>
                                         <hr>
-                                        <p>ชื่อ - นามสกุล : {{fetchFirstName}} {{fetchLastName}}</p>
+                                        <p>ชื่อ - นามสกุล : {{firstName}} {{lastName}}</p>
                                         <p>ตำแหน่ง : {{ position }}</p>
                                         <p>กลุ่มสาระการเรียนรู้ : {{ learningGroup }}</p>
                                     </mat-card>
@@ -91,7 +91,7 @@
                                         </tbody>
                                     </table>
 
-                                    <div class="card">
+                                    <div class="card" *ngIf="role !== 'ADMIN' && role !== 'USER'">
                                         <div class="card-body">
                                             <div class="card-title">
                                                 <h4>อนุมัติเห็นชอบโครงการ</h4>
@@ -111,12 +111,6 @@
                                                                 </mat-radio-button>
                                                                 <mat-error *ngIf="formApprove.value.invalid">กรุณากรอกข้อมูล</mat-error>
                                                             </mat-radio-group>
-                                                            <!-- <div class="col-md-6 text-center">
-                                                            <mat-radio-button value="auto">อนุมัติเห็นชอบโครงการนี้</mat-radio-button>
-                                                        </div>
-                                                        <div class="col-md-6 text-center">
-                                                            <mat-radio-button value="always">ไม่อนุมัติเห็นชอบโครงการนี้</mat-radio-button>
-                                                        </div> -->
                                                         </div>
                                                     </mat-radio-group>
                                                     <div class="container">

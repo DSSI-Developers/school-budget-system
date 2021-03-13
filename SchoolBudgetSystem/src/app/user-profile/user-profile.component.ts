@@ -113,23 +113,33 @@ export class UserProfileComponent implements OnInit, OnDestroy {
    */
   profile: FormGroup;
   imagePreview: string;
-  noImagePath: string = '../assets/img/faces/no-image.png';
+  noImagePath: string = "../assets/img/faces/no-image.png";
 
   constructor(public dialog: MatDialog, private userServices: UsersService) {}
 
   ngOnInit() {
     // Section user detail
     this.profile = new FormGroup({
-      firstName: new FormControl(this.firstName, { validators: [Validators.required] }),
-      lastName: new FormControl(this.lastName, { validators: [Validators.required] }),
+      firstName: new FormControl(this.firstName, {
+        validators: [Validators.required],
+      }),
+      lastName: new FormControl(this.lastName, {
+        validators: [Validators.required],
+      }),
       email: new FormControl(this.email, { validators: [Validators.required] }),
-      password: new FormControl(this.password, { validators: [Validators.required] }),
+      password: new FormControl(this.password, {
+        validators: [Validators.required],
+      }),
       phone: new FormControl(this.phone, { validators: [Validators.required] }),
-      position: new FormControl(this.position, { validators: [Validators.required] }),
-      department: new FormControl(this.department, { validators: [Validators.required] }),
+      position: new FormControl(this.position, {
+        validators: [Validators.required],
+      }),
+      department: new FormControl(this.department, {
+        validators: [Validators.required],
+      }),
       avatar: new FormControl(this.avatar, {
         validators: [Validators.required],
-        asyncValidators: [mimeType]
+        asyncValidators: [mimeType],
       }),
     });
     // Section user
@@ -145,10 +155,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.password = oneUserDetail.data.password;
       this.phone = oneUserDetail.data.phone;
       this.position = oneUserDetail.data.position;
-      this.avatar  = oneUserDetail.data.avatar,
-      this.department = oneUserDetail.data.department,
-      this.role = oneUserDetail.data.role,
-      console.log(this.avatar);
+      (this.avatar = oneUserDetail.data.avatar),
+        (this.department = oneUserDetail.data.department),
+        (this.role = oneUserDetail.data.role),
+        console.log(this.avatar);
       this.imagePreview = this.avatar;
 
       // Set data value in profile form control
@@ -160,11 +170,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         phone: this.phone,
         position: this.position,
         department: this.department,
-        avatar: this.avatar
+        avatar: this.avatar,
       });
     });
-    if (this.avatar != 'ADMIN', this.avatar != 'USER' ,this.avatar != 'LEADER') {
-      this.imagePreview = '../assets/img/faces/no-image.png';
+    if (
+      (this.avatar != "ADMIN", this.avatar != "USER", this.avatar != "LEADER")
+    ) {
+      this.imagePreview = "../assets/img/faces/no-image.png";
     }
 
     this.userIsAuthenticated = this.userServices.getIsAuth();
@@ -178,7 +190,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.profile.patchValue({ avatar: file });
-    this.profile.get('avatar').updateValueAndValidity();
+    this.profile.get("avatar").updateValueAndValidity();
     console.log(file);
     console.log(this.profile);
     const reader = new FileReader();
@@ -187,7 +199,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     };
     reader.readAsDataURL(file);
   }
-
 
   editUser() {
     if (this.profile.invalid) {
@@ -200,8 +211,19 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   onSavePost() {
-    console.log(this.userId);
-    console.log(this.profile.value.firstName);
+    // console.log(
+    //   this.userId,
+    //   this.profile.value.firstName,
+    //   this.profile.value.lastName,
+    //   this.profile.value.email,
+    //   this.profile.value.password,
+    //   this.profile.value.phone,
+    //   this.profile.value.position,
+    //   this.profile.value.department,
+    //   this.role,
+    //   this.profile.value.avatar
+    // );
+
     this.userServices.userEditData(
       this.userId,
       this.profile.value.firstName,
@@ -214,10 +236,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.role,
       this.profile.value.avatar
     );
-    // console.log(this.profile.value.avatar);
-    // console.log(typeof this.profile.value.avatar);
   }
+
   ngOnDestroy(): void {
-    this.authListenerSubs.unsubscribe();
+    // this.authListenerSubs.unsubscribe();
   }
 }

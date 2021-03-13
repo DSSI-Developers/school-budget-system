@@ -5,7 +5,7 @@
 }
 
 .responsive {
-    width: 60%;
+    width: 50%;
     height: auto;
 }
 
@@ -27,5 +27,11 @@
 @media (max-width: 450px) {
     .title-login h3 {
         font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .card {
+        margin: auto;
     }
 }

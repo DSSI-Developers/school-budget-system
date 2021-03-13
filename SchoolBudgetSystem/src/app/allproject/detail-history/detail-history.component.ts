@@ -50,15 +50,15 @@ export class DetailHistoryComponent implements OnInit {
         this.isLoading = false;
       });
     this.value = this.data.detail;
-    console.log(this.value['_id']);
-    // Get data sub quipment
-    this.subServices.getEquipmentBySubId(this.data.id);
-    this.allData = this.subServices.subEquipmentListenUpdate().subscribe((data) => {
-      console.log(data);
-      this.detail = data;
-    })
+    console.log('Value :', this.value);
 
-    console.log(this.data.id);
+    // console.log(this.data.id);
+    this.subServices.getEquipmentBySubId(this.data.id);
+    // this.allData = this.subServices.subEquipmentListenUpdate().subscribe((data) => {
+    //   console.log(data);
+    //   this.detail = data;
+    // })
+
   }
 
   exportPDF() {

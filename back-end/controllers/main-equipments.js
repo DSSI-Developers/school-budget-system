@@ -31,6 +31,7 @@ exports.saveProject = async(req, res, next) => {
         status: req.body.status,
         approveCondition: req.body.approveCondition,
         approveReason: req.body.approveReason,
+        userId: req.userData.userId,
         creator: req.userData.userId
     });
     if (!project) {
@@ -95,6 +96,9 @@ exports.editProject = (req, res, next) => {
     // }
     const id = req.params.id;
     console.log(id);
+    // return res.status(201).json({
+    //     message: "Success"
+    // });
     MainEquipment.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then((result => {
             console.log(result);
             res.status(201).json({

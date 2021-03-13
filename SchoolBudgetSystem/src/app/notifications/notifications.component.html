@@ -20,7 +20,21 @@
                                 <h5 class="card-title" *ngIf="notic.status == 'กำลังดำเนินการ'"><span class="dot pending"></span> {{ notic.dateTime | thaidate:'meduim'}}</h5>
                                 <h5 class="card-title" *ngIf="notic.status == 'ไม่ผ่านการอนุมัติ'"><span class="dot reject"></span> {{ notic.dateTime |thaidate: 'meduim' }}</h5>
                                 <hr>
-                                <p class="card-text">{{ notic.detail }}</p>
+                                <div class="row" (click)="readDetail(notic._id)">
+                                    <div class="col-md-6">{{ notic.detail }}</div>
+                                    <div class="col-md-6">
+                                        <div class="text-rigth" *ngIf="notic.readStatus === false; else read">
+                                            ยังไม่อ่าน</div>
+                                        <ng-template #read>
+                                            <div class="text-rigth">
+                                                อ่านเเล้ว
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <!-- <p class="card-text"></p> -->
+
+
                             </div>
                         </div>
                         <div class="card" *ngIf="document <= 0">

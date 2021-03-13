@@ -1,6 +1,6 @@
-import { NotifiedService } from './../../services/notified.service';
-import { SubEquipments } from './../../../models/sub-equipments.model';
-import { SubEquipmentsService } from './../../services/sub-equipments.service';
+import { NotifiedService } from "./../../services/notified.service";
+import { SubEquipments } from "./../../../models/sub-equipments.model";
+import { SubEquipmentsService } from "./../../services/sub-equipments.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { EquipmentsService } from "./../../services/equipments.service";
 import { Equipments } from "./../../../models/equipments.model";
@@ -10,8 +10,8 @@ import { UsersService } from "app/services/users.service";
 import { Subscription } from "rxjs";
 import { param } from "jquery";
 
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import { EquipmentsHistoryService } from "../../services/equipments-history.service";
 @Component({
   selector: "app-read-detail-form",
   templateUrl: "./read-detail-form.component.html",
@@ -29,12 +29,12 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
     },
   ];
 
-  
   dataDetail;
   isLoading = false;
   private authStatusSub: Subscription;
 
-  budget; number;
+  budget;
+  number;
   condition: string;
   dateProject;
   existEquipment;
@@ -50,6 +50,7 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
   reason;
   status: string;
   subjectTeach: string;
+  listSubEquipments: Array<any> = [];
 
   conditionValue: FormGroup;
   // personalData
@@ -63,24 +64,32 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
 
   equipmentId: string;
   subequipment_group: Subscription;
-  subEquipmentList: SubEquipments[] = []
+  subEquipmentList: SubEquipments[] = [];
 
   formApprove: FormGroup;
   typeEquipment: string;
+  idUserInProject: any;
+  role: any;
+  list_sub_equipments: Subscription;
   constructor(
     private userServices: UsersService,
     private router: ActivatedRoute,
     private route: Router,
     private equipmentService: EquipmentsService,
     private subServices: SubEquipmentsService,
-    private notifiedService: NotifiedService
+    private notifiedService: NotifiedService,
+    private histories: EquipmentsHistoryService
   ) {}
 
   ngOnInit(): void {
     this.formApprove = new FormGroup({
-      approveCondition : new FormControl(null, {validators: [Validators.required]}),
-      approveReason: new FormControl(null, {validators: [Validators.required, Validators.min(5)]}),
-    })
+      approveCondition: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      approveReason: new FormControl(null, {
+        validators: [Validators.required, Validators.min(5)],
+      }),
+    });
     this.conditionValue = new FormGroup({
       condition: new FormControl(null, { validators: [] }),
     });
@@ -95,7 +104,8 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
     this.userServices.getUserDetail(userId).subscribe((data) => {
       this.fetchFirstName = data.data.firstName;
       this.fetchLastName = data.data.lastName;
-      console.log(this.fetchFirstName + " " + this.fetchLastName);
+      this.role = data.data.role;
+      // console.log(this.fetchFirstName + " " + this.fetchLastName);
     });
 
     // Section fetch data of Project | Equipment
@@ -120,37 +130,83 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
         this.reason = data.response.reason;
         this.status = data.response.status;
         this.subjectTeach = data.response.subjectTeach;
-        console.log(this.dataDetail);
-
+        this.idUserInProject = data.response.userId;
+        // console.log(this.dataDetail);
+        // Get list of sub equipment
+        this.subServices.getEquipmentBySubId(this.equipmentId);
+        this.list_sub_equipments = this.subServices.subEquipmentListenUpdate().subscribe((data: SubEquipments[]) => {
+          const list_sub_equipments = data;
+          console.log(list_sub_equipments.length);
+          for (let i = 0; i < list_sub_equipments.length; i++) {
+            this.listSubEquipments.push(list_sub_equipments[i]);
+            // console.log(list_sub_equipments[i]);
+          }
+          // console.log('list of sub equipment : ', this.listSubEquipments);
+          // console.log('Type of :', typeof this.listSubEquipments);
+        })
 
         this.conditionValue.setValue({
-          condition: this.condition
+          condition: this.condition,
         });
-        this.subServices.getEquipmentBySubId(this.equipmentId);
-        this.subequipment_group = this.subServices.subEquipmentListenUpdate().subscribe((value: SubEquipments[]) => {
-          this.subEquipmentList = value;
-          console.log('Sub Equipment : ', this.subEquipmentList);
-        });
-        console.log(this.dataDetail);
+        // this.subServices.getEquipmentBySubId(this.equipmentId);
+        this.subequipment_group = this.subServices
+          .subEquipmentListenUpdate()
+          .subscribe((value: SubEquipments[]) => {
+            this.subEquipmentList = value;
+            // console.log("Sub Equipment : ", this.subEquipmentList);
+          });
+        // console.log(this.dataDetail);
       });
     });
   }
 
   approveProject() {
     Swal.fire({
-      title: 'คุณต้องการอนุมัติโครงการนี้ ?',
-      text: 'หากอนุมัติโครงการแล้วจะไม่สามารถเปลี่ยนหรือแก้ไขข้อมูลได้ !',
-      icon: 'warning',
+      title: "คุณต้องการอนุมัติโครงการนี้ ?",
+      text: "หากอนุมัติโครงการแล้วจะไม่สามารถเปลี่ยนหรือแก้ไขข้อมูลได้ !",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'ตกลง',
-      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: "ตกลง",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (this.formApprove.value.approveCondition === 'อนุมัติเห็นชอบโครงการนี้') {
-          this.status = 'ผ่านการอนุมัติ';
+        if (
+          this.formApprove.value.approveCondition === "อนุมัติเห็นชอบโครงการนี้"
+        ) {
+          this.status = "ผ่านการอนุมัติ";
         } else {
-          this.status  = 'ไม่ผ่านการอนุมัติ';
+          this.status = "ไม่ผ่านการอนุมัติ";
         }
+
+        // Check Status for add history
+        const userId = this.userServices.getUserId();
+        if (this.status === "ผ่านการอนุมัติ") {
+          this.histories.addHistory(
+            this.equipmentId,
+            this.firstName,
+            this.lastName,
+            this.position,
+            this.learningGroup,
+            this.subjectTeach,
+            this.reason,
+            this.objective,
+            this.typeEquipment,
+            this.learningGroups,
+            this.majorList,
+            this.budget,
+            this.necessary,
+            this.existEquipment,
+            this.otherReason,
+            this.dateProject,
+            this.condition,
+            this.status,
+            this.formApprove.value.approveCondition,
+            this.formApprove.value.approveReason,
+            this.idUserInProject,
+            this.listSubEquipments
+          );
+        }
+
         this.equipmentService.editEquipment(
           this.equipmentId,
           this.firstName,
@@ -174,17 +230,23 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
           this.formApprove.value.approveReason
         );
 
-        const note = '';
-        // Add notification
-        this.notifiedService.addNotification(this.typeEquipment, this.status, this.majorList, this.formApprove.value.approveReason );
-        this.route.navigate(['/readForm']);
-        Swal.fire('อนุมัติโครงการสำเร็จ', 'You submitted succesfully!', 'success');
-      } else if (result.isDismissed) {
+        const note = "";
+        const type = "โครงการ";
+        const status = this.status;
+        const detail = this.majorList;
+        // Notification
+      this.notifiedService.addNotification(userId, type, status, detail, note);
 
+        this.route.navigate(["/readForm"]);
+        Swal.fire(
+          "อนุมัติโครงการสำเร็จ",
+          "You submitted succesfully!",
+          "success"
+        );
+      } else if (result.isDismissed) {
       }
     });
   }
-
 
   ngOnDestroy() {
     this.subequipment_group.unsubscribe();

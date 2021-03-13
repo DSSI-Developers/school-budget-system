@@ -12,11 +12,12 @@
                                         <div class="card-avatar">
                                             <!-- <div *ngIf="imagePreview == '' || imagePreview == null || avatar === 'ADMIN' || avatar === 'USER' || avatar === 'LEADER'; else noImage"> -->
                                             <div *ngIf="imagePreview !== '' || avatar !== 'ADMIN' && avatar !== 'USER' && avatar !== 'LEADER' ; else noImage">
-                                                <img class="img" [src]="imagePreview" [alt]="profile.value.firstName" />
+                                                <img class="img" [src]="imagePreview" />
                                             </div>
                                             <ng-template #noImage>
                                                 <img class="img" src="../assets/img/faces/no-image.png" [alt]="profile.value.firstName" />
                                             </ng-template>
+
                                             <!-- <div class="image-preview" *ngIf="avatar != '' && avatar != null && imagePreview !== '' && imagePreview && profile.get('avatar').valid; else noImage">
                                                 <img [src]="imagePreview" [alt]="profile.value.firstName">
                                             </div>
@@ -26,7 +27,7 @@
                                         </div>
                                         <div class="card-body">
                                             <p class="card-description">
-                                                เลือกรูปโปรไฟล์ที่สวมชุดสุภาพเเละที่มีขนาดไฟล์ภาพไม่เกิน MB
+                                                เลือกรูปโปรไฟล์ที่สวมชุดสุภาพเเละที่มีขนาดไฟล์ภาพไม่เกิน ...MB
                                             </p>
                                             <hr>
 

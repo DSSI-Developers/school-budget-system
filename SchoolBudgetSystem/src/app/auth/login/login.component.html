@@ -6,7 +6,7 @@
             </div>
 
             <div class="col-md-6">
-                <div class="card" style="margin-top: 3rem;">
+                <div class="card" style="margin-top: 1rem;">
                     <div class="card-header" style="text-align: center;">
                         <!-- <img src="https://angular.io/assets/images/logos/angular/angular.png" alt="Logo not responding"> -->
                         <img src="../assets/img/school_logo.png" alt="โรงเรียนบึงมะลูวิทยา" class="responsive">
@@ -21,10 +21,11 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>อีเมล</mat-label>
                                 <input matInput placeholder="Enter your email" type="email" formControlName="email">
-                                <button mat-button *ngIf="login.value.email" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                                <!-- <button mat-button *ngIf="login.value.email" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
                                     <mat-icon>close</mat-icon>
-                                </button>
-                                <mat-icon matSuffix *ngIf="!login.value.email">email</mat-icon>
+                                </button> -->
+                                <!-- <mat-icon matSuffix *ngIf="!login.value.email">email</mat-icon> -->
+                                <mat-icon matSuffix>email</mat-icon>
                                 <!-- <mat-error *ngIf="login.get('email').invalid">รูปแบบอีเมลไม่ถูกต้อง</mat-error> -->
                                 <mat-error *ngIf="login.value.email">รูปแบบอีเมลไม่ถุกต้อง</mat-error>
                                 <mat-error *ngIf="login.value.email === ''">กรุณากรอกอีเมลแอเดรส</mat-error>

@@ -10,7 +10,8 @@ import { NotifiedService } from "./../services/notified.service";
 import { Notification } from "./../../models/notified.model";
 import { Subscription } from "rxjs";
 import { UsersService } from "app/services/users.service";
-
+import { MatDialog } from "@angular/material/dialog";
+import { ReadNotificationComponent } from "./read-notification/read-notification.component";
 declare var $: any;
 
 // export interface Notification {
@@ -47,7 +48,8 @@ export class NotificationsComponent implements OnInit {
   document;
   constructor(
     public notifiedService: NotifiedService,
-    private userServices: UsersService
+    private userServices: UsersService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -113,6 +115,35 @@ export class NotificationsComponent implements OnInit {
   //     }
   //   );
   // }
+  readDetail(id) {
+    const dialogRef = this.dialog.open(ReadNotificationComponent, {
+      width: "50%",
+      data: id,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(id);
+      this.notifiedService.getNotified(id).subscribe((notification) => {
+        console.log(notification);
+        if (notification.response.readStatus === false) {
+          this.notifiedService.editNotification(
+            notification.response._id,
+            notification.response.userId,
+            notification.response.type,
+            notification.response.status,
+            notification.response.detail,
+            notification.response.note
+          );
+          this.notifiedService.getAllNotified();
+          console.log('Read status is False !');
+        } else {
+          this.notifiedService.getAllNotified();
+          console.log('Read status is True !');
+        }
+
+      });
+    });
+  }
 
   OnDestroy() {
     this.authStatusSub.unsubscribe();

@@ -299,8 +299,9 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
       const status = 'กำลังดำเนินการ';
       const detail = this.equipmentsRequest.value.majorList;
       const note = '';
+      const userId = this.userServices.getUserId();
       // Notification
-      this.notifiedService.addNotification(type, status, detail, note);
+      this.notifiedService.addNotification(userId, type, status, detail, note);
       Swal.fire(
         'บันทึกรายการเรียบร้อย',
         'You submitted succesfully!',

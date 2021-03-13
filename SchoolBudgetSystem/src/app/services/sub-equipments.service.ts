@@ -37,7 +37,7 @@ export class SubEquipmentsService {
   getSubEquipment(id: string) {
     // return { ...this.subEquipments.filter((data) => data._id === id) };
     return this.http
-      .get<{ message: string; response: any }>(
+      .get<{ message: string; response: SubEquipments[] }>(
         'http://localhost:8080/subEquipment/getSubId/' + id
       );
   }

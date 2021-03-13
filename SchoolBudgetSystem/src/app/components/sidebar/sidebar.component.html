@@ -70,8 +70,13 @@
             && menuItem.title != 'แก้ไขคำขอจัดตั้งครุภัณฑ์ใหม่'
             " [routerLink]="[menuItem.path]">
                 <!-- <a class="nav-link" *ngIf="menuItem.title != 'เพิ่มคำขอจัดตั้งครุภัณฑ์ใหม่' && menuItem.title != 'จัดการครุภัณฑ์หรือรายการย่อย'" [routerLink]="[menuItem.path]"> -->
-                <i class="material-icons">{{menuItem.icon}}</i>
+                <i *ngIf="menuItem.title == 'การเเจ้งเตือนโครงการ'; else hide" class="material-icons"><span class="badge badge-warning" *ngIf="countAlert != 0">{{ countAlert }}</span>{{menuItem.icon}} </i>
                 <p>{{menuItem.title}}</p>
+                <ng-template #hide>
+                    <i class="material-icons">{{menuItem.icon}}</i>
+                    <!-- <p>{{menuItem.title}}</p> -->
+                </ng-template>
+
             </a>
         </li>
     </ul>

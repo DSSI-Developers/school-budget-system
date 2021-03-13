@@ -8,6 +8,6 @@ export interface Users {
     position: string,
     department: string,
     role: string,
-    avatar: string,
+    avatar: string | File,
     permission: string
 }
