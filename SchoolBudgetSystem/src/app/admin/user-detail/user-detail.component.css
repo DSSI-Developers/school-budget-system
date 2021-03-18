@@ -1,14 +1,3 @@
-/* mat-tab-group {
-    max-width: 1000px;
-    min-width: 750px;
-} */
-
-
-/* example-full-width {
-    width: 100%;
-    margin: auto;
-} */
-
 div.ng-star-inserted {
     display: flex;
     flex-direction: row;
@@ -36,9 +25,11 @@ div.ng-star-inserted {
     border-radius: 50%;
 } */
 
-mat-card {
+
+/* mat-card {
     margin: auto;
-}
+    width: 100%;
+} */
 
 .example-full-width-one-line {
     width: 100%;
@@ -55,7 +46,6 @@ mat-card {
 
 .example-full-width {
     width: 100%;
-    margin: auto;
 }
 
 .button-group {
@@ -64,13 +54,3 @@ mat-card {
     justify-content: flex-start;
     flex-wrap: wrap;
 }
-
-
-/* example-full-width-table {
-    max-width: 100%;
-} */
-
-
-/* .user-profile {
-    margin-top: 5px;
-} */

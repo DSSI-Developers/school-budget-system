@@ -7,7 +7,7 @@
             <div class="row">
                 <!-- <form class="example-form" *ngFor="let user of dataUser"> -->
                 <form *ngFor="let user of dataUser">
-                    <div class="flex-profile">
+                    <!-- <div class="flex-profile">
                         <div class="image-preview">
                             <div *ngIf="user.avatar === 'ADMIN' || user.avatar === 'USER' || user.avatar === 'LEADER'; else noImage">
                                 <img class="img" src="../assets/img/faces/no-image.png" [alt]="user.firstName" />
@@ -16,10 +16,9 @@
                                 <img class="img" [src]="user.avatar" [alt]="user.firstName" />
                             </ng-template>
                         </div>
-                    </div>
-                    <!-- <img class="img" [src]="user.avatar" [alt]="user.firstName" /> -->
+                    </div> -->
 
-                    <mat-card>
+                    <!-- <mat-card>
                         <table class="example-full-width" cellspacing="0">
                             <tr>
                                 <td>
@@ -64,7 +63,53 @@
                                 </td>
                             </tr>
                         </table>
-                    </mat-card>
+                    </mat-card> -->
+                    <table class="example-full-width" cellspacing="0">
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>ชื่อ</mat-label>
+                                    <input matInput disabled value="{{ user.firstName }}">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>นามสกุล</mat-label>
+                                    <input matInput disabled value="{{ user.lastName }}">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>อีเมง</mat-label>
+                                    <input matInput disabled value="{{ user.email }}">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>โทรศัพท์</mat-label>
+                                    <input matInput disabled value="{{ user.phone }}">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
+                                    <input matInput disabled value="{{ user.department }}">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>ตำแหน่ง</mat-label>
+                                    <input matInput disabled value="{{ user.position }}">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
                     <hr>
                     <button mat-stroked-button mat-dialog-close>
                         <mat-icon>close</mat-icon> Cancel

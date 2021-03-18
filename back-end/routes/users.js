@@ -20,7 +20,10 @@ router.delete('/deleteUser/:id', checkAuth, userController.deleteUser);
 router.put('/editProfile/:id', checkAuth, extractFile, userController.editProfile);
 router.post('/addUser', extractFile, userController.addUser);
 // router.put('/adminEditUser/:id', checkAuth, extractFile, userController.adminEditUserData);
-// router.put('/approveUser/:id', userController.approveUser);
+router.put('/userEditProfile/:id', userController.userEditProfile);
+router.put('/editPassword/:id', userController.changePassword);
+
+
 
 module.exports = router;
 

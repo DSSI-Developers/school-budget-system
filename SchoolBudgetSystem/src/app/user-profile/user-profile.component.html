@@ -3,51 +3,40 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form [formGroup]="profile" (submit)="onSavePost()">
+                <form [formGroup]="profile">
                     <div class="content">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <div class="card card-profile">
                                         <div class="card-avatar">
-                                            <!-- <div *ngIf="imagePreview == '' || imagePreview == null || avatar === 'ADMIN' || avatar === 'USER' || avatar === 'LEADER'; else noImage"> -->
                                             <div *ngIf="imagePreview !== '' || avatar !== 'ADMIN' && avatar !== 'USER' && avatar !== 'LEADER' ; else noImage">
                                                 <img class="img" [src]="imagePreview" />
                                             </div>
                                             <ng-template #noImage>
                                                 <img class="img" src="../assets/img/faces/no-image.png" [alt]="profile.value.firstName" />
                                             </ng-template>
-
-                                            <!-- <div class="image-preview" *ngIf="avatar != '' && avatar != null && imagePreview !== '' && imagePreview && profile.get('avatar').valid; else noImage">
-                                                <img [src]="imagePreview" [alt]="profile.value.firstName">
-                                            </div>
-                                            <ng-template #noImage>
-                                                <img class="img" [src]="imagePreview" [alt]="profile.value.firstName" />
-                                            </ng-template> -->
                                         </div>
                                         <div class="card-body">
                                             <p class="card-description">
                                                 เลือกรูปโปรไฟล์ที่สวมชุดสุภาพเเละที่มีขนาดไฟล์ภาพไม่เกิน ...MB
                                             </p>
                                             <hr>
-
-                                            <!-- <div>
-                                                <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-                                                <input type="file" #filePicker (change)="onImagePicked($event)">
-                                              </div> -->
                                             <div>
                                                 <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
                                                 <input type="file" #filePicker (change)="onImagePicked($event)">
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+
                                 <!-- Start form input data of user detail -->
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header card-header-danger">
                                             <h4 class="card-title">โปรไฟล์</h4>
-                                            <p class="card-category">จัดการข้อมูลส่วนส่วนตัวของคุณเพื่อความปลอดภัยของบัญชีผู้ช้นี้</p>
+                                            <p class="card-category">
+                                                จัดการข้อมูลส่วนส่วนตัวของคุณเพื่อความปลอดภัยของบัญชีผู้ช้นี้</p>
                                         </div>
                                         <div class="card-body">
 
@@ -108,7 +97,8 @@
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>ตำแหน่ง</mat-label>
                                                             <mat-select formControlName="department">
-                                                                <mat-option *ngFor="let item of departments" value="{{item.value}}">{{ item.viewValue }}</mat-option>
+                                                                <mat-option *ngFor="let item of departments" value="{{item.value}}">{{ item.viewValue }}
+                                                                </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                         <!-- </div>
@@ -122,9 +112,12 @@
                                                     </div>
                                                 </div>
                                                 <hr>
+                                                <button type="submit" class="btn btn-default pull-right" (click)="changePassword()">
+                                                    <mat-icon>edit</mat-icon> แก้ไขรหัส่าน
+                                                </button>
                                                 <button type="submit" class="btn btn-danger pull-right" (click)="onSavePost()">
-                                                <mat-icon>edit</mat-icon> แก้ไขข้อมูลส่วนตัว
-                                            </button>
+                                                    <mat-icon>edit</mat-icon> แก้ไขข้อมูลส่วนตัว
+                                                </button>
                                                 <div class="clearfix"></div>
                                             </div>
 

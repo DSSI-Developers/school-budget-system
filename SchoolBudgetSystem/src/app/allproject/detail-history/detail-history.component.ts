@@ -25,10 +25,10 @@ export interface PeriodicElement {
   styleUrls: ["./detail-history.component.css"],
 })
 export class DetailHistoryComponent implements OnInit {
-  detailTitle = "ครุภัณฑ์เเละอุปกรณ์ต่อพ่วง โครงการ : DLIT";
-  statusProject = "สำเร็จ";
-  statusColor = "success";
-  displayedColumns: string[] = ["position", "name", "weight", "symbol"];
+  // detailTitle = "ครุภัณฑ์เเละอุปกรณ์ต่อพ่วง โครงการ : DLIT";
+  // statusProject = "สำเร็จ";
+  // statusColor = "success";
+  // displayedColumns: string[] = ["position", "name", "weight", "symbol"];
   // dataSource = ELEMENT_DATA;
 
   detail;

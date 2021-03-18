@@ -28,16 +28,16 @@ declare var $: any;
 export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
   subEquipment: FormGroup;
   socket;
-  listOfProject = [
-    {
-      no: '1',
-      type: 'โครงการ',
-      list: 'วงโยธวาทิต',
-      unit: '20',
-      budget: 900000,
-      subEquipment: 900000,
-    },
-  ];
+  // listOfProject = [
+  //   {
+  //     no: '1',
+  //     type: 'โครงการ',
+  //     list: 'วงโยธวาทิต',
+  //     unit: '20',
+  //     budget: 900000,
+  //     subEquipment: 900000,
+  //   },
+  // ];
 
   majorList: string;
   budget: number;

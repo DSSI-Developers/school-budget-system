@@ -123,7 +123,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   isLoading = false;
   private authStatusSub: Subscription;
 
-  public Editor = ClassicEditor;
+  // public Editor = ClassicEditor;
   // Data about user
   firstName: string;
   lastName: string;

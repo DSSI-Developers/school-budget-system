@@ -333,7 +333,84 @@ export class UsersService {
     //   );
   }
 
-  userEditData(
+  // userEditData(
+  //   id: string,
+  //   firstName: string,
+  //   lastName: string,
+  //   email: string,
+  //   password: string,
+  //   phone: string,
+  //   position: string,
+  //   department: string,
+  //   role: string,
+  //   avatar: File | string
+  // ) {
+  //   let userProfile = new FormData();
+  //   if (typeof avatar === "object") {
+  //     userProfile.append("_id", id);
+  //     userProfile.append("firstName", firstName);
+  //     userProfile.append("lastName", lastName);
+  //     userProfile.append("email", email);
+  //     userProfile.append("password", password);
+  //     userProfile.append("phone", phone);
+  //     userProfile.append("position", position);
+  //     userProfile.append("department", department);
+  //     userProfile.append("role", role);
+  //     userProfile.append("avatar", avatar, id);
+  //   } else {
+  //     let userProfile: Users = {
+  //       _id: id,
+  //       firstName: firstName,
+  //       lastName: lastName,
+  //       email: email,
+  //       password: password,
+  //       phone: phone,
+  //       position: position,
+  //       department: department,
+  //       role: role,
+  //       avatar: avatar,
+  //       permission: null,
+  //     };
+  //   }
+
+  //   console.log(userProfile);
+  //   // const user = {
+  //   //   _id: id,
+  //   //   firstName: firstName,
+  //   //   lastName: lastName,
+  //   //   email: email,
+  //   //   password: password,
+  //   //   phone: phone,
+  //   //   position: position,
+  //   //   department: department,
+  //   //   role: role,
+  //   //   avatar: avatar,
+  //   //   permission: null,
+  //   // };
+  //   // console.log(user);
+
+  //   this.http
+  //     .put<{ message: string; response: any }>(
+  //       'http://localhost:8080/users/editProfile/' + id,
+  //       userProfile
+  //     )
+  //     .subscribe(
+  //       (response) => {
+  //         console.log(response);
+  //         Swal.fire('แก้ไขข้อมูลเรียบร้อยแล้ว', 'You submitted succesfully!', 'success');
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Oops...',
+  //           text: 'แก้ข้อมูลส่วนตัวไม่สำเร็จ!',
+  //         })
+  //       }
+  //     );
+  // }
+
+  userEditProfile(
     id: string,
     firstName: string,
     lastName: string,
@@ -345,53 +422,22 @@ export class UsersService {
     role: string,
     avatar: File | string
   ) {
-    let userProfile = new FormData();
-    if (typeof avatar === "object") {
-      userProfile.append("_id", id);
-      userProfile.append("firstName", firstName);
-      userProfile.append("lastName", lastName);
-      userProfile.append("email", email);
-      userProfile.append("password", password);
-      userProfile.append("phone", phone);
-      userProfile.append("position", position);
-      userProfile.append("department", department);
-      userProfile.append("role", role);
-      userProfile.append("avatar", avatar, id);
-    } else {
-      let userProfile: Users = {
-        _id: id,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-        phone: phone,
-        position: position,
-        department: department,
-        role: role,
-        avatar: avatar,
-        permission: null,
-      };
-    }
-
-    console.log(userProfile);
-    // const user = {
-    //   _id: id,
-    //   firstName: firstName,
-    //   lastName: lastName,
-    //   email: email,
-    //   password: password,
-    //   phone: phone,
-    //   position: position,
-    //   department: department,
-    //   role: role,
-    //   avatar: avatar,
-    //   permission: null,
-    // };
-    // console.log(user);
-
+    const userProfile = {
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      phone: phone,
+      position: position,
+      department: department,
+      role: role,
+      avatar: avatar,
+      permission: null,
+    };
     this.http
       .put<{ message: string; response: any }>(
-        'http://localhost:8080/users/editProfile/' + id,
+        'http://localhost:8080/users/userEditProfile/' + id,
         userProfile
       )
       .subscribe(

@@ -351,73 +351,142 @@ exports.editProfile = (req, res, next) => {
         message: "Success"
     });
 
-    Users.findOneAndUpdate(id, user, { useFindAndModify: false })
-        .then((result => {
-            console.log(result);
-            res.status(201).json({
-                message: `Updated data ${result}`,
-                response: result
-            });
-        }))
-        .catch(err => {
-            console.log(err);
-            res.status(401).json({
-                message: "ไม่สามารถแก้ไขขอมูลได้ " + err
-            });
-        });
-
-
-    exports.adminEditUserData = () => {
-            const userId = req.params.id;
-            const userData = req.body;
-            console.log();
-            if (!userId) {
-                res.status(401).json({
-                    message: "ไมพบ ID ที่ตรงกัน"
-                })
-            }
-            return res.status(202).send("success", userId, userData);
-            Users.findByIdAndUpdate(userId, userData, { useFindAndModify: false })
-                .then(result => {
-                    res.status(404).json({
-                        message: "แก้ไขจ้อมูลสำเร็จ"
-                    })
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: `Error message at ${err}`
-                    })
-                })
-        }
-        // .then(result => {
-        //     res.status(200).json({
-        //         message: "Update successful!",
-        //         response: result
-        //     });
-        //     // if (result.n > 0) {
-        //     // } else {
-        //     //     res.status(401).json({ message: "Not authorized!" });
-        //     // }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        //     res.status(500).json({
-        //         message: error
-        //     });
-        // });
-
-    // Users.findByIdAndUpdate(id, user, { useFindAndModify: false })
-    //     .then(data => {
-    //         if (!data) {
-    //             res.status(404).json({
-    //                 message: `Cannot update User with id=${id}. Maybe User was not found!`
-    //             });
-    //         } else res.json({ message: "Tutorial was updated successfully." });
-    //     })
+    // Users.findOneAndUpdate(id, user, { useFindAndModify: false })
+    //     .then((result => {
+    //         console.log(result);
+    //         res.status(201).json({
+    //             message: `Updated data ${result}`,
+    //             response: result
+    //         });
+    //     }))
     //     .catch(err => {
-    //         res.status(500).json({
-    //             message: "Error updating user detail with id=" + id,
-    //             response: err
+    //         console.log(err);
+    //         res.status(401).json({
+    //             message: "ไม่สามารถแก้ไขขอมูลได้ " + err
     //         });
     //     });
+
+
+    // exports.adminEditUserData = () => {
+    //         const userId = req.params.id;
+    //         const userData = req.body;
+    //         console.log();
+    //         if (!userId) {
+    //             res.status(401).json({
+    //                 message: "ไมพบ ID ที่ตรงกัน"
+    //             })
+    //         }
+    //         return res.status(202).send("success", userId, userData);
+    //         Users.findByIdAndUpdate(userId, userData, { useFindAndModify: false })
+    //             .then(result => {
+    //                 res.status(404).json({
+    //                     message: "แก้ไขจ้อมูลสำเร็จ"
+    //                 })
+    //             })
+    //             .catch(err => {
+    //                 res.status(500).json({
+    //                     message: `Error message at ${err}`
+    //                 })
+    //             })
+    //     }
+}
+
+
+// This function edit profile without image avatar
+exports.userEditProfile = (req, res, next) => {
+    const id = req.params.id;
+    const userData = req.body;
+
+    if (!userData || !id) {
+        res.status(404).json({
+            message: "ไม่มีข้อมูล"
+        });
+    }
+    console.log(id);
+    console.log(userData);
+    // return res.status(200).send(userData);
+    Users.findByIdAndUpdate(id, userData, { useFindAndModify: false })
+        .then((result) => {
+            res.status(201).json({
+                message: "Updated user profile success !",
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                message: `มีบางอย่างผิดพลาด : ${err}`
+            });
+        });
+}
+
+
+exports.changePassword = async(req, res, next) => {
+    const id = req.params.id;
+    // const old_password = req.body.old_password;
+    const old_password = req.body.old_password;
+    const new_password = req.body.new_password;
+    const userData = {
+        id: req.body.id,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: new_password,
+        phone: req.body.phone,
+        position: req.body.position,
+        department: req.body.department,
+        role: req.body.role,
+        avatar: req.body.role,
+        permission: req.body.permission,
+    }
+    checkUser(id, old_password);
+    Users.findByIdAndUpdate(id, user, { useFindAndModify: false }).then(res => {
+        res.status(201).json({
+            message: "เปลี่ยนรหัสผ่านเรียบร้อย"
+        });
+    }).catch(err => {
+        res.status(500).json({
+            message: err + "error"
+        });
+    })
+
+
+
+    // await Users.findById(id)
+    //     .then(result => {
+    //         checkUser(id, old_password);
+    //         if (!result) {
+    //             console.log("ไม่พบรหัสผ่านเดิม !");
+    //             res.status(401).json({
+    //                 message: "รหัสผ่านเดิมไม่ถุกต้อง"
+    //             });
+    //         } else {
+    //             console.log("Sucessful เย้");
+    //             res.status(201).json({
+    //                 message: "เปลี่ยนรหัสผ่านเรียบร้อย เย้ !",
+    //             });
+    //         }
+    //     })
+    //     .catch(err => {
+    //         console.log(err, "Error แป่ว")
+    //         res.status(500).json({
+    //             message: "มีบางอย่างปิดพลาด"
+    //         })
+    //     })
+}
+
+
+function checkUser(id, password) {
+    //... fetch user from a db etc.
+    Users.findById(id).then(user => {
+        const hash = user.password;
+        const myPlaintextPassword = password
+        console.log('Hash :', hash);
+        console.log('Password ', myPlaintextPassword);
+        bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
+            console.log('Res: ', res);
+            if (res) {
+                return res;
+            } else {
+                return false;
+            }
+        });
+    });
 }

@@ -128,7 +128,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // ];
   // doughnutChartType: ChartType = "doughnut";
 
-  chart: any;
+  // chart: any;
 
   constructor(
     public dialog: MatDialog,

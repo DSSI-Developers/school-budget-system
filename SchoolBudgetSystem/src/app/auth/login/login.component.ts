@@ -15,15 +15,15 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 declare var $: any;
-export interface UserProfile {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phone: string;
-  position: string;
-  role: string;
-}
+// export interface UserProfile {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   password: string;
+//   phone: string;
+//   position: string;
+//   role: string;
+// }
 
 @Component({
   selector: 'app-login',

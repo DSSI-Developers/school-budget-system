@@ -49,6 +49,7 @@ import { ErrorInterceptor } from './services/error-interceptor';
 
 // import { CKEditorModule } from 'ng2-ckeditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+// import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 // import { ReadNotificationComponent } from './notifications/read-notification/read-notification.component';
 // import { ReadProjectDetailComponent } from './users/read-project-detail/read-project-detail.component';
 
@@ -81,7 +82,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     RegisterComponent,
     ExportPDFComponent,
     // MoreDetailComponent,
-    ErrorComponent,
+    ErrorComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'th-TH' },

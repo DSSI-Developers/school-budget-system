@@ -36,11 +36,11 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
         idForCheck: string;
         userId: string;
         // countDataInSubEquipment;
-        alert: string;
+        // alert: string;
         countDataInSubEquipment: Array<number> = [];
         dataSub;
 
-        totalPosts = 0;
+        // totalPosts = 0;
         postsPerPage = 2;
         currentPage = 1;
         pageSizeOptions = [1, 2, 5, 10];

@@ -83,7 +83,7 @@ export class ManageUserComponent implements OnInit, OnDestroy {
   addUser(): void {
     const dialogRef = this.dialog.open(AddUserComponent, {
       height: "80%",
-      width: "90%",
+      // width: "90%",
       // data: {name: this.name, animal: this.animal}
     });
     
@@ -105,7 +105,7 @@ export class ManageUserComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(UserDetailComponent, {
       height: "80%",
-      width: "90%",
+      // width: "90%",
       data: {
         user: this.personalData,
       },

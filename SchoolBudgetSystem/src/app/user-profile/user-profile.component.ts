@@ -6,7 +6,7 @@ import { MatDialog } from "@angular/material/dialog";
 
 import { UsersService } from "./../services/users.service";
 import { mimeType } from "./mime-type.validator";
-
+import { ChangePasswordComponent } from "./change-password/change-password.component";
 interface Position {
   viewValue: string;
   value: string;
@@ -112,6 +112,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
    * @memberof UserProfileComponent
    */
   profile: FormGroup;
+  editPassword: FormGroup;
   imagePreview: string;
   noImagePath: string = "../assets/img/faces/no-image.png";
 
@@ -142,6 +143,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         asyncValidators: [mimeType],
       }),
     });
+   
     // Section user
     this.userServices.autoAuthUser();
     this.userId = this.userServices.getUserId();
@@ -224,7 +226,20 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     //   this.profile.value.avatar
     // );
 
-    this.userServices.userEditData(
+    // this.userServices.userEditData(
+    //   this.userId,
+    //   this.profile.value.firstName,
+    //   this.profile.value.lastName,
+    //   this.profile.value.email,
+    //   this.profile.value.password,
+    //   this.profile.value.phone,
+    //   this.profile.value.position,
+    //   this.profile.value.department,
+    //   this.role,
+    //   this.profile.value.avatar
+    // );
+
+    this.userServices.userEditProfile(
       this.userId,
       this.profile.value.firstName,
       this.profile.value.lastName,
@@ -236,6 +251,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.role,
       this.profile.value.avatar
     );
+  }
+
+  changePassword() {
+    const change_PW_Ref = this.dialog.open(ChangePasswordComponent, {
+      width: '60%'
+    });
+    change_PW_Ref.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   ngOnDestroy(): void {

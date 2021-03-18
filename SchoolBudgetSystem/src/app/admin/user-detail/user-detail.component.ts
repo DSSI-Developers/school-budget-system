@@ -27,19 +27,19 @@ interface Department {
   styleUrls: ["./user-detail.component.css"],
 })
 export class UserDetailComponent implements OnInit {
-  userData = [
-    {
-      id: 2,
-      firstName: "Prasit",
-      lastName: "Kritsana",
-      email: "kritsana.pr.60@ubu.ac.th",
-      password: "1234567890",
-      phone: "0987654321",
-      position: "user",
-      role: "user",
-      permission: "Anonymous",
-    },
-  ];
+  // userData = [
+  //   {
+  //     id: 2,
+  //     firstName: "Prasit",
+  //     lastName: "Kritsana",
+  //     email: "kritsana.pr.60@ubu.ac.th",
+  //     password: "1234567890",
+  //     phone: "0987654321",
+  //     position: "user",
+  //     role: "user",
+  //     permission: "Anonymous",
+  //   },
+  // ];
 
   posite: Position[] = [
     { value: "ครู", viewValue: "ครู" },

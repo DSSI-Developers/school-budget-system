@@ -18,16 +18,16 @@ import { EquipmentsHistoryService } from "../../services/equipments-history.serv
   styleUrls: ["./read-detail-form.component.css"],
 })
 export class ReadDetailFormComponent implements OnInit, OnDestroy {
-  listOfProject = [
-    {
-      no: "1",
-      type: "โครงการ",
-      list: "วงโยธวาทิต",
-      unit: "20",
-      budget: 900000,
-      subEquipment: 900000,
-    },
-  ];
+  // listOfProject = [
+  //   {
+  //     no: "1",
+  //     type: "โครงการ",
+  //     list: "วงโยธวาทิต",
+  //     unit: "20",
+  //     budget: 900000,
+  //     subEquipment: 900000,
+  //   },
+  // ];
 
   dataDetail;
   isLoading = false;
