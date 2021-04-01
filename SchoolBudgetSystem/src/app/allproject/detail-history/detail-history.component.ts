@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { UsersService } from "app/services/users.service";
 
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import THBText from 'thai-baht-text'
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -36,6 +37,7 @@ export class DetailHistoryComponent implements OnInit {
   isLoading = false;
   private authStatusSub: Subscription;
   allData: Subscription;
+  thaiBaht: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { detail: string; id: string },
     public router: Router,
@@ -50,7 +52,12 @@ export class DetailHistoryComponent implements OnInit {
         this.isLoading = false;
       });
     this.value = this.data.detail;
-    console.log('Value :', this.value);
+    const value = this.data.detail[0]['budget'];
+    // console.log(value);
+
+    this.thaiBaht = THBText(this.data.detail[0]['budget']);
+    // console.log(this.thaiBaht);
+    // console.log('Value :', this.value);
 
     // console.log(this.data.id);
     this.subServices.getEquipmentBySubId(this.data.id);

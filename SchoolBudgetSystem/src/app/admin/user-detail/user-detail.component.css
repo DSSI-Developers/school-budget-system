@@ -54,3 +54,7 @@ div.ng-star-inserted {
     justify-content: flex-start;
     flex-wrap: wrap;
 }
+
+mat-button {
+    margin: auto;
+}

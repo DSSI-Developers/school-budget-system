@@ -202,15 +202,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(file);
   }
 
-  editUser() {
-    if (this.profile.invalid) {
-      return;
-    }
-    const dialogRef = this.dialog.open(ManageProfileComponent);
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
+  // editUser() {
+  //   if (this.profile.invalid) {
+  //     return;
+  //   }
+  //   const dialogRef = this.dialog.open(ManageProfileComponent);
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     console.log(`Dialog result: ${result}`);
+  //   });
+  // }
 
   onSavePost() {
     // console.log(
@@ -258,7 +258,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       width: '60%'
     });
     change_PW_Ref.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result[0]}`);
+      // const response = result.value;
     });
   }
 

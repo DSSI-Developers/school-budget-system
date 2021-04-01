@@ -104,10 +104,10 @@ export class ManageUserComponent implements OnInit, OnDestroy {
     console.log(`Personal data : ${this.personalData}`);
 
     const dialogRef = this.dialog.open(UserDetailComponent, {
-      height: "80%",
+      // height: "80%",
       // width: "90%",
       data: {
-        user: this.personalData,
+        user: id,
       },
     });
     // dialogRef.afterClosed().subscribe(id => {

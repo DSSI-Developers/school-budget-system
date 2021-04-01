@@ -125,14 +125,11 @@ export class UserDetailComponent implements OnInit {
       phone: new FormControl(""),
       position: new FormControl(""),
       department: new FormControl(""),
-      role: new FormControl(""),
-      avatar: new FormControl(""),
-      permission: new FormControl(""),
     });
 
     const userID = this.usersService.getUserId();
     console.log(userID);
-    this.usersService.getUserDetail(userID).subscribe((userDetail) => {
+    this.usersService.getUserDetail(this.data.user).subscribe((userDetail) => {
       console.log(userDetail);
       this.firstName = userDetail.data.firstName;
       this.lastName = userDetail.data.lastName;
@@ -142,18 +139,17 @@ export class UserDetailComponent implements OnInit {
       this.department = userDetail.data.department;
       this.avatar = userDetail.data.avatar;
       this.permission = userDetail.data.permission;
+
+      this.userprofile.setValue({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        phone: this.phone,
+        position: this.position,
+        department: this.department,
+      });
     });
-    this.userprofile.patchValue({
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      position: this.position,
-      department: this.department,
-      role: this.role,
-      avatar: this.avatar,
-      permission: this.permission,
-    });
+    console.log("User Profile : ", this.userprofile.value);
 
     this.dataUser = this.data.user;
     console.log(`User ID in dialog component: ${this.data.user}`);
@@ -167,35 +163,31 @@ export class UserDetailComponent implements OnInit {
     this.dialog.closeAll();
   }
 
-  editUser() {
-    console.log(this.formUserData.value);
-    window.alert(this.formUserData.value);
-  }
-
-  // editUser(id: string, firstName: string) {
-  //   const valueConfirm = window.confirm(
-  //     `ต้องการ verified ${firstName} หรือไม่`
-  //   );
-  //   if (valueConfirm === true) {
-  //     this.dataUser.forEach((fied) => {
-  //       console.log(fied);
-  //       this.usersService.editUser(
-  //         fied._id,
-  //         fied.firstName,
-  //         fied.lastName,
-  //         fied.email,
-  //         fied.password,
-  //         fied.phone,
-  //         fied.position,
-  //         fied.department,
-  //         fied.role,
-  //         fied.avatar,
-  //         fied.permission
-  //       );
-  //     });
-  //     console.log('Verified');
-  //   } else {
-  //     console.log('Cancle verified');
-  //   }
+  // editUser() {
+  //   console.log(this.formUserData.value);
+  //   window.alert(this.formUserData.value);
   // }
+
+  editUser() {
+    if (this.userprofile.value.position === "ผู้ดูแลระบบ") {
+      this.role = "ADMIN";
+    } else if (
+      this.userprofile.value.position === "หัวหน้ากลุ่มสาระการเรียนรู้"
+    ) {
+      this.role = "LEADER";
+    } else {
+      this.role = "USER";
+    }
+    console.log(this.userprofile.value);
+    this.usersService.adminEditUserData(
+      this.data.user,
+      this.userprofile.value.firstName,
+      this.userprofile.value.lastName,
+      this.userprofile.value.email,
+      this.userprofile.value.phone,
+      this.userprofile.value.position,
+      this.userprofile.value.department,
+      this.role
+    );
+  }
 }

@@ -69,30 +69,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <!-- <div class="chart-wrapper">
-                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
-                      </canvas>
-                    </div> -->
-                    <div class="chart-container">
-                        <chart aria-label="งบประมาณแต่ละกลุ่มสาระ ฯ" [type]="typeChart" [data]="dataChart" [options]="optionsChart"></chart>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <!-- <div class="chart-wrapper">
-                        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
-                      </canvas>
-                    </div> -->
-                    <div class="chart-container">
-                        <chart [type]="typeChart2" [data]="dataChart" [options]="optionsChart"></chart>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">-
@@ -142,6 +118,31 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <!-- <div class="chart-wrapper">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+                      </canvas>
+                    </div> -->
+                    <div class="chart-container">
+                        <chart aria-label="งบประมาณแต่ละกลุ่มสาระ ฯ" [type]="typeChart" [data]="dataChart" [options]="optionsChart"></chart>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <!-- <div class="chart-wrapper">
+                        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+                      </canvas>
+                    </div> -->
+                    <div class="chart-container">
+                        <chart [type]="typeChart2" [data]="dataChart" [options]="optionsChart"></chart>
                     </div>
                 </div>
             </div>

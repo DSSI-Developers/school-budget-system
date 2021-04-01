@@ -5,7 +5,8 @@
                 <div class="card">
                     <div class="card-header card-header-danger">
                         <h4 class="card-title">รายละเอียดดโครงการ</h4>
-                        <p class="card-category">ข้อมูลคำขอจัดตั้งครุภัณฑ์หลักและโครงการที่กำลังดำเนินการ ก่อนยืนยันข้อมูล</p>
+                        <p class="card-category">ข้อมูลคำขอจัดตั้งครุภัณฑ์หลักและโครงการที่กำลังดำเนินการ ก่อนยืนยันข้อมูล
+                        </p>
                     </div>
                     <div class="card-body table-responsive">
                         <div class="row">
@@ -41,9 +42,11 @@
                                         <p>เงื่อไขการขอ : </p>
                                         <form [formGroup]="conditionValue">
                                             <mat-radio-group formControlName="condition">
-                                                <mat-radio-button value="ขาดเเคลนตามเกณฑ์">ขาดเเคลนตามเกณฑ์ </mat-radio-button>
+                                                <mat-radio-button value="ขาดเเคลนตามเกณฑ์">ขาดเเคลนตามเกณฑ์
+                                                </mat-radio-button>
                                                 &nbsp;
-                                                <mat-radio-button value="ทดแทนการจำหน่าย">ทดแทนการจำหน่าย</mat-radio-button>
+                                                <mat-radio-button value="ทดแทนการจำหน่าย">ทดแทนการจำหน่าย
+                                                </mat-radio-button>
                                             </mat-radio-group>
                                         </form>
                                     </mat-card>
@@ -104,12 +107,15 @@
                                                     <mat-radio-group>
                                                         <div class="row">
                                                             <mat-radio-group formControlName="approveCondition">
-                                                                <mat-radio-button value="อนุมัติเห็นชอบโครงการนี้">อนุมัติเห็นชอบโครงการนี้
+                                                                <mat-radio-button value="อนุมัติเห็นชอบโครงการนี้">
+                                                                    อนุมัติเห็นชอบโครงการนี้
                                                                 </mat-radio-button>
                                                                 &nbsp;
-                                                                <mat-radio-button value="ไม่อนุมัติเห็นชอบโครงการนี้">ไม่อนุมัติเห็นชอบโครงการนี้
+                                                                <mat-radio-button value="ไม่อนุมัติเห็นชอบโครงการนี้">
+                                                                    ไม่อนุมัติเห็นชอบโครงการนี้
                                                                 </mat-radio-button>
-                                                                <mat-error *ngIf="formApprove.value.invalid">กรุณากรอกข้อมูล</mat-error>
+                                                                <mat-error *ngIf="formApprove.value.invalid">
+                                                                    กรุณากรอกข้อมูล</mat-error>
                                                             </mat-radio-group>
                                                         </div>
                                                     </mat-radio-group>
@@ -120,13 +126,16 @@
                                                                 <mat-form-field appearance="outline">
                                                                     <mat-label>เหตุผลเพิ่มเติม</mat-label>
                                                                     <textarea matInput rows="3" placeholder="เหตุผลประกอบการพิจารณา" formControlName="approveReason"></textarea>
-                                                                    <mat-error *ngIf="formApprove.invalid">กรุณากรอกข้อมูล</mat-error>
+                                                                    <mat-error *ngIf="formApprove.invalid">
+                                                                        กรุณากรอกข้อมูล</mat-error>
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <b>ชื่อผู้อนุมัติโครงการ : {{fetchFirstName}}  {{fetchLastName}}</b>
+                                                                <b>ชื่อผู้อนุมัติโครงการ : {{fetchFirstName}}
+                                                                    {{fetchLastName}}</b>
                                                                 <br>
-                                                                <b>หมายเหตุ : </b>กรุณาตรวจสอบข้อมูลให้แน่ใจก่อนที่จะกดบันทึกข้อมูล เนื่องจากจะระบบจะส่งข้อมูลเข้าสู่กระบวนการถัดไป จึงไม่สามารถแก้ไขได้ในภายหลัง
+                                                                <b>หมายเหตุ :
+                                                                </b>กรุณาตรวจสอบข้อมูลให้แน่ใจก่อนที่จะกดบันทึกข้อมูล เนื่องจากจะระบบจะส่งข้อมูลเข้าสู่กระบวนการถัดไป จึงไม่สามารถแก้ไขได้ในภายหลัง
                                                             </div>
                                                         </div>
                                                     </div>

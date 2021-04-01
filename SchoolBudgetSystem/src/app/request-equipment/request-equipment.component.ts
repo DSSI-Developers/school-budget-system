@@ -46,6 +46,7 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
         pageSizeOptions = [1, 2, 5, 10];
 
         subEquipment: SubEquipments[] = [];
+  approved: Equipments[];
   // document: Equipments[] = [];
   constructor(
     private equipmentsService: EquipmentsService,
@@ -70,7 +71,9 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
       .getEquipmentUpdateListener()
       .subscribe((equipments: Equipments[]) => {
         this.equipments = equipments;
-        this.document = this.equipments.filter(data => data.creator === this.userId)
+        this.approved = this.equipments.filter(approve => approve.approveCondition !== 'อนุมัติเห็นชอบโครงการนี้');
+        // console.log(this.approved);
+        this.document = this.approved.filter(data => data.creator === this.userId)
         // Count sub equipment in for loop
         for (let i = 0; i < this.document.length; i++) {
           console.log('Documents : ', this.document[i]['_id']);

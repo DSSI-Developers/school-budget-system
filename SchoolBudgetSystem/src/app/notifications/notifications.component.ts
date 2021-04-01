@@ -66,7 +66,7 @@ export class NotificationsComponent implements OnInit {
       .subscribe((result: Notification[]) => {
         this.notification = result;
         this.document = this.notification.filter(
-          (data) => data.creator === this.userId
+          (data) => data.userId === this.userId
         );
 
         // console.log('Result of notification : ', result);

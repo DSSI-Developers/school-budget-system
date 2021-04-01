@@ -18,22 +18,22 @@
                                     <div class="col-md">
                                         <mat-form-field appearance="outline">
                                             <mat-label>ชื่อ</mat-label>
-                                            <input matInput placeholder="กรอกชื่อ" type="text" formControlName="firstName" value="{{firstName}}" readonly/>
+                                            <input matInput placeholder="กรอกชื่อ" type="text" formControlName="firstName" value="{{ firstName }}" readonly />
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>นาสกุล</mat-label>
-                                            <input matInput placeholder="กรอกนาสกุล" type="text" formControlName="lastName" value="{{lastName}}" readonly/>
+                                            <input matInput placeholder="กรอกนาสกุล" type="text" formControlName="lastName" value="{{ lastName }}" readonly />
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>ตำแหน่ง</mat-label>
-                                            <input matInput placeholder="กรอกตำแหน่ง" type="text" formControlName="position" value="{{position}}" readonly/>
+                                            <input matInput placeholder="กรอกตำแหน่ง" type="text" formControlName="position" value="{{ position }}" readonly />
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
-                                            <input matInput placeholder="กลุ่มสาระการเรียนรู้" type="text" formControlName="learningGroup" value="{{department}}" readonly/>
+                                            <input matInput placeholder="กลุ่มสาระการเรียนรู้" type="text" formControlName="learningGroup" value="{{ department }}" readonly />
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>รายวิชาที่สอน</mat-label>
@@ -44,25 +44,29 @@
                                     <div class="col-md"></div>
                                 </div>
                                 <div class="col-md-12">
-                                    <h5>ข้อมูล</h5>
+                                    <!-- <h5>ข้อมูล</h5> -->
                                     <div class="col-md"></div>
                                     <div class="col-md">
                                         <!-- <angular-editor formControlName="htmlContent" [config]="editorConfig"></angular-editor> -->
-                                        <mat-label>หลักการและเหตุผล</mat-label>
-                                        <ckeditor [editor]="Editor" data="reason" formControlName="reason"></ckeditor>
-                                        <!-- <mat-form-field appearance="outline">
+                                        <!-- <mat-label>หลักการและเหตุผล</mat-label> -->
+                                        <!-- <ckeditor [editor]="Editor" data="reason" formControlName="reason"></ckeditor> -->
+                                        <h5>ข้อมูล</h5>
+
+                                        <mat-form-field appearance="outline">
                                             <mat-label>หลักการและเหตุผล</mat-label>
-                                            <textarea matInput rows="5" placeholder="เหตุผลประกอบการพิจารณา"
-                                            formControlName="reason" value="dataEdit"></textarea>
-                                        </mat-form-field> -->
-                                        <br>
-                                        <!-- <mat-form-field appearance="outline">
+                                            <textarea style="resize:both" matInput rows="10" placeholder="เหตุผลประกอบการพิจารณา" formControlName="reason"></textarea>
+                                        </mat-form-field>
+                                        <br />
+                                        <h5>ข้อมูล</h5>
+
+                                        <mat-form-field appearance="outline">
                                             <mat-label>วัตถุประสงค์</mat-label>
-                                            <textarea matInput rows="5" placeholder="เหตุผลประกอบการพิจารณา" formControlName="objective"></textarea>
-                                        </mat-form-field> -->
-                                        <mat-label>วัตถุประสงค์</mat-label>
-                                        <ckeditor [editor]="Editor" data="objective" formControlName="objective"></ckeditor>
-                                        <br>
+                                            <textarea style="resize:both" matInput rows="10" placeholder="เหตุผลประกอบการพิจารณา" formControlName="objective"></textarea>
+                                        </mat-form-field>
+
+                                        <!-- <mat-label>วัตถุประสงค์</mat-label> -->
+                                        <!-- <ckeditor [editor]="Editor" data="objective" formControlName="objective"></ckeditor> -->
+                                        <br />
                                     </div>
                                     <div class="col-md"></div>
                                 </div>
@@ -98,10 +102,10 @@
                                                 </mat-form-field> -->
                                                 <mat-form-field class="example-full-width" appearance="fill">
                                                     <mat-label>ครุภัณฑ์</mat-label>
-                                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="majorList" [matAutocomplete]="auto">
+                                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="majorList" [matAutocomplete]="auto" />
                                                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                                         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                                            {{option}}
+                                                            {{ option }}
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                 </mat-form-field>

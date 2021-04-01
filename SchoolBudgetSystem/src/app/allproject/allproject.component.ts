@@ -108,7 +108,7 @@ export class AllprojectComponent implements OnInit {
   openDialog(id: string) {
     this.dataDetail = this.equipments.filter((data) => data._id === id);
     const dialogRef = this.dialog.open(DetailHistoryComponent, {
-      width: '45%',
+      width: '80%',
       data: {
         detail: this.dataDetail,
         id: id,

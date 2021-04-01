@@ -12,10 +12,11 @@
                         <button mat-raised-button routerLink="/addRequestEquip">
                             <span class="material-icons">
                                 add_task
-                            </span> เพิ่มคำขอโครงการ / ครุภัณฑ์</button>
+                            </span> เพิ่มคำขอโครงการ / ครุภัณฑ์</button> &nbsp; กรณีรายการครุภัณฑ์ไม่ผ่านการอนุมัติ จะเเสดงสถานะ &nbsp;&nbsp;<span class="dot reject"></span>&nbsp;&nbsp; ให้แก้ไข
                         <hr>
                         <table class="table table-hover">
                             <thead class="text-center">
+                                <th></th>
                                 <th>สถานะ</th>
                                 <!-- <th>ประเภท</th> -->
                                 <th>รายการครุภัณฑ์ / โครงการ</th>
@@ -27,6 +28,11 @@
                             </thead>
                             <tbody class="text-center">
                                 <tr *ngFor="let listProject of document; let i = index">
+                                    <td>
+                                        <p class="card-title" *ngIf="listProject.status == 'ผ่านการอนุมัติ'"><span class="dot success"></span></p>
+                                        <p class="card-title" *ngIf="listProject.status == 'กำลังดำเนินการ'"><span class="dot pending"></span></p>
+                                        <p class="card-title" *ngIf="listProject.status == 'ไม่ผ่านการอนุมัติ'"><span class="dot reject"></span></p>
+                                    </td>
                                     <td class="table-danger" *ngIf="countDataInSubEquipment[i]<= 0; else done" matTooltip="ยังไม่ได้เพิ่มครุภัณฑ์รอง">
                                         <!-- {{ i +1 }} , {{ countDataInSubEquipment[i] }} -->
                                         <mat-icon class="red">clear</mat-icon>
@@ -57,6 +63,7 @@
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </td>
+
                                     <!-- <td>
                                     </td> -->
                                 </tr>

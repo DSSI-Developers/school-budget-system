@@ -507,7 +507,7 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
   sumPrice(majorId) {
     this.totalBudget = 0;
     this.subServices.getEquipmentBySubId(majorId);
-    console.log(this.subServices);
+    // console.log(this.subServices);
     this.allUpdate = this.subServices
       .subEquipmentListenUpdate()
       .subscribe((data: SubEquipments[]) => {
@@ -590,12 +590,12 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
       if (result.value) {
         this.subServices.deleteSubEquipment(id);
         Swal.fire(
-          'Deleted!',
-          'Your imaginary file has been deleted.',
+          'ลบรายการสำเร็จ',
+          'ลบรายการครุภัณฑ์ย่อยเรียบร้อย!',
           'success'
         );
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
+        Swal.fire('ยกเลิกการลบรายการ', '', 'warning');
       }
     });
     console.log(id);

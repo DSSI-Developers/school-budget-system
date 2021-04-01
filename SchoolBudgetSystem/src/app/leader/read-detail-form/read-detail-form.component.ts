@@ -230,12 +230,14 @@ export class ReadDetailFormComponent implements OnInit, OnDestroy {
           this.formApprove.value.approveReason
         );
 
-        const note = "";
-        const type = "โครงการ";
+        const type = this.formApprove.value.approveCondition;
+        const note = this.formApprove.value.approveReason;
+        // const note = " ";
+        // const type = " ";
         const status = this.status;
         const detail = this.majorList;
         // Notification
-      this.notifiedService.addNotification(userId, type, status, detail, note);
+      this.notifiedService.addNotification(this.idUserInProject, type, status, detail, note);
 
         this.route.navigate(["/readForm"]);
         Swal.fire(

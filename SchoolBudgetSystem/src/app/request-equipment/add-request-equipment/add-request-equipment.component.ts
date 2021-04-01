@@ -9,7 +9,6 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-
 import { Equipments } from './../../../models/equipments.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -123,7 +122,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   isLoading = false;
   private authStatusSub: Subscription;
 
-  // public Editor = ClassicEditor;
+  public Editor = ClassicEditor;
   // Data about user
   firstName: string;
   lastName: string;

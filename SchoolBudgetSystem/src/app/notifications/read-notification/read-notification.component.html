@@ -7,8 +7,13 @@
             <h3>{{ detail }}</h3>
             <p>เวลา : {{ dateTime | thaidate: 'meduim'}}</p>
             <hr>
-            <p>{{ type }} : {{ detail }}</p>
+            <p>โครงการ : {{ detail }}</p>
             <p>สถานะโครงการ : <i> <u>{{ status }}</u></i></p>
+            <p>
+                เงื่อนไข : {{ type }}
+            </p>
+            <p>หมายเหตุ : {{ note }}</p>
+            <hr>
             <P>ผู้จัดทำโครงการ : {{firstName}} {{lastName}}</P>
         </div>
     </div>

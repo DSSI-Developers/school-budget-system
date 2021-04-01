@@ -420,73 +420,52 @@ exports.userEditProfile = (req, res, next) => {
 
 exports.changePassword = async(req, res, next) => {
     const id = req.params.id;
-    // const old_password = req.body.old_password;
-    const old_password = req.body.old_password;
     const new_password = req.body.new_password;
-    const userData = {
-        id: req.body.id,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: new_password,
-        phone: req.body.phone,
-        position: req.body.position,
-        department: req.body.department,
-        role: req.body.role,
-        avatar: req.body.role,
-        permission: req.body.permission,
-    }
-    checkUser(id, old_password);
-    Users.findByIdAndUpdate(id, user, { useFindAndModify: false }).then(res => {
-        res.status(201).json({
-            message: "เปลี่ยนรหัสผ่านเรียบร้อย"
-        });
-    }).catch(err => {
-        res.status(500).json({
-            message: err + "error"
-        });
-    })
+    const old_password = req.body.old_password;
 
-
-
-    // await Users.findById(id)
-    //     .then(result => {
-    //         checkUser(id, old_password);
-    //         if (!result) {
-    //             console.log("ไม่พบรหัสผ่านเดิม !");
-    //             res.status(401).json({
-    //                 message: "รหัสผ่านเดิมไม่ถุกต้อง"
-    //             });
-    //         } else {
-    //             console.log("Sucessful เย้");
-    //             res.status(201).json({
-    //                 message: "เปลี่ยนรหัสผ่านเรียบร้อย เย้ !",
-    //             });
-    //         }
-    //     })
-    //     .catch(err => {
-    //         console.log(err, "Error แป่ว")
-    //         res.status(500).json({
-    //             message: "มีบางอย่างปิดพลาด"
-    //         })
-    //     })
-}
-
-
-function checkUser(id, password) {
-    //... fetch user from a db etc.
     Users.findById(id).then(user => {
         const hash = user.password;
-        const myPlaintextPassword = password
+        const myPlaintextPassword = old_password;
         console.log('Hash :', hash);
         console.log('Password ', myPlaintextPassword);
-        bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
-            console.log('Res: ', res);
-            if (res) {
-                return res;
-            } else {
-                return false;
-            }
-        });
+        bcrypt.compare(myPlaintextPassword, hash)
+            .then(response => {
+                if (response) {
+                    const hash = bcrypt.hashSync(new_password, 10);
+                    console.log(response);
+                    console.log(hash);
+                    const userData = {
+                        _id: id,
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        email: req.body.email,
+                        password: hash,
+                        phone: req.body.phone,
+                        position: req.body.position,
+                        department: req.body.department,
+                        role: req.body.role,
+                        avatar: req.body.firstName,
+                        permission: false,
+                    }
+                    Users.findByIdAndUpdate(id, userData, { useFindAndModify: false })
+                        .then(() => {
+                            res.status(201).json({
+                                message: "เปลี่ยนรหัสผ่านเรียบร้อย"
+                            });
+                        }).catch(err => {
+                            res.status(500).json({
+                                message: err
+                            });
+                        })
+                } else {
+                    res.status(404).json({
+                        message: "รหัสผ่านไม่ตรงกันกับรหัสผ่านเดิม"
+                    });
+                }
+            }).catch(err => {
+                res.status(500).json({
+                    message: "มีบางอย่างผิดพลาด" + " " + err
+                });
+            });
     });
 }

@@ -107,7 +107,6 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-    this.isLoading = true;
     this.usersService.userLogin(
       this.login.value.email,
       this.login.value.password
