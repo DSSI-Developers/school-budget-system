@@ -27,11 +27,12 @@ import {
 } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../user-profile/change-password/change-password.component';
 
+const BACKEND_URL = 'http://localhost:8080/users/';
+// const BACKEND_URL = 'https://budget-school-api.herokuapp.com/users/';
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  private url: String = 'http://localhost:8080/users/';
   private token: string;
   private isAuthenticated = false;
   private tokenTimer: any;
@@ -66,7 +67,8 @@ export class UsersService {
     const authData: AuthData = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number; userId: string }>(
-        'http://localhost:8080/users/authentication',
+        // 'http://localhost:8080/users/authentication',
+        BACKEND_URL + 'authentication',
         authData
       )
       .subscribe(
@@ -192,7 +194,8 @@ export class UsersService {
       permission: permission,
     };
     this.http
-      .post('http://localhost:8080/users/userRegister', userDatail)
+      // .post('http://localhost:8080/users/userRegister', userDatail)
+      .post(BACKEND_URL + 'userRegister', userDatail)
       .subscribe(
         () => {
           // this.router.navigate(['/']);
@@ -234,7 +237,8 @@ export class UsersService {
       permission: permission,
     };
     this.http
-      .post('http://localhost:8080/users/userRegister', userDatail)
+      // .post('http://localhost:8080/users/userRegister', userDatail)
+      .post(BACKEND_URL + 'userRegister', userDatail)
       .subscribe(
         () => {
           // this.router.navigate(['/']);
@@ -252,7 +256,8 @@ export class UsersService {
 
   getAllUsers() {
     return this.http.get<{ message: string; users: any }>(
-      'http://localhost:8080/users/getAllUsers'
+      // 'http://localhost:8080/users/getAllUsers'
+      BACKEND_URL + 'getAllUsers'
     );
   }
 
@@ -263,7 +268,8 @@ export class UsersService {
   getUserAll() {
     return this.http
       .get<{ message: string; users: any }>(
-        'http://localhost:8080/users/getAllUsers'
+        // 'http://localhost:8080/users/getAllUsers'
+        BACKEND_URL + 'getAllUsers'
       )
       .subscribe((userAll) => {
         this.userAll.next([...userAll.users]);
@@ -272,7 +278,8 @@ export class UsersService {
 
   deleteUser(userId: string) {
     this.http
-      .delete('http://localhost:8080/users/deleteUser/' + userId)
+      // .delete('http://localhost:8080/users/deleteUser/' + userId)
+      .delete(BACKEND_URL + 'deleteUser/' + userId)
       .subscribe(
         (userDelete) => {
           console.log(userDelete);
@@ -321,7 +328,8 @@ export class UsersService {
     // const userId = this.getUserId();
     // console.log(userId);
     return this.http.get<{ message: string; data: any }>(
-      'http://localhost:8080/users/getOneUser/' + id
+      // 'http://localhost:8080/users/getOneUser/' + id
+      BACKEND_URL + 'getOneUser/' + id
     );
   }
 
@@ -444,7 +452,8 @@ export class UsersService {
     };
     this.http
       .put<{ message: string; response: any }>(
-        'http://localhost:8080/users/userEditProfile/' + id,
+        // 'http://localhost:8080/users/userEditProfile/' + id,
+         BACKEND_URL + 'userEditProfile/' + id,
         userProfile
       )
       .subscribe(
@@ -489,7 +498,7 @@ export class UsersService {
     };
     console.log(personalData, 'with break point');
 
-    this.http.put(this.url + 'userEditProfile/' + id, personalData).subscribe(response => {
+    this.http.put(BACKEND_URL + 'userEditProfile/' + id, personalData).subscribe(response => {
       console.log('Edit user data success');
       Swal.fire(
         'แก้ไขข้อมูลเรียบร้อยแล้ว',
@@ -533,7 +542,8 @@ export class UsersService {
     console.log(userData);
 
     this.http
-      .put('http://localhost:8080/users/' + 'editPassword/' + id, userData)
+      // .put('http://localhost:8080/users/' + 'editPassword/' + id, userData)
+      .put(BACKEND_URL + 'editPassword/' + id, userData)
       .subscribe(
         (response) => {
           console.log(`response is : ${response}`);

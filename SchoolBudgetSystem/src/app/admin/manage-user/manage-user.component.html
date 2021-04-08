@@ -42,14 +42,14 @@
                     </thead>
                     <tbody class="text-center">
                         <tr *ngFor="let user of users$ | filter:searchUser  index as i">
-                            <td class="text-center">{{ user.firstName }} {{ user.lastName }}</td>
-                            <td>{{ user.position }}</td>
+                            <td class="table-active text-center">{{ user.firstName }} {{ user.lastName }}</td>
+                            <td class="table-active">{{ user.position }}</td>
                             <!-- <td class="text-left">{{ user.email }}</td> -->
-                            <td>{{ user.phone }}</td>
-                            <td class="text-left">
+                            <td class="table-active">{{ user.phone }}</td>
+                            <td class="table-active text-left">
                                 {{ user.department }}
                             </td>
-                            <td>
+                            <td class="table-active">
                                 <button *ngIf="user._id !== userId" mat-icon-button (click)="userDetail(user._id)">
                                     <mat-icon>create</mat-icon>
                                 </button>

@@ -24,9 +24,11 @@
                                         <h4>คำขอตั้งงบประมาณ</h4>
                                         <hr>
                                         <p>เหตุผล : </p>
-                                        <div class="panel-body" [innerHTML]="reason"></div>
+                                        <!-- <div class="panel-body" [innerHTML]="reason"></div> -->
+                                        <p>{{reason}}</p>
                                         <p>วัตถุประสงค์ :</p>
-                                        <div class="panel-body" [innerHTML]="objective"></div>
+                                        <!-- <div class="panel-body" [innerHTML]="objective"></div> -->
+                                        <p>{{objective}}</p>
                                         <p>หัวข้อรายการหลัก : {{ majorList }}</p>
                                         <p>จำนวนงบประมาณที่จัดตั้ง : {{ budget }}</p>
                                     </mat-card>

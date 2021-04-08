@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 import { SubEquipments } from './../../models/sub-equipments.model';
 
 import * as io from 'socket.io-client';
+
+const BACKEND_URL = 'http://localhost:8080/subEquipment/';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,7 +24,8 @@ export class SubEquipmentsService {
   getEquipmentBySubId(mainId: string) {
     return this.http
       .get<{ message: string; response: any }>(
-        'http://localhost:8080/subEquipment/getSubId/' + mainId
+        // 'http://localhost:8080/subEquipment/getSubId/' + mainId
+        BACKEND_URL + 'getSubId' + mainId
       )
       .subscribe((subEquipments) => {
         this.subEquipments = subEquipments.response;
@@ -38,14 +41,16 @@ export class SubEquipmentsService {
     // return { ...this.subEquipments.filter((data) => data._id === id) };
     return this.http
       .get<{ message: string; response: SubEquipments[] }>(
-        'http://localhost:8080/subEquipment/getSubId/' + id
+        // 'http://localhost:8080/subEquipment/getSubId/' + id
+        BACKEND_URL + '/getSubId' + id
       );
   }
 
   getAllSubEquipments() {
     return this.http
       .get<{ message: string; response: any }>(
-        'http://localhost:8080/subEquipment/getAllSubEquip'
+        // 'http://localhost:8080/subEquipment/getAllSubEquip'
+        BACKEND_URL + 'getAllSubEquip'
       )
       .subscribe((subEquipments) => {
         this.subEquipments = subEquipments.response;
@@ -72,7 +77,8 @@ export class SubEquipmentsService {
     };
     this.http
       .post<{ message: string; response: any }>(
-        'http://localhost:8080/subEquipment/addSubEquipment',
+        // 'http://localhost:8080/subEquipment/addSubEquipment',
+        BACKEND_URL + 'addSubEquipment',
         subEquipment
       )
       .subscribe((response) => {
@@ -92,7 +98,8 @@ export class SubEquipmentsService {
   deleteSubEquipment(id: string) {
     // console.log('Delete data at id : ' + id);
     this.http
-      .delete('http://localhost:8080/subEquipment/deleteSubEquipment/' + id)
+      // .delete('http://localhost:8080/subEquipment/deleteSubEquipment/' + id)
+      .delete(BACKEND_URL + 'deleteSubEquipment/' + id)
       .subscribe(() => {
         console.log('Delete Successful!');
         const updateSubEquipment = this.subEquipments.filter(

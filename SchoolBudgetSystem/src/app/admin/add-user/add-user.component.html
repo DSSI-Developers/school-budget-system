@@ -204,10 +204,9 @@
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field> -->
 
-        <mat-form-field appearance="outline">
+        <!-- <mat-form-field appearance="outline">
             <mat-label>ยืนยันรหัสผ่าน</mat-label>
             <input matInput placeholder="กรอกรหัสผ่านอีกครั้ง" ngValidateEqual="password" [type]="hide ? 'password' : 'text'" formControlName="confirm_password">
-            <!-- <mat-icon matSuffix>password</mat-icon> -->
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-error *ngIf="formUserData.value.confirm_password == ''">
                 กรุณายืนยันรหัสผ่าน
@@ -217,8 +216,7 @@
                     รหัสผ่านไม่ตรงกัน
                 </p>
             </mat-error>
-
-        </mat-form-field>
+        </mat-form-field> -->
         <br>
         <mat-form-field appearance="outline">
             <mat-label>เบอร์โทรศัพท์</mat-label>

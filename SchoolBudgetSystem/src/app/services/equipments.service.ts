@@ -7,9 +7,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
+const BACKEND_API = "http://localhost:8080/mainEquipment/";
+
 @Injectable({
   providedIn: 'root',
 })
+
 
 export class EquipmentsService {
   private equipments: Equipments[] = [];
@@ -20,7 +23,8 @@ export class EquipmentsService {
   getAllEquipments() {
     // เพิ่ม User ID ด้วย
     return this._http.get<{ data: any  }>(
-      'http://localhost:8080/mainEquipment/getAllEquipments'
+      // 'http://localhost:8080/mainEquipment/getAllEquipments'
+      BACKEND_API+'getAllEquipments'
     ).subscribe((data) => {
       // console.log(data);
       this.equipments = data.data;
@@ -31,7 +35,8 @@ export class EquipmentsService {
   getAllEquipmentsByPag(postsPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
     return this._http.get<{ data: any , maxPosts: number }>(
-      'http://localhost:8080/mainEquipment/getAllEquipmentsByPage' +  queryParams
+      // 'http://localhost:8080/mainEquipment/getAllEquipmentsByPage' +  queryParams
+      BACKEND_API+'getAllEquipmentsByPage' + queryParams
     ).subscribe((data) => {
       // console.log(data);
       this.equipments = data.data;
@@ -64,7 +69,8 @@ export class EquipmentsService {
       message: string,
       response: any
     }>(
-      'http://localhost:8080/mainEquipment/getOneEquipment/' + equipmentsId
+      // 'http://localhost:8080/mainEquipment/getOneEquipment/' + equipmentsId
+      BACKEND_API + 'getOneEquipment' + equipmentsId
     );
   }
 
@@ -77,12 +83,12 @@ export class EquipmentsService {
   // Filter equipment id to show
   // จะเอาข้อมูล Equipment ทั้งหมด มาหา ID ที่ตรงกัน เเล้ว return กลับ
   getEquipment(id: string) {
-    return this._http.get<{message: string, data: any }>('http://localhost:8080/mainEquipment/getAllEquipments');
-    // return { ...this.equipments.find((data) => data._id === id) };
+    // return this._http.get<{message: string, data: any }>('http://localhost:8080/mainEquipment/getAllEquipments');
+    return this._http.get<{message: string, data: any }>(BACKEND_API + 'getAllEquipments');
   }
 
   getEquipmentByName(name: string) {
-    return this._http.get<{message: string, data: any }>('http://localhost:8080/mainEquipment/getEquipmentByName/' + name);
+    return this._http.get<{message: string, data: any }>(BACKEND_API + 'getEquipmentByName/' + name);
     // return { ...this.equipments.find((data) => data._id === id) };
   }
 
@@ -130,7 +136,8 @@ export class EquipmentsService {
     };
     this._http
       .post<{ message: string; equipmentId: string }>(
-        'http://localhost:8080/mainEquipment/addEquipment',
+        // 'http://localhost:8080/mainEquipment/addEquipment',
+        BACKEND_API + 'addEquipment',
         equipment
       )
       .subscribe((responseData) => {
@@ -185,7 +192,8 @@ export class EquipmentsService {
     console.log(equipment);
     this._http
       .put<{ message: string; equipmentId: string }>(
-        'http://localhost:8080/mainEquipment/editEquipment/' + id,
+        // 'http://localhost:8080/mainEquipment/editEquipment/' + id,
+        BACKEND_API + 'editEquipment/'+ id,
         equipment
       )
       .subscribe((responseData) => {
@@ -200,7 +208,8 @@ export class EquipmentsService {
   deleteEquipment(equipmentId: string) {
     this._http
       .delete(
-        'http://localhost:8080/mainEquipment/deleteEquipment/' + equipmentId
+        // 'http://localhost:8080/mainEquipment/deleteEquipment/' + equipmentId
+        BACKEND_API + 'deleteEquipment' + equipmentId
       )
       .subscribe(() => {
         console.log('Delete successful');

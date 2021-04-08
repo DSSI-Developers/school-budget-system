@@ -44,7 +44,7 @@ exports.getOneNotification = (req, res, next) => {
 
 exports.getAllNotification = (req, res, next) => {
     var mysort = { dateTime: -1 };
-    Notification.find({}).sort(mysort).then(data => {
+    Notification.find().sort(mysort).then(data => {
         res.status(201).json({
             message: "All notification",
             notification: data

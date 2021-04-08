@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Notification } from './../../models/notified.model';
-import { Subject, Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Notification } from "./../../models/notified.model";
+import { Subject, Observable } from "rxjs";
+import { Router } from "@angular/router";
 
+const BACKEND_URL = "http://localhost:8080/notification/";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class NotifiedService {
   private notified: Notification[] = [];
@@ -15,7 +16,8 @@ export class NotifiedService {
   getAllNotified() {
     return this.http
       .get<{ message: string; notification; any }>(
-        'http://localhost:8080/notification/getAllNotification'
+        // 'http://localhost:8080/notification/getAllNotification'
+        BACKEND_URL + "getAllNotification"
       )
       .subscribe((notified) => {
         this.notified = notified.notification;
@@ -29,10 +31,10 @@ export class NotifiedService {
 
   getNotified(id: string) {
     console.log(id);
-    return this.http
-      .get<{ message: string; response; any }>(
-        'http://localhost:8080/notification/getOneNotification/' + id
-      )
+    return this.http.get<{ message: string; response; any }>(
+      // 'http://localhost:8080/notification/getOneNotification/' + id
+      BACKEND_URL + "getOneNotification" + id
+    );
   }
 
   // "type": "ครุภัณฑ์",
@@ -53,13 +55,18 @@ export class NotifiedService {
       detail: detail,
       note: note,
       userId: userId,
-      readStatus: false
-    }
+      readStatus: false,
+    };
 
-    this.http.post<{message: string, notification: any}>('http://localhost:8080/notification/pushNotification', notification)
-    .subscribe((respondata) => {
-      console.log(respondata);
-    })
+    this.http
+      .post<{ message: string; notification: any }>(
+        // "http://localhost:8080/notification/pushNotification",
+        BACKEND_URL + "pushNotification",
+        notification
+      )
+      .subscribe((respondata) => {
+        console.log(respondata);
+      });
   }
 
   editNotification(
@@ -77,19 +84,26 @@ export class NotifiedService {
       detail: detail,
       note: note,
       userId: userId,
-      readStatus: true
-    }
+      readStatus: true,
+    };
 
-    this.http.put('http://localhost:8080/notification/editNotification/' + id, notification).subscribe(response => {
-      this.router.navigate(['/notifications']);
-      console.log('readed !');
-    });
+    this.http
+      .put(
+        // "http://localhost:8080/notification/editNotification/" + id,
+        BACKEND_URL + "editNotification" + id,
+        notification
+      )
+      .subscribe((response) => {
+        this.router.navigate(["/notifications"]);
+        console.log("readed !");
+      });
   }
 
   deleteNotified(id: string) {
-    console.log(id + 'In Service file');
+    console.log(id + "In Service file");
     this.http
-      .delete('http://localhost:8080/notification/deleteOneNotification/' + id)
+      // .delete("http://localhost:8080/notification/deleteOneNotification/" + id)
+      .delete(BACKEND_URL + "deleteOneNotification/" + id)
       .subscribe(() => {
         const updateDataNotified = this.notified.filter(
           (data) => data._id !== id
@@ -98,6 +112,4 @@ export class NotifiedService {
         this.notifiedUpdate.next([...this.notified]);
       });
   }
-
-
 }

@@ -3,12 +3,13 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
+const BACKEND_URL = "http://localhost:8080/history/history";
 
 @Injectable({
   providedIn: "root",
 })
 export class EquipmentsHistoryService {
-  api: string = "http://localhost:8080/history/history";
+  // api: string = "http://localhost:8080/history/history";
   constructor(public http: HttpClient, public router: Router) {}
 
   addHistory(
@@ -60,7 +61,7 @@ export class EquipmentsHistoryService {
       listSubEquipment: listSubEquipment,
     };
     console.log('History :', history);
-    this.http.post<{ message: string }>(`${this.api}`, history).subscribe(
+    this.http.post<{ message: string }>(BACKEND_URL, history).subscribe(
       (response) => {
         console.log("Insert data success" , response);
       },
@@ -71,7 +72,7 @@ export class EquipmentsHistoryService {
   }
 
   getHistory() {
-    return this.http.get<{ message: string; response: any }>(`${this.api}`);
+    return this.http.get<{ message: string; response: any }>(BACKEND_URL);
     // .subscribe(
     //   (response) => {
     //     console.log(response.response);
@@ -83,11 +84,11 @@ export class EquipmentsHistoryService {
   }
 
   getOneHistories(id: string) {
-    return this.http.get<{mesage: string, response: any}>(`${this.api}` + '/' + id);
+    return this.http.get<{mesage: string, response: any}>(BACKEND_URL + '/' + id);
   }
 
   deleteHistory(id: string) {
-    this.http.delete<{ message: string }>(`${this.api}` + "/" + id).subscribe(
+    this.http.delete<{ message: string }>(BACKEND_URL + "/" + id).subscribe(
       (response) => {
         console.log(response);
       },
@@ -98,7 +99,7 @@ export class EquipmentsHistoryService {
   }
 
   deleteOneHistory() {
-    this.http.get<{ message: string }>(`${this.api}`).subscribe(
+    this.http.get<{ message: string }>(BACKEND_URL).subscribe(
       (response) => {
         console.log(response);
       },

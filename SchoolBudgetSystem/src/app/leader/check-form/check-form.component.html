@@ -80,11 +80,13 @@
                                         สถานะการอนุมัติ : <span class="dot reject"></span> {{ cardDetail.status }}
                                     </div>
                                 </mat-card-content>
-                                <hr />
+
                                 <mat-card-actions>
-                                    <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
-                                    <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
-                                </button>
+                                    <div *ngIf="cardDetail.status !== 'ผ่านการอนุมัติ'">
+                                        <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
+                                            <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
+                                        </button>
+                                    </div>
                                 </mat-card-actions>
                             </mat-card>
                         </div>
@@ -121,8 +123,8 @@
                                 <hr />
                                 <mat-card-actions>
                                     <button mat-raised-button [routerLink]="['/readDetailForm', cardDetail._id]">
-                                    <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
-                                </button>
+                                        <mat-icon>chrome_reader_mode</mat-icon> อ่านรายละเอียด
+                                    </button>
                                 </mat-card-actions>
                             </mat-card>
                         </div>
