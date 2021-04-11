@@ -79,3 +79,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 .text-rigth {
     text-align: right;
 }
+
+.text-red {
+    color: #c9404d;
+}

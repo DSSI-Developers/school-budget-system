@@ -41,6 +41,7 @@ export class ReadNotificationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.notifiedService.getAllNotified();
     this.authStatusSub = this.userServices
       .getAuthStatusListener()
       .subscribe((authStatus) => {

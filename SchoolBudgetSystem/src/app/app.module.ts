@@ -49,6 +49,8 @@ import { ErrorInterceptor } from './services/error-interceptor';
 
 // import { CKEditorModule } from 'ng2-ckeditor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+// import { DetailManageBudgetComponent } from './leader/detail-manage-budget/detail-manage-budget.component';
+// import { ManageBudgetComponent } from './leader/manage-budget/manage-budget.component';
 // import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 // import { ReadNotificationComponent } from './notifications/read-notification/read-notification.component';
 // import { ReadProjectDetailComponent } from './users/read-project-detail/read-project-detail.component';
@@ -56,6 +58,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 // import { ManageEquipmentsComponent } from './admin/manage-equipments/manage-equipments.component';
 
 // import { ThaiDatePipe } from './directives/thaidate.pipe';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+// import { ReportDetailComponent } from './dashboard/report-detail/report-detail.component';
+// import { ReportComponent } from './dashboard/report/report.component';
 
 @NgModule({
   imports: [
@@ -71,7 +76,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     DragDropModule,
     DndModule,
     MatDialogModule,
-    CKEditorModule
+    CKEditorModule,
     // SweetAlert2Module.forRoot(),
     // AngularEditorModule
   ],

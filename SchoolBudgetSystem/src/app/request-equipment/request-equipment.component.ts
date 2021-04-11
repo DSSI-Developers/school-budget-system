@@ -11,6 +11,7 @@ import {PageEvent} from '@angular/material/paginator';
 
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { SetBudgetService } from '../services/set-budget.service';
 declare var count: number;
 export interface Type {
   value: string;
@@ -47,13 +48,19 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
 
         subEquipment: SubEquipments[] = [];
   approved: Equipments[];
+  dataOfSubEQ: Subscription;
+  amount: any;
+  totalAmount: number;
+  department: any;
+  setBudgetDetail: any;
   // document: Equipments[] = [];
   constructor(
     private equipmentsService: EquipmentsService,
     private route: ActivatedRoute,
     private subEquipmentsService: SubEquipmentsService,
     private userServices: UsersService,
-    private subServices: SubEquipmentsService
+    private subServices: SubEquipmentsService,
+    private setBudgetService: SetBudgetService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +69,15 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
     });
 
     this.userId = this.userServices.getUserId();
+    this.userServices.getUserDetail(this.userId).subscribe(userData => {
+      this.department = userData.data['department'];
+      this.setBudgetService.getDataBudget().subscribe(dataBudget => {
+        const detailOfSetBG = dataBudget.data;
+        this.setBudgetDetail = detailOfSetBG.filter(data => data.learningGroup === this.department);
+        console.log(this.setBudgetDetail);
+      });
+    });
+
     console.log('User ID :', this.userId);
 
     this.equipmentsService.getAllEquipments();
@@ -85,8 +101,22 @@ export class RequestEquipmentComponent implements OnInit, OnDestroy {
             console.log('Count sub equipment : ', this.countDataInSubEquipment);
           });
         }
+        const mainEquipment = this.equipments.filter(mainList => mainList.creator === this.userId && mainList.status !== "ผ่านการอนุมัติ");
+        console.log(mainEquipment[0]['_id']);
+        const mainId = mainEquipment[0]['_id'];
+        this.totalAmount = 0;
+        this.subServices.getSubEquipment(mainId).subscribe(data => {
+          const allDataOfSub = data.response;
+          console.log(allDataOfSub);
+          for (let i = 0; i < allDataOfSub.length; i++) {
+            // console.log(allDataOfSub[i]['unit']);
+            this.totalAmount += allDataOfSub[i]['unit'];
+          }
+          console.log(this.totalAmount);
+        });
+        // console.log(this.dataOfSubEQ);
+        // this.filterSub = this.dataOfSubEQ.filter(data =>);
       });
-      // console.log('Count data sub : ', this.countDataInSubEquipment);
   }
 
   onChangedPage(pageData: PageEvent) {

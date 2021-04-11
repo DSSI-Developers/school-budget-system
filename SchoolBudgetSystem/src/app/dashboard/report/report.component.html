@@ -1,0 +1,44 @@
+<button type="button" class="close" data-dismiss="alert" aria-label="Close" mat-dialog-close>
+    <span aria-hidden="true">&times;</span>
+</button>
+<h2 mat-dialog-title>รายงานงบประมาณที่ได้รับการจัดสรร</h2>
+<hr>
+<mat-dialog-content class="mat-typography">
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">รายการครุภัณณ์หลัก</th>
+                <th scope="col">จำนวนงบประมาณที่จัดตั้ง</th>
+                <th scope="col">สถานะ</th>
+                <th scope="col">ผู้ทำโครงการ</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of groupEquipment; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td>{{ item.majorList }}</td>
+                <td class="text-center">{{ item.budget | number}}</td>
+                <td class="text-center">{{ item.status }}</td>
+                <td>{{ item.firstName }} {{ item.lastName }}</td>
+                <td class="text-center">
+                    <button mat-raised-button (click)="detailEquipment(item._id)">
+                        <span class="material-icons">
+                            fact_check
+                        </span> ตรวจสอบ
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>ราคารวม</td>
+                <td></td>
+                <td class="text-center">{{ totalBudget }}</td>
+                <td colspan="3"></td>
+            </tr>
+        </tbody>
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>ปิด</button>
+</mat-dialog-actions>

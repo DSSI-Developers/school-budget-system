@@ -1,34 +1,35 @@
-import { Users } from './../../../models/users.model';
-import { UsersService } from './../../services/users.service';
-import { NotifiedService } from './../../services/notified.service';
-import { EquipmentsService } from './../../services/equipments.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Users } from "./../../../models/users.model";
+import { UsersService } from "./../../services/users.service";
+import { NotifiedService } from "./../../services/notified.service";
+import { EquipmentsService } from "./../../services/equipments.service";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
   FormControl,
   Validators,
-} from '@angular/forms';
-import { Equipments } from './../../../models/equipments.model';
-import { ActivatedRoute, Router } from '@angular/router';
+} from "@angular/forms";
+import { Equipments } from "./../../../models/equipments.model";
+import { ActivatedRoute, Router } from "@angular/router";
 
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { map } from 'rxjs/operators';
+import { MomentDateAdapter } from "@angular/material-moment-adapter";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
+import { map } from "rxjs/operators";
 
-import { Observable } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { Observable, Subject } from "rxjs";
+import { startWith } from "rxjs/operators";
 
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+} from "@angular/material/snack-bar";
 
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { Subscription } from 'rxjs';
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import { Subscription } from "rxjs";
 
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { SetBudgetService } from "../../services/set-budget.service";
 
 export interface Type {
   value: string;
@@ -36,83 +37,83 @@ export interface Type {
 }
 
 @Component({
-  selector: 'app-add-request-equipment',
-  templateUrl: './add-request-equipment.component.html',
-  styleUrls: ['./add-request-equipment.component.css'],
+  selector: "app-add-request-equipment",
+  templateUrl: "./add-request-equipment.component.html",
+  styleUrls: ["./add-request-equipment.component.css"],
 })
 export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  horizontalPosition: MatSnackBarHorizontalPosition = "right";
+  verticalPosition: MatSnackBarVerticalPosition = "top";
 
   // Initialized to specific date (09.10.2018).
   private model: Object = { date: { year: 2018, month: 10, day: 9 } };
   typeOfProject: Type[] = [
-    { value: 'ครุภัณฑ์การศึกษา', valueView: 'ครุภัณฑ์การศึกษา' },
-    { value: 'โครงการ', valueView: 'โครงการ' },
+    { value: "ครุภัณฑ์การศึกษา", valueView: "ครุภัณฑ์การศึกษา" },
+    { value: "โครงการ", valueView: "โครงการ" },
   ];
 
   learningGroup: Type[] = [
     {
-      value: 'กลุ่มสาระการเรียนรู้วิทยาศาสตร์',
-      valueView: 'กลุ่มสาระการเรียนรู้วิทยาศาสตร์',
+      value: "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+      valueView: "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้คณิตศาสตร์',
-      valueView: 'กลุ่มสาระการเรียนรู้คณิตศาสตร์',
+      value: "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
+      valueView: "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี',
-      valueView: 'กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี',
+      value: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
+      valueView: "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้ภาษาไทย',
-      valueView: 'กลุ่มสาระการเรียนรู้ภาษาไทย',
+      value: "กลุ่มสาระการเรียนรู้ภาษาไทย",
+      valueView: "กลุ่มสาระการเรียนรู้ภาษาไทย",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา',
-      valueView: 'กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา',
+      value: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
+      valueView: "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม',
-      valueView: 'กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม',
+      value: "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
+      valueView: "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้ศิลปะ',
-      valueView: 'กลุ่มสาระการเรียนรู้ศิลปะ',
+      value: "กลุ่มสาระการเรียนรู้ศิลปะ",
+      valueView: "กลุ่มสาระการเรียนรู้ศิลปะ",
     },
     {
-      value: 'กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ',
-      valueView: 'กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ',
+      value: "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
+      valueView: "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
     },
   ];
 
   // Auto complete
   majorList = new FormControl();
   options: string[] = [
-    'ครุภัณฑ์สำนักงาน',
-    'ครุภัณฑ์การศึกษา',
-    'ครุภัณฑ์ยานพาหนะและขนส฽่ง',
-    'ครุภัณฑ์การเกษตร',
-    'ครุภัณฑ์ก฽่อสร้฾าง',
-    'ครุภัณฑ์ไฟฟ้าและวิทยุ',
-    'ครุภัณฑ์โฆษณาและเผยแพร่',
-    'ครุภัณฑ์วิทยาศาสตร์การแพทย์',
-    'ครุภัณฑ์อาวุธ',
-    'ครุภัณฑ์งานบ฾านงานครัว',
-    'ครุภัณฑ์โรงงาน',
-    'ครุภัณฑ์กีฬา',
-    'ครุภัณฑ์สำรวจ',
-    'ครุภัณฑ์ดนตรีและนาฏศิลป฼์',
-    'ครุภัณฑ์คอมพิวเตอร์',
-    'ครุภัณฑ์สนาม'
+    "ครุภัณฑ์สำนักงาน",
+    "ครุภัณฑ์การศึกษา",
+    "ครุภัณฑ์ยานพาหนะและขนส฽่ง",
+    "ครุภัณฑ์การเกษตร",
+    "ครุภัณฑ์ก฽่อสร้฾าง",
+    "ครุภัณฑ์ไฟฟ้าและวิทยุ",
+    "ครุภัณฑ์โฆษณาและเผยแพร่",
+    "ครุภัณฑ์วิทยาศาสตร์การแพทย์",
+    "ครุภัณฑ์อาวุธ",
+    "ครุภัณฑ์งานบ฾านงานครัว",
+    "ครุภัณฑ์โรงงาน",
+    "ครุภัณฑ์กีฬา",
+    "ครุภัณฑ์สำรวจ",
+    "ครุภัณฑ์ดนตรีและนาฏศิลป฼์",
+    "ครุภัณฑ์คอมพิวเตอร์",
+    "ครุภัณฑ์สนาม",
   ];
   filteredOptions: Observable<string[]>;
 
   equipments;
-  private mode = 'create';
+  private mode = "create";
   private equipmentsId: string;
   dataEdit;
 
@@ -129,6 +130,12 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   position: string;
   department: string;
   private userDetail;
+  totalPrice: number;
+  buttonDisable: boolean;
+  existEquip: any;
+  learningGroupSet: any;
+
+  mainEquipmentList: Object[] = [];
   constructor(
     public fb: FormBuilder,
     private equipmentsService: EquipmentsService,
@@ -136,7 +143,8 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private userServices: UsersService
+    private userServices: UsersService,
+    private setBudgetService: SetBudgetService
   ) {}
 
   ngOnInit(): void {
@@ -178,33 +186,56 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
       dateProject: new FormControl(null, { validators: [Validators.required] }),
       condition: new FormControl(null, { validators: [Validators.required] }),
     });
+
+
     // Auto complete
     this.filteredOptions = this.majorList.valueChanges.pipe(
-      startWith(''),
+      startWith(""),
       map((value) => this._filter(value))
     );
     // Get user detail
     const userId = this.userServices.getUserId();
-    console.log('User ID : ', userId);
+    console.log("User ID : ", userId);
     this.userServices.getUserDetail(userId).subscribe((userDetail) => {
       this.userDetail = userDetail.data;
       this.firstName = this.userDetail.firstName;
       this.lastName = this.userDetail.lastName;
       this.position = this.userDetail.position;
       this.department = this.userDetail.department;
-      console.log(
-        'User Detail',
-        this.firstName,
-        this.lastName,
-        this.position,
-        this.department
-      );
+      
+      this.equipmentsService
+      .getEquipmentUpdateListener()
+      .subscribe((equipment) => {
+        const allEquipment = equipment;
+        const equipmentInGroup = allEquipment.filter(
+          (group) =>
+            group.learningGroups === this.department
+        );
+        for (let i = 0; i < equipment.length; i++) {
+          this.mainEquipmentList.push(equipment[i].majorList);
+        }
+        console.log(equipmentInGroup);
+        console.log(this.mainEquipmentList);
+        // console.log(allEquipment);
+
+        // console.log(this.mainEquipmentList.toString());
+      });
+      this.equipmentsRequest.patchValue({
+        learningGroups: this.department,
+      });
+      // console.log(
+      //   "User Detail",
+      //   this.firstName,
+      //   this.lastName,
+      //   this.position,
+      //   this.department
+      // );
     });
     this.route.paramMap.subscribe((paramMap) => {
-      console.log('Param', paramMap.has('equipmentId'));
-      if (paramMap.has('equipmentId')) {
-        this.mode = 'edit';
-        this.equipmentsId = paramMap.get('equipmentId');
+      console.log("Param", paramMap.has("equipmentId"));
+      if (paramMap.has("equipmentId")) {
+        this.mode = "edit";
+        this.equipmentsId = paramMap.get("equipmentId");
         this.equipments = this.equipmentsService
           .getOneEquipment(this.equipmentsId)
           .subscribe((equipmentData) => {
@@ -250,7 +281,7 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
             });
           });
       } else {
-        this.mode = 'create';
+        this.mode = "create";
         console.log(this.mode);
       }
     });
@@ -267,45 +298,67 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
   ckeditorContent;
 
   addData() {
-    if (this.mode === 'create') {
-      console.log('Form insert data : ', this.equipmentsRequest);
-      this.equipmentsService.addEquipment(
-        this.firstName,
-        this.lastName,
-        this.position,
-        this.department,
-        // this.equipmentsRequest.value.firstName,
-        // this.equipmentsRequest.value.lastName,
-        // this.equipmentsRequest.value.position,
-        // this.equipmentsRequest.value.learningGroup,
-        this.equipmentsRequest.value.subjectTeach,
-        this.equipmentsRequest.value.reason,
-        this.equipmentsRequest.value.objective,
-        this.equipmentsRequest.value.typeEquipment,
-        this.equipmentsRequest.value.learningGroups,
-        this.equipmentsRequest.value.majorList,
-        // this.majorList.value,
-        this.equipmentsRequest.value.budget,
-        this.equipmentsRequest.value.necessary,
-        this.equipmentsRequest.value.existEquipment,
-        this.equipmentsRequest.value.otherReason,
-        this.equipmentsRequest.value.dateProject,
-        this.equipmentsRequest.value.condition,
-        '',
-        ''
-      );
-      const type = 'โครงการ';
-      const status = 'กำลังดำเนินการ';
-      const detail = this.equipmentsRequest.value.majorList;
-      const note = '';
-      const userId = this.userServices.getUserId();
-      // Notification
-      this.notifiedService.addNotification(userId, type, status, detail, note);
-      Swal.fire(
-        'บันทึกรายการเรียบร้อย',
-        'You submitted succesfully!',
-        'success'
-      );
+    if (this.mode === "create") {
+      this.setBudgetService.getDataBudget().subscribe((data) => {
+        this.learningGroupSet = data.data;
+        const myLearningGroup = this.learningGroupSet.filter(
+          (learn) =>
+            learn.learningGroup === this.equipmentsRequest.value.learningGroups
+        );
+        console.log(this.learningGroupSet);
+        console.log(myLearningGroup[0]["budget"]);
+        const budgetGroup = myLearningGroup[0]["budget"];
+        // Condition
+        if (this.equipmentsRequest.value.budget > budgetGroup) {
+          Swal.fire(
+            "เกินงบประมาณ",
+            "ราคาที่จัดตั้งเกินงบประมาณที่ได้ระบจัดสรร!",
+            "warning"
+          );
+        } else {
+          // console.log("Form insert data : ", this.equipmentsRequest);
+          this.equipmentsService.addEquipment(
+            this.firstName,
+            this.lastName,
+            this.position,
+            this.department,
+            this.equipmentsRequest.value.subjectTeach,
+            this.equipmentsRequest.value.reason,
+            this.equipmentsRequest.value.objective,
+            this.equipmentsRequest.value.typeEquipment,
+            this.equipmentsRequest.value.learningGroups,
+            this.equipmentsRequest.value.majorList,
+            this.equipmentsRequest.value.budget,
+            this.equipmentsRequest.value.necessary,
+            this.equipmentsRequest.value.existEquipment,
+            this.equipmentsRequest.value.otherReason,
+            this.equipmentsRequest.value.dateProject,
+            this.equipmentsRequest.value.condition,
+            "",
+            ""
+          );
+
+          const type = "โครงการ";
+          const status = "กำลังดำเนินการ";
+          const detail = this.equipmentsRequest.value.majorList;
+          const note = "";
+          const userId = this.userServices.getUserId();
+          // Notification
+          this.notifiedService.addNotification(
+            userId,
+            type,
+            status,
+            detail,
+            note
+          );
+          Swal.fire(
+            "บันทึกรายการเรียบร้อย",
+            "You submitted succesfully!",
+            "success"
+          );
+        }
+      });
+
       // this._snackBar.open('เพิ่มข้อมูลเรียบร้อย', 'ปิด', {
       //   duration: 5000,
       //   horizontalPosition: this.horizontalPosition,
@@ -330,22 +383,66 @@ export class AddRequestEquipmentComponent implements OnInit, OnDestroy {
         this.equipmentsRequest.value.otherReason,
         this.equipmentsRequest.value.dateProject,
         this.equipmentsRequest.value.condition,
-        'กำลังดำเนินการ',
-        '',
-        ''
+        "กำลังดำเนินการ",
+        "",
+        ""
       );
-      this.router.navigate(['/requestEquipment']);
+      this.router.navigate(["/requestEquipment"]);
       Swal.fire(
-        'บันทึกรายการแก้ไขเรียบร้อย',
-        'You submitted succesfully!',
-        'success'
+        "บันทึกรายการแก้ไขเรียบร้อย",
+        "You submitted succesfully!",
+        "success"
       );
-      // this._snackBar.open('แก้ไขข้อมูลเรียบร้อย', 'ปิด', {
-      //   duration: 5000,
-      //   horizontalPosition: this.horizontalPosition,
-      //   verticalPosition: this.verticalPosition,
-      // });
     }
+  }
+
+  getEvent(event: string) {
+    this.existEquip = event;
+    console.log(this.existEquip);
+    console.log(this.mainEquipmentList);
+    // const exist = this.mainEquipmentList.toString();
+    // if (this.existEquip == exist) {
+    //   Swal.fire(
+    //     "ครุภัณฑ์รายการนี้ถูกเลือกเเล้ว",
+    //     "ไม่สามารถเลือกครุภัณฑ์รายการหลักนี้ได้ เนื่องจากถูกเลือกเเล้ว !",
+    //     "warning"
+    //   );
+    //   this.buttonDisable = true;
+    // } else {
+    //   this.buttonDisable = false;
+    // }
+  }
+
+  onKeyCheckEquip(event: any) {
+    this.existEquip = event.target.value;
+    console.log(this.existEquip);
+    if (this.existEquip == "ครุภัณฑ์สำนักงาน") {
+      // window.alert('Equipment Exist!');
+      Swal.fire(
+        "ครุภัณฑ์รายการนี้ถูกเลือกเเล้ว",
+        "ไม่สามารถเลือกครุภัณฑ์รายการหลักนี้ได้ เนื่องจากถูกเลือกเเล้ว !",
+        "warning"
+      );
+      this.buttonDisable = true;
+    } else {
+      this.buttonDisable = false;
+    }
+  }
+
+  onKeyCheckPrice(event: any) {
+    // without type info
+    // this.totalPrice = event.target.value;
+    // console.log(this.totalPrice);
+    // if (this.totalPrice >= 500000) {
+    //   Swal.fire(
+    //     'เกินงบประมาณ',
+    //     'ราคาที่จัดตั้งเกินงบประมาณที่ได้ระบจัดสรร!',
+    //     'warning'
+    //   );
+    //   this.buttonDisable = true;
+    // } else {
+    //   this.buttonDisable = false;
+    // }
   }
 
   ngOnDestroy() {

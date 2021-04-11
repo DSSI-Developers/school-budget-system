@@ -23,7 +23,7 @@
                                 <div class="row" (click)="readDetail(notic._id)">
                                     <div class="col-md-6">{{ notic.detail }}</div>
                                     <div class="col-md-6">
-                                        <div class="text-rigth" *ngIf="notic.readStatus === false; else read">
+                                        <div class="text-rigth text-red" *ngIf="notic.readStatus === false; else read">
                                             ยังไม่อ่าน</div>
                                         <ng-template #read>
                                             <div class="text-rigth">

@@ -86,7 +86,7 @@
                                             <div class="col">
                                                 <mat-form-field appearance="fill">
                                                     <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
-                                                    <mat-select formControlName="learningGroups">
+                                                    <mat-select formControlName="learningGroups" [disabled]="true">
                                                         <mat-option *ngFor="let learnGroup of learningGroup" value="{{ learnGroup.value }}">{{ learnGroup.valueView }}
                                                         </mat-option>
                                                     </mat-select>
@@ -102,8 +102,8 @@
                                                 </mat-form-field> -->
                                                 <mat-form-field class="example-full-width" appearance="fill">
                                                     <mat-label>ครุภัณฑ์</mat-label>
-                                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="majorList" [matAutocomplete]="auto" />
-                                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="majorList" [matAutocomplete]="auto" (keyup)="onKeyCheckEquip($event)" />
+                                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)='getEvent($event.option.value)'>
                                                         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                                                             {{ option }}
                                                         </mat-option>
@@ -113,7 +113,7 @@
                                         </div>
                                         <mat-form-field appearance="outline">
                                             <mat-label>จำนวนงบประมาณที่จัดตั้ง</mat-label>
-                                            <input matInput placeholder="จำนวนงบประมาณที่จัดตั้ง" type="number" formControlName="budget" />
+                                            <input matInput placeholder="จำนวนงบประมาณที่จัดตั้ง" type="number" formControlName="budget" (keyup)="onKeyCheckPrice($event)" />
                                             <span matSuffix>บาท</span>
                                             <mat-icon matSuffix></mat-icon>
                                         </mat-form-field>
@@ -169,7 +169,10 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" [disabled]="equipmentsRequest.invalid" (click)="addData()" class="btn btn-danger">
+                            <!-- <button type="submit" [disabled]="equipmentsRequest.invalid || buttonDisable" (click)="addData()" class="btn btn-danger">
+                                <mat-icon>save_alt</mat-icon> บันทึกข้อมูล
+                            </button> -->
+                            <button type="submit" (click)="addData()" class="btn btn-danger">
                                 <mat-icon>save_alt</mat-icon> บันทึกข้อมูล
                             </button>
                         </div>

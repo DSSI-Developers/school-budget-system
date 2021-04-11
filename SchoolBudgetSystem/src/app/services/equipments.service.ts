@@ -70,7 +70,7 @@ export class EquipmentsService {
       response: any
     }>(
       // 'http://localhost:8080/mainEquipment/getOneEquipment/' + equipmentsId
-      BACKEND_API + 'getOneEquipment' + equipmentsId
+      BACKEND_API + 'getOneEquipment/' + equipmentsId
     );
   }
 
@@ -209,7 +209,7 @@ export class EquipmentsService {
     this._http
       .delete(
         // 'http://localhost:8080/mainEquipment/deleteEquipment/' + equipmentId
-        BACKEND_API + 'deleteEquipment' + equipmentId
+        BACKEND_API + 'deleteEquipment/' + equipmentId
       )
       .subscribe(() => {
         console.log('Delete successful');

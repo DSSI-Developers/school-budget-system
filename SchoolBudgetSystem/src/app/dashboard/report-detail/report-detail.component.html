@@ -1,0 +1,35 @@
+<button type="button" class="close" data-dismiss="alert" aria-label="Close" mat-dialog-close>
+    <span aria-hidden="true">&times;</span>
+</button>
+<h2 mat-dialog-title>รายการครุภัณฑ์</h2>
+<mat-dialog-content class="mat-typography">
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">รายการครุภัณณ์</th>
+                <th scope="col">จำนวน</th>
+                <th scope="col">ราคาต่อชิ้น</th>
+                <th scope="col">ราคารวม</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of subEquipment; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td>{{ item.equipmentName }}</td>
+                <td class="text-center">{{ item.unit }}</td>
+                <td class="text-center">{{ item.budgetPerPrice | number}}</td>
+                <td class="text-center">{{ item.budget | number}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">รวม</td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center">{{ budget | number}}</td>
+            </tr>
+        </tbody>
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <!-- <button mat-raised-button (click)="closeDialog()">ยกเลิก</button> -->
+</mat-dialog-actions>

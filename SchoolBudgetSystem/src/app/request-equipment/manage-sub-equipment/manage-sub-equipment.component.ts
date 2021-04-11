@@ -52,7 +52,7 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
   countPricePerUnit: number;
   private authStatusSub: Subscription;
   private allUpdate: Subscription;
-  private subEquipmentsData: SubEquipments[] = [];
+  subEquipmentsData: SubEquipments[] = [];
 
   valueOfprice: number;
   valueOfunit: number;
@@ -339,6 +339,7 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
   filteredOptions: Observable<string[]>;
   educationsList: string[] = [];
   main: Array<any> = [];
+  totalAmount: number;
 
   constructor(
     public fb: FormBuilder,
@@ -391,6 +392,18 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
           this.budget = listProject.response.budget;
           this.necessary = listProject.response.necessary;
           // console.log(this.equipmentDetail);
+
+           const mainId = listProject.response._id;
+          this.totalAmount = 0;
+          this.subServices.getSubEquipment(mainId).subscribe(data => {
+            const allDataOfSub = data.response;
+            console.log(allDataOfSub);
+            for (let i = 0; i < allDataOfSub.length; i++) {
+              // console.log(allDataOfSub[i]['unit']);
+              this.totalAmount += allDataOfSub[i]['unit'];
+            }
+            console.log(this.totalAmount);
+          });
 
           // Auto complete
           this.filteredOptions = this.equipmentName.valueChanges.pipe(
@@ -541,12 +554,11 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
         this.subEquipment.value.unit,
         this.totalUnitPerprice
       );
-      this.subServices.getEquipmentBySubId(this.projectId);
-
+      
       // Swal.fire('Thank you...', 'You submitted succesfully!', 'success');
       const type = ['', 'info', 'success', 'warning', 'danger'];
       const color = Math.floor(Math.random() * 4 + 1);
-
+      
       $.notify(
         {
           icon: 'notifications',
@@ -560,20 +572,22 @@ export class ManageSubEquipmentComponent implements OnInit, OnDestroy {
             align: 'right',
           },
           template:
-            '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
-            '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
-            '<span data-notify="title">{1}</span> ' +
-            '<span data-notify="message">{2}</span>' +
-            '<div class="progress" data-notify="progressbar">' +
-            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-            '</div>' +
-            '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            '</div>',
+          '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          '</div>' +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          '</div>',
         }
-      );
-      this.subEquipment.reset();
+        );
+        this.subEquipment.reset();
+        this.mainEquipmentServices.getAllEquipments();
+        this.subServices.getEquipmentBySubId(this.projectId);
+      }
     }
-  }
 
   deleteEquipment(id: any, price: number) {
     this.totalBudget = this.totalBudget - this.totalBudget;

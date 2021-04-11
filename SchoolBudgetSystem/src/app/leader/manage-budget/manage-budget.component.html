@@ -1,0 +1,46 @@
+<button type="button" class="close" data-dismiss="alert" aria-label="Close" mat-dialog-close>
+    <span aria-hidden="true">&times;</span>
+</button>
+<h2 mat-dialog-title>งบประมาณที่สามารถจัดตั้งได้</h2>
+<mat-dialog-content class="mat-typography">
+    <form style="padding: 10px 20px;" [formGroup]='dataBudget'>
+        <div class="col">
+            <mat-form-field appearance="outline">
+                <mat-label>ตั้งงบประมาณ</mat-label>
+                <input type="number" formControlName="budget" matInput placeholder="กรอกจำนวนงบประมาณที่ได้ระบการจัดสรร">
+                <mat-icon matSuffix> attach_money</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </div>
+        <!-- &nbsp;&nbsp; -->
+        <div class="col">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>วันที่</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field appearance="outline">
+                <mat-label>กลุ่มสาระการเรียนรู้</mat-label>
+                <mat-select formControlName='learningGroup' [disabled]="true">
+                    <mat-option *ngFor="let depart of departments" value="{{ depart.value }}">
+                        {{ depart.viewValue }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <div class="col">
+                <mat-form-field appearance="outline">
+                    <mat-label>ตั้งงบประมาณ</mat-label>
+                    <input matInput placeholder="กรอกจำนวนงบประมาณที่ได้ระบการจัดสรร">
+                    <mat-icon> attach_money</mat-icon>
+                </mat-form-field>
+            </div> -->
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="closeDialog()">ยกเลิก</button>
+    <button mat-raised-button color="primary" cdkFocusInitial [disabled]="dataBudget.invalid" (click)="setBudget()">บันทึกข้อมูล</button>
+</mat-dialog-actions>

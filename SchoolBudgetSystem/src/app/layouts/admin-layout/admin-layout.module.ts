@@ -45,7 +45,12 @@ import { ReadNotificationComponent } from "app/notifications/read-notification/r
 // import 'chart.piecelabel.js';
 import "chart.piecelabel.js";
 import { ChangePasswordComponent } from "app/user-profile/change-password/change-password.component";
+import { ManageBudgetComponent } from "app/leader/manage-budget/manage-budget.component";
+import { DetailManageBudgetComponent } from "app/leader/detail-manage-budget/detail-manage-budget.component";
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ReportComponent } from "app/dashboard/report/report.component";
+import { ReportDetailComponent } from "app/dashboard/report-detail/report-detail.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -65,6 +70,7 @@ import { ChangePasswordComponent } from "app/user-profile/change-password/change
     Ng2SearchPipeModule,
     ChartModule,
     ChartsModule,
+    NgxChartsModule
   ],
   declarations: [
     DashboardComponent,
@@ -89,7 +95,11 @@ import { ChangePasswordComponent } from "app/user-profile/change-password/change
     AddUserComponent,
     ReadProjectDetailComponent,
     ReadNotificationComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ManageBudgetComponent,
+    DetailManageBudgetComponent,
+    ReportComponent,
+    ReportDetailComponent
   ],
   entryComponents: [
     MoreDetailComponent,
@@ -97,7 +107,11 @@ import { ChangePasswordComponent } from "app/user-profile/change-password/change
     DetailHistoryComponent,
     AddUserComponent,
     ReadNotificationComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ManageBudgetComponent,
+    DetailManageBudgetComponent,
+    ReportComponent,
+    ReportDetailComponent
   ],
 })
 export class AdminLayoutModule {}
