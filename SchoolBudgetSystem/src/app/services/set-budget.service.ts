@@ -62,6 +62,7 @@ export class SetBudgetService {
     console.log(dataSet);
     this.http.put(API_URL + '/' + id, dataSet).subscribe(result => {
       console.log(result);
+      this.getAllDataBudget();
       Swal.fire('แก้ไขข้อมูลสำเร็จ', 'แก้ไขงบประมาณที่ได้ระบการจัดสรรแล้ว', 'success')
     }, (error) => {
       console.log(error);
